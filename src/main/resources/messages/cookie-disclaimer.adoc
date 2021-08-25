@@ -1,0 +1,18 @@
+// tag::DE[]
+== Cookie-Disclaimer
+
+Diese Anwendung nutzt Cookies zum Halten des States. Diese werden bei Beenden des Durchgangs gelöscht.
+
+Es werden keinerlei sonstige Cookies verwendet.
+// end::DE[]
+
+
+// tag::EN[]
+== Cookie-Disclaimer
+
+This application uses cookies for storing the state. These cookies will be deleted 
+on the end of the exam.
+
+No other cookies are used.
+// end::EN[]
+

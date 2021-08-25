@@ -1,0 +1,146 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="style.css"/>
+	<title>ISAQB Foundation - Mock Exam</title>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+	<!-- Autoreload on local file change -->
+	<!-- 
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+	 -->
+</head>
+<body>
+
+
+
+ <div class="container">
+    <h3>Fragen</h3>
+    <div class="master_detail">
+      <div class="row">
+          <div class="col-md-3 col-sm-12 col-xs-12">
+          
+            <div class="master_list">
+              <div class="list-group">
+              	
+              	  <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}">
+                  	  <span th:utext="${task.getMenuLabelForResultPage()}"/>
+                  	  <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png" th:if="${task.missingPoints}">
+                  </button> 
+              	  <hr>
+              	  <span th:text="${util.statistik()}"/>
+              	
+              	  <br>
+              	  <br>
+				  <button type="button" class="link-button" value="end">Beenden</button>
+				  <button type="button" class="link-button" value="result.html">Zurück</button>
+				  
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-md-9 col-sm-12 col-xs-12">
+          
+            <div class="detail_list">
+              <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}">
+                  <h3 th:text="'Frage ' + ${wrapper.nr}"/>
+                  <i th:text="${wrapper.reachablePoints}"/><br>
+                  <b th:text="${wrapper.kind}"/><br>
+                  <p th:text="${wrapper.task.question.getText('DE')}"/>
+                  
+                  <br>
+                  <div th:switch="${wrapper.task.type.name()}" th:remove="tag">
+                  
+                  	 <div th:case="'CHOOSE'" th:remove="tag">
+	                    <table border="1">
+	                      <tr>
+	                        <th 
+	                        	th:each="header : ${wrapper.task.columnHeaders}" 
+	                        	th:text="${header.getText('DE')}"
+	                        	colspan="2"/>
+	                        <th/>
+	                        <th/>
+	                      </tr>
+	                      <tr th:each="option : ${wrapper.task.possibleOptions}">
+	                        <div th:each="col,iter : ${option.columnValues}" th:remove="tag">
+		                      <td>
+		                        <input type="radio"
+		                        	th:attr="
+		                        		name='frage-' + ${wrapper.nr} + '-' + ${option.position}, 
+		                        		value=${col}"
+	                        		th:checked="${wrapper.optionSelected(option, iter.index)}"
+	                        		disabled="disabled"
+		                        /> 
+		                      </td>
+		                      <td><img src="haken-gruen.png" th:if="${option.isCorrect(iter.index)}"></td>
+	                        </div>
+	                        <td class="choice" th:text="${option.position} + ')'"/>
+	                        <td class="choice" th:text="${option.text.getText('DE')}"/>
+	                      </tr>
+	                    </table>
+                  	 </div>
+                  	 
+                  	 <div th:case="*" th:remove="tag">
+						<table>
+							<tr th:each="option,iter : ${wrapper.task.possibleOptions}">
+							  <td><input 
+							  	type="checkbox" 
+							  	th:attr="name='frage-' + ${wrapper.nr} + '-' + ${option.position}"
+							  	disabled="disabled" 
+							  	th:checked="${wrapper.optionSelected(option, iter.index)}"
+							  	>
+							  </td>
+							  <td><img src="haken-gruen.png" th:if="${option.isCorrect()}"></td>
+							  <td th:text="${option.position} + ') ' + ${option.text.getText('DE')}"/>
+							</tr>
+						</table>                 
+                  	 </div>
+                  	 
+                  </div>
+              </article>
+            
+          </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+<script id="rendered-js">
+// Fade-In/Out of details in master-detail-view
+$(document).ready(function () {
+  var $body = $('body');
+
+  $body.on('click', 'div.master_list div.list-group button', function () {
+    var $button = $(this),
+    article_option = $button.attr('data-option'),
+    article_selector = 'article.' + article_option,
+    $master_detail = $button.closest('.master_detail'),
+    $article = $master_detail.find(article_selector);
+
+    $master_detail.find('article').removeClass('grow fadeIn');
+
+    $article.addClass('grow fadeIn');
+  });
+});
+//# sourceURL=pen.js
+</script>
+
+
+<script id="link-buttons">
+$(document).ready(function() {
+	var $body = $('body');
+	$body.on('click', '.link-button', function() {
+		var $button = $(this);
+		var href = $button.attr('value');
+		window.location.href = href;
+	});
+});
+</script>
+
+</body>
+</html>

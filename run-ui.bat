@@ -1,0 +1,1 @@
+cls && gradlew build -x test && java -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar

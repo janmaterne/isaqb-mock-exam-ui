@@ -1,0 +1,43 @@
+init: Aus den AsciiDoc-Dateien von Github den Datenbestand aufbauen
+  https://github.com/isaqb-org/examination-foundation/tree/master/raw/mock_exam/docs/questions
+  question-*.adoc
+  
+  
+  Task
+    id
+    type
+    points
+    question
+        language
+    answer
+        language
+        isCorrect
+        comment
+        
+UI
+    Auswahl der Sprache
+    Liste der Tasks (randomisiert)
+        Type, Points
+        Question
+        Liste der Antworten (randomisiert) mit Anw�hlm�glichkeit (Checkbox, Radiobutton)
+    Timer l�uft
+    Button "Auswerten"
+    Auswertung wird angezeigt
+        Hervorheben der falschen Antworten
+        (I)-Info-Zeichen f�r Antworten, zu denen Erl�uterungen vorliegen
+      
+  
+
+====
+
+TODO
+- fehlerhandling: 
+  -- url nicht zu laden
+  -- option.merge: columnValues passen nicht zueinander (= adoc ist falsch)
+- ui   
+
+
+i18n
+https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#a-multi-language-welcome
+               
+               

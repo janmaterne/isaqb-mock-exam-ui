@@ -1,0 +1,25 @@
+Punkteberechnung fehlerhaft
+
+Internationalisierung der Oberflächen
+
+berechnen, ob bestanden
+- scheint ok zu sein
+
+Frage 2 wird falsch geparst: es fehlen optionen
+--> bei option 'c' beginnt der Text mit einem Sonderzeichen '('
+--> dadurch erkennt der Parser den Text nicht
+==> sicherer wäre es, den Parser umzustellen:
+
+
+introduction: wie zu bedienen
+
+
+in container
+
+auf developer sandbox @ redhat / heroku / knative?
+
+auf github
+
+an jörg vollmer
+
+an isaqb
