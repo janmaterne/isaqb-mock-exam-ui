@@ -78,6 +78,11 @@ public class TaskParserTest {
 		assertFalse(task.getPossibleOptions().isEmpty());
 
 		assertPositionsPresentUpTo(task, 'e');
+		
+		assertEquals(
+			"(interne und externe) Schnittstellen",
+			task.findOptionByPosition('c').get().getText(Language.DE)
+		);
 	}
 	
 	@Test

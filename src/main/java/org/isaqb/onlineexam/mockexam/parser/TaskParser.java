@@ -145,7 +145,7 @@ public class TaskParser {
 			currentOption.setPosition(position);
 			return;
 		}
-		if (line.matches("\\| \\w.+")) {
+		if (line.matches("\\| .+")) {
 			String text = line.replaceFirst("\\| (.+)", "$1");
 			
 			if (state == TaskParserState.TEXT && currentLanguage().isPresent()) {
