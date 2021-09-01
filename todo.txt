@@ -5,11 +5,12 @@ Internationalisierung der Oberflächen
 berechnen, ob bestanden
 - scheint ok zu sein
 
-Frage 2 wird falsch geparst: es fehlen optionen
---> bei option 'c' beginnt der Text mit einem Sonderzeichen '('
---> dadurch erkennt der Parser den Text nicht
-==> sicherer wäre es, den Parser umzustellen:
 
+auswertung k-frage (frage 4) falsch
+- html <input> wird falsch gefüllt
+- value muss index enthalten; platz von index wird als ausgewählt gewertet
+--> erledigt
+offen: vorbelegung der <option>s klappt nicht
 
 introduction: wie zu bedienen
 
@@ -18,8 +19,19 @@ in container
 
 auf developer sandbox @ redhat / heroku / knative?
 
-auf github
-
-an jörg vollmer
-
 an isaqb
+
+
+springboot.jar lässt sich nicht starten:
+Caused by: java.util.ServiceConfigurationError: org.asciidoctor.Asciidoctor: Provider org.asciidoctor.jruby.internal.JRubyAsciidoctor could not be instantiated
+
+
+process/details: wenn frage ausgewählt, dann nach oben scrollen
+
+
+Tasks nach dem Laden validieren
+
+Umstellen: Welche Antworten selektiert sind und welche richtig sind als List<Boolean>
+  - logisch klarer
+  - besser vergleichbar
+  - derzeit List<Character> / List<String>
