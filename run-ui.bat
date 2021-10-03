@@ -1,1 +1,1 @@
-cls && gradlew build -x test && java -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar
+cls && gradlew build -x test && call run.bat
