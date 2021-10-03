@@ -22,7 +22,6 @@ import org.isaqb.onlineexam.mockexam.model.Language;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
 import org.isaqb.onlineexam.mockexam.model.calculation.Calculator;
 import org.isaqb.onlineexam.mockexam.util.JsonMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
@@ -41,6 +40,7 @@ public class UiController {
 	private IntroductionLoader introductionLoader;
 	private JsonMapper jsonMapper;
 	private I18NText cookieDislaimer;
+	private I18NText howToUse;
 	
 
 	public UiController(
@@ -48,13 +48,21 @@ public class UiController {
 			IntroductionLoader introductionLoader, 
 			JsonMapper jsonMapper,
 			AsciidocReader adocReader,
-			@Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer
+			@Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
+			@Value("classpath:messages/how-to-use.adoc") Resource howToUse
 	) throws IOException {
 		this.exam = exam;
 		this.introductionLoader = introductionLoader;
 		this.jsonMapper = jsonMapper;
+		this.cookieDislaimer = parseADoc(adocReader, resourceCookieDisclaimer);
+		this.howToUse = parseADoc(adocReader, howToUse);
+	}
+
+
+
+	private I18NText parseADoc(AsciidocReader adocReader, Resource resourceCookieDisclaimer) throws IOException {
 		String adocCookieDisclaimer = IOUtils.toString(resourceCookieDisclaimer.getInputStream(), Charset.defaultCharset());
-		this.cookieDislaimer = adocReader.parse(adocCookieDisclaimer);
+		return adocReader.parse(adocCookieDisclaimer);
 	}
 
 
@@ -66,6 +74,7 @@ public class UiController {
 		
 		model.addAttribute("html", introductionLoader.getHtml(lang));
 		model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
+		model.addAttribute("howToUse", howToUse.getText(lang));
 		
 		return "introduction.html";
 	}
@@ -137,7 +146,8 @@ public class UiController {
 	public String calculatePoints(HttpServletResponse response, Model model, @CookieValue("language") String language, @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64) {
 		List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
-		System.out.println(givenAnswers);
+		System.out.println("Given Answers:");
+		givenAnswers.forEach(a->System.out.println("- " + a));
 		
 		Calculator calc = new Calculator();
 		var result = calc.calculate(exam, givenAnswers);

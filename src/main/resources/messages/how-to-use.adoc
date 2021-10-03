@@ -1,0 +1,43 @@
+// tag::DE[]
+== Anleitung
+
+Bei P-Fragen (Mehrfachauswahl) werden einfache Checkboxen zur Verfügung gestellt, 
+in denen die gewünschten Antworten angewählt werden.
+Dieses findet auch bei A-Fragen (Einfachauswahl) statt, damit bei Bedarf die Antwort abgewählt werden kann.
+
+Bei K-Fragen (Zuordnung) werden Radiobuttons verwendet. Ein Abwählen kann Klick auf den Fragetext erfolgen.
+
+Bei allen Fragen wird eine Checkbox `Flag this` angeboten. 
+Bei Anwahl dieser Box wird in der Übersicht die Frage mit einem Fähnchen 
+image:red-flag.svg[width=15]
+hervorgehoben. 
+Damit kann man sich Fragen zur späteren Überarbeitung "merken".
+
+In der Übersicht werden auch die Fragen hervorgehoben (
+image:red-exclamation-mark.png[width=15] 
+), zu denen keine Antworten getätigt wurden.
+ 
+
+// end::DE[]
+
+
+// tag::EN[]
+== How to use
+
+On P-questions (multiple choice) simple checkboxes are used for selecting the answer.
+Checkboxes are also used for A-questions (single choice) so you are still able to uncheck them.
+
+On K-questions (choose) radio buttons are used. You are also able to uncheck them  by clicking on the question text.
+
+On each question there is a checkbox `Flag this`. 
+With this a flag sign
+image:red-flag.svg[width=15]
+is shown in the overview.
+With this you could mark questions for later checks.
+
+Also questions without any answer are highlighted
+image:red-exclamation-mark.png[width=15] 
+in the overview.
+
+// end::EN[]
+
