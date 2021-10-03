@@ -6,8 +6,5 @@ Internationalisierung der Oberflächen
 - Seite 5 result: komplett
 - Seite 6 details: komplett, lang übertragen?
 
-Dockerfile
-- SpringBoot JAR für besseres Layering extrahieren
-
 
 auf developer sandbox @ redhat / heroku / knative?
