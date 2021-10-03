@@ -187,11 +187,13 @@ public class UiController {
 	}
 
 	private void deleteCookies(HttpServletResponse response, HttpServletRequest request) {
-		for(Cookie cookie : request.getCookies()) {
-			// bandwidth
-			cookie.setValue("");
-			cookie.setMaxAge(0);
-			response.addCookie(cookie);
+		if (request != null && response != null) {
+			for(Cookie cookie : request.getCookies()) {
+				// bandwidth
+				cookie.setValue("");
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+			}
 		}
 	}
 
