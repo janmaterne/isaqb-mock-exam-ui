@@ -3,7 +3,10 @@ package org.isaqb.onlineexam.mockexam;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootApplication
+@Slf4j
 public class MockexamApplication {
 
 	public static void main(String[] args) {
@@ -13,7 +16,7 @@ public class MockexamApplication {
 
 	private static void validateEnvironment() {
 		if (!"UTF-8".equalsIgnoreCase(System.getProperty("file.encoding"))) {
-			System.out.println("Die Anwendung muss mit -Dfile.encoding=UTF-8 gestartet werden.");
+			log.info("Die Anwendung muss mit -Dfile.encoding=UTF-8 gestartet werden.");
 			System.exit(1);
 		}
 	}

@@ -13,12 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Load the whole exam with all questions and their options.
  */
 @Component
 @AllArgsConstructor
+@Slf4j
 public class ExamLoader {
 
 	@Autowired
@@ -38,8 +40,8 @@ public class ExamLoader {
 			.map(Optional::get)
 			.collect(Collectors.joining("\n"));
 		if (errorMsg.length() > 0) {
-			System.out.println("Fehler bei den geladenen Tasks:");
-			System.out.println(errorMsg);
+			log.error("Fehler bei den geladenen Tasks:");
+			log.error(errorMsg);
 		}
 	}
 	

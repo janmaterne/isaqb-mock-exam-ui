@@ -146,16 +146,10 @@ public class UiController {
 	public String calculatePoints(HttpServletResponse response, Model model, @CookieValue("language") String language, @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64) {
 		List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
-		System.out.println("Given Answers:");
-		givenAnswers.forEach(a->System.out.println("- " + a));
-		
 		Calculator calc = new Calculator();
 		var result = calc.calculate(exam, givenAnswers);
 		model.addAttribute("result", result);
 		response.addCookie(new Cookie("result", jsonMapper.toString(result)));
-		System.out.println("result");
-		System.out.println(result);
-		result.points.entrySet().forEach(e->System.out.printf("- %s: %s%n", e.getKey(), e.getValue()));
 		
 		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
 		model.addAttribute("util", uiData);
@@ -187,8 +181,9 @@ public class UiController {
 	}
 
 	private void deleteCookies(HttpServletResponse response, HttpServletRequest request) {
-		if (request != null && response != null) {
-			for(Cookie cookie : request.getCookies()) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for(Cookie cookie : cookies) {
 				// bandwidth
 				cookie.setValue("");
 				cookie.setMaxAge(0);

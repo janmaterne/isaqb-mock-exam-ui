@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
 import org.isaqb.onlineexam.mockexam.model.calculation.CalculationResult;
-import org.isaqb.onlineexam.mockexam.ui.UIData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,9 +31,6 @@ public class JsonMapper {
 	private String mapToString(Object value) {
 		try {
 			String json = mapper.writer().writeValueAsString(value);
-			if (value instanceof UIData) {
-				System.out.printf("%n%ntoString()%n%s%n%n%n", json);
-			}
 			return encode(json);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);

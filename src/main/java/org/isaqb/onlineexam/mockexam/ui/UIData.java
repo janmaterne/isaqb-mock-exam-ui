@@ -11,7 +11,6 @@ import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
 import org.isaqb.onlineexam.mockexam.model.TaskType;
 import org.isaqb.onlineexam.mockexam.model.calculation.CalculationResult;
 import org.isaqb.onlineexam.mockexam.util.LanguageData;
-import org.jruby.RubyIO.Sysopen;
 
 import lombok.AllArgsConstructor;
 
@@ -99,17 +98,8 @@ public class UIData {
 		}
 
 		public boolean optionSelected(Option option, int index) {
-			System.out.printf(
-				"%s idx=%s answer=%s %n", 
-				option.getPosition(), 
-				index,
-				givenAnswer
-				//.getOptionSelections().get(String.valueOf(option.getPosition()))
-			);
 			String position = String.valueOf(option.getPosition());
 			if (givenAnswer != null && givenAnswer.getOptionSelections().containsKey(position)) {
-				var x = givenAnswer.getOptionSelections().get(String.valueOf(option.getPosition()));
-				System.out.printf("- %s%n", x);
 				return true;
 			} else {
 				return false;

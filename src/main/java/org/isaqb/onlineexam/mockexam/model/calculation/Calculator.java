@@ -77,7 +77,6 @@ public class Calculator {
 				task.getType() == TaskType.CHOOSE
 				? analyseChoose()
 				: analyze();
-			System.out.println(results);
 			return calculate(
 				task.getReachablePoints(), 
 				task.getPossibleOptions().size(),
