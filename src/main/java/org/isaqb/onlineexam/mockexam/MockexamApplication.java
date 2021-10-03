@@ -7,11 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MockexamApplication {
 
 	public static void main(String[] args) {
-		verify();
+		validateEnvironment();
 		SpringApplication.run(MockexamApplication.class, args);
 	}
 
-	private static void verify() {
+	private static void validateEnvironment() {
 		if (!"UTF-8".equalsIgnoreCase(System.getProperty("file.encoding"))) {
 			System.out.println("Die Anwendung muss mit -Dfile.encoding=UTF-8 gestartet werden.");
 			System.exit(1);
