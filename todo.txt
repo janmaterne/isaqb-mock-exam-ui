@@ -1,17 +1,7 @@
-Punkteberechnung fehlerhaft
-
 Internationalisierung der Oberflächen
 
 berechnen, ob bestanden
 - scheint ok zu sein
-
-
-
-auswertung k-frage (frage 4) falsch
-- html <input> wird falsch gefüllt
-- value muss index enthalten; platz von index wird als ausgewählt gewertet
---> erledigt
-offen: vorbelegung der <option>s klappt nicht
 
 
 
