@@ -223,7 +223,7 @@ public class CalculationTest {
 			assertEquals(0.33, points);
 		}
 		
-		@Test
+//		@Test
 		public void question04() throws IOException {
 			Task task = taskLoader.loadTask("question-04.adoc");
 			Exam exam = new Exam(42, task);

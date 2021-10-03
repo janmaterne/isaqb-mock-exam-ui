@@ -3,6 +3,7 @@ package org.isaqb.onlineexam.mockexam.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,11 @@ public class Task {
 	
 	private List<Option> possibleOptions = new ArrayList<>();
 	
+	public List<String> columnValues() {
+		return IntStream.iterate(0,  i -> i<columnHeaders.size(), i->i+1)
+			.mapToObj(String::valueOf)
+			.toList();
+	}
 	
 	
 	public Task(String id, TaskType type, int reachablePoints, I18NText question) {

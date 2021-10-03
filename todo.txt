@@ -12,21 +12,12 @@ auswertung k-frage (frage 4) falsch
 --> erledigt
 offen: vorbelegung der <option>s klappt nicht
 
-introduction: wie zu bedienen
 
 
 in container
 
 auf developer sandbox @ redhat / heroku / knative?
 
-an isaqb
-
-
-springboot.jar lässt sich nicht starten:
-Caused by: java.util.ServiceConfigurationError: org.asciidoctor.Asciidoctor: Provider org.asciidoctor.jruby.internal.JRubyAsciidoctor could not be instantiated
-
-
-process/details: wenn frage ausgewählt, dann nach oben scrollen
 
 
 Tasks nach dem Laden validieren

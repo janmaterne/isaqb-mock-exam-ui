@@ -80,6 +80,11 @@ public class UIData {
 		private TaskAnswer givenAnswer;
 		private CalculationResult result;
 		
+		//TODO: Im fertigen Produkt entfernen. Nur für Debug.
+		public boolean debugShowArticle() {
+			return nr == 4 || true;
+		}
+		
 		public boolean flagSelected() {
 			return givenAnswer != null && givenAnswer.isFlagged();
 		}
@@ -92,8 +97,26 @@ public class UIData {
 				return false;
 			}
 		}
-		
+
 		public boolean optionSelected(Option option, int index) {
+			System.out.printf(
+				"%s idx=%s answer=%s %n", 
+				option.getPosition(), 
+				index,
+				givenAnswer
+				//.getOptionSelections().get(String.valueOf(option.getPosition()))
+			);
+			String position = String.valueOf(option.getPosition());
+			if (givenAnswer != null && givenAnswer.getOptionSelections().containsKey(position)) {
+				var x = givenAnswer.getOptionSelections().get(String.valueOf(option.getPosition()));
+				System.out.printf("- %s%n", x);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		public boolean optionSelectedOLD(Option option, int index) {
 			String position = String.valueOf(option.getPosition());
 			if (givenAnswer != null && givenAnswer.getOptionSelections().containsKey(position)) {
 				var valuesForThisOption = givenAnswer.getOptionSelections().get(position);

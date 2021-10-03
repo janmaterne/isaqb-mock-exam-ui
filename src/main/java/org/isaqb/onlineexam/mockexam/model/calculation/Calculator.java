@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.isaqb.onlineexam.mockexam.model.Exam;
 import org.isaqb.onlineexam.mockexam.model.Task;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
+import org.isaqb.onlineexam.mockexam.model.TaskType;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -72,7 +73,11 @@ public class Calculator {
 			if (answer == null) {
 				return 0;
 			}
-			Map<AnswerResult, Integer> results = analyze();
+			Map<AnswerResult, Integer> results = 
+				task.getType() == TaskType.CHOOSE
+				? analyseChoose()
+				: analyze();
+			System.out.println(results);
 			return calculate(
 				task.getReachablePoints(), 
 				task.getPossibleOptions().size(),
@@ -80,6 +85,59 @@ public class Calculator {
 				results.get(AnswerResult.INCORRECT),
 				results.get(AnswerResult.UNSELECTED)
 			);
+		}
+
+		private Map<AnswerResult, Integer> analyseChoose() {
+			if (answer == null) {
+				return Map.of(
+					AnswerResult.CORRECT, 0,
+					AnswerResult.INCORRECT, 0,
+					// no given answer means all unselected
+					AnswerResult.UNSELECTED, task.getPossibleOptions().size()
+				);
+			}
+
+			var map = Map.of(
+				AnswerResult.CORRECT, new AtomicInteger(),
+				AnswerResult.INCORRECT, new AtomicInteger(),
+				AnswerResult.UNSELECTED, new AtomicInteger()
+			);
+			for(int i=0; i<task.getPossibleOptions().size(); i++) {
+				var option = task.getPossibleOptions().get(i);
+				var position = String.valueOf(option.getPosition());
+				if (answer.getOptionSelections().containsKey(position)) {
+					var given = answer.getOptionSelections().get(position);
+					boolean correct = isCorrect(option.getCorrectColumnsIndices(), given);
+					if (correct) {
+						map.get(AnswerResult.CORRECT).incrementAndGet();
+					} else {
+						map.get(AnswerResult.INCORRECT).incrementAndGet();
+					}
+				} else {
+					map.get(AnswerResult.UNSELECTED).incrementAndGet();
+				}
+			}
+			
+			// Use of Integer instead of AtomicInteger for safety reason
+			return Map.of(
+				AnswerResult.CORRECT, map.get(AnswerResult.CORRECT).get(),
+				AnswerResult.INCORRECT, map.get(AnswerResult.INCORRECT).get(),
+				AnswerResult.UNSELECTED, map.get(AnswerResult.UNSELECTED).get()
+			);
+		}
+
+		private boolean isCorrect(List<Integer> correctColumnsIndices, List<String> given) {
+			if (given == null || correctColumnsIndices.size() != given.size()) {
+				return false;
+			}
+			for(int i=0; i<correctColumnsIndices.size(); i++) {
+				int correctValue = correctColumnsIndices.get(i);
+				int givenValue = Integer.parseInt(given.get(i));
+				if (correctValue != givenValue) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		public Map<AnswerResult, Integer> analyze() {

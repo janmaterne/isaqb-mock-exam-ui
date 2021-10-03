@@ -35,7 +35,7 @@
           <div class="col-md-9 col-sm-12 col-xs-12">
           
             <div class="detail_list">
-              <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}">
+              <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}" th:if="${wrapper.debugShowArticle()}">
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
@@ -51,7 +51,7 @@
 	                        <th/>
 	                      </tr>
 	                      <tr th:each="option : ${wrapper.task.possibleOptions}">
-	                        <div th:each="col,iter : ${option.columnValues}" th:remove="tag">
+	                        <div th:each="col,iter : ${wrapper.task.columnValues()}" th:remove="tag">
 		                      <td>
 		                        <input type="radio"
 		                        	th:attr="
@@ -109,9 +109,9 @@ $(document).ready(function () {
     $master_detail.find('article').removeClass('grow fadeIn');
 
     $article.addClass('grow fadeIn');
+	window.scrollTo(0,0);
   });
 });
-//# sourceURL=pen.js
 </script>
 
 
