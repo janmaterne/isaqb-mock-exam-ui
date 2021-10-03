@@ -1,20 +1,13 @@
 Internationalisierung der Oberflächen
-
-berechnen, ob bestanden
-- scheint ok zu sein
-
-
+- Seite 1 index: ok
+- Seite 2 introduction: "weiter"
+- Seite 3 process: Header "Fragen", Button "Berechnen", Fragetexte
+- Seite 4 send-exam: komplett
+- Seite 5 result: komplett
+- Seite 6 details: komplett, lang übertragen?
 
 Dockerfile
 - SpringBoot JAR für besseres Layering extrahieren
 
 
-
 auf developer sandbox @ redhat / heroku / knative?
-
-
-
-Umstellen: Welche Antworten selektiert sind und welche richtig sind als List<Boolean>
-  - logisch klarer
-  - besser vergleichbar
-  - derzeit List<Character> / List<String>
