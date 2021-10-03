@@ -6,6 +6,7 @@ berechnen, ob bestanden
 - scheint ok zu sein
 
 
+
 auswertung k-frage (frage 4) falsch
 - html <input> wird falsch gefüllt
 - value muss index enthalten; platz von index wird als ausgewählt gewertet
@@ -14,13 +15,14 @@ offen: vorbelegung der <option>s klappt nicht
 
 
 
-in container
+Dockerfile
+- SpringBoot JAR für besseres Layering extrahieren
+
+
 
 auf developer sandbox @ redhat / heroku / knative?
 
 
-
-Tasks nach dem Laden validieren
 
 Umstellen: Welche Antworten selektiert sind und welche richtig sind als List<Boolean>
   - logisch klarer

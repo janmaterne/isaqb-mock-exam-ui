@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 
 /**
  * Loads a list of {@link Task}s by using the given
- * {@link TaskParser} and {@link StringLoadero}.
+ * {@link TaskParser} and {@link StringLoader}.
  */
 @AllArgsConstructor
 @Component

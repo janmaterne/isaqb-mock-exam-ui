@@ -8,6 +8,7 @@ import org.isaqb.onlineexam.mockexam.loader.ExamLoader;
 import org.isaqb.onlineexam.mockexam.loader.StringLoader;
 import org.isaqb.onlineexam.mockexam.loader.TaskLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
+import org.isaqb.onlineexam.mockexam.model.TaskValidator;
 import org.isaqb.onlineexam.mockexam.parser.TaskParser;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ public class ExamLoaderTest {
 	private Exam loadExamWithOneTask() {
 		StringLoader stringLoader = new StringLoader(appProps.urlTemplate(), 1, 1);
 		TaskLoader taskLoader = new TaskLoader(new TaskParser(), stringLoader);
-		return new ExamLoader().loadExam(taskLoader, 15);
+		return new ExamLoader(new TaskValidator()).loadExam(taskLoader, 15);
 	}
 	
 }
