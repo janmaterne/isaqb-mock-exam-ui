@@ -21,7 +21,7 @@
           
             <div class="master_list">
               <div class="list-group">
-                  <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}">
+                  <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}, id='button-' + ${task.nr}">
                   	  <span th:utext="${task.getMenuLabel}"/>
                   	  <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png">
                   	  <img th:attr="id='flag-' + ${task.nr}" src="red-flag.svg">
@@ -36,6 +36,8 @@
           
             <div class="detail_list">
               <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}" th:if="${wrapper.debugShowArticle()}">
+<!-- TODO: Maximal-Anzahl 37 aus Backend -->
+              	  <a th:attr="href='javascript:changeToQuestion(' + ${ (wrapper.nr + 1) % 39} + ')'">Nächste Frage</a>
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
@@ -112,6 +114,12 @@ $(document).ready(function () {
 	window.scrollTo(0,0);
   });
 });
+</script>
+
+<script id="">
+function changeToQuestion(nr) {
+	document.getElementById("button-" + nr).click();
+}
 </script>
 
 

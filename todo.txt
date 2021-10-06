@@ -8,3 +8,28 @@ Internationalisierung der Oberflächen
 
 
 auf developer sandbox @ redhat / heroku / knative?
+
+
+process-exam: link on top "nächste Frage"
+  --> Maximal-Anzahl noch mit 39 im Template fest verdrahtet
+  --> Beschriftung bei #39 "Erste Frage" oder Link nicht setzten
+  --> Beschriftung internationalisieren
+
+
+Frage 28
+    falsch geparst? Es scheint die a)-Antwort im Fragetext zu landen
+Frage 39
+    nbsp,  Antwort a in der Frage; Antwort a = null
+    
+    
+Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit
+
+
+Docker-Image ist mit >500MB sehr groß (Basis=110 + JDK=320).
+  --> Spring Native 
+  --> a) Klappt nicht, da Asciidoctor dynamisch nachladen will. 
+         Intensivere Experimente zurückgestellt.
+      b) Build dauert mit 15min sehr lange
+      c) resultierendes Image ca 120MB
+      d) Banner wird nicht geladen 
+                 
