@@ -12,10 +12,32 @@ The application requires internet access on startup, because the application loa
 
 #TODO: Upload distro to ... where? GitHub?#
 
+There are three types of distributions:
+
+* as startable JAR file
+* as Docker image
+* as distribution with embedded Java runtime
+
+===== Startable JAR
+
+If you have a Java runtime installed (required Java16+), you could download the JAR and start it as any startable JAR:
+`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar`
+Here you have to specify the file encoding, as the application produces UTF-8 characters.
+Additionally you should "open" the Java module system.
+
+===== Docker image
+
+You could start the application by starting the docker image:
+`docker run -p 8080:8080 --env JAVA_OPTS="-Dfile.encoding=UTF-8" janmaterne/mockexam:latest`
+Here you have to publish port - maybe with changing it `-p 80:8080`.
+You have to specify the file encoding via environment variable.
+After starting the container you could access the application via the specified port on http://localhost:8080.
+
+===== Distribution
+
 After extracting the distribution archive you'll find a start script `run.bat` (Windows) or `run.sh` (Linux, MacOS) in the root directory.
 With this script you could start the application which will open port `8080` for incoming requests from the browser.
 So opening http://localhost:8080/ should work.
-
 
 ==== Developing it
 
@@ -30,6 +52,29 @@ Interaktives UI für das Üben der Mockprüfung des iSAQB Foundation Level.
 ==== Nutzung
 
 Die Anwendung benötigt Internetzugang zum Startzeitpunkt, da die Anwendung dann alle Fragen direkt aus dem Repository bei Github herunterlädt.
+
+Es gibt drei Arten der Distribution
+
+* als startbares JAR
+* als Docker Image
+* als Distribution mit mitgebrachter Java Laufzeit
+
+===== Starbares JAR
+
+Wenn eine Java Laufzeit installiert ist (es wird mindestens ein Java 16 benötigt), kann einfach das JAR heruntergeladen und wie gewohnt gestartet werden:
+`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar`
+Dabei muss das Encoding gesetzt werden, da die Anwendung UTF-8 Zeichen erzeugt.
+Auch sollte das Java Modulsystem befriedigt werden.
+
+===== Docker Image
+
+Man kann die Anwendung durch per Docker Image starten:
+`docker run -p 8080:8080 --env JAVA_OPTS="-Dfile.encoding=UTF-8" janmaterne/mockexam:latest`
+Hier muss der Port veröffentlicht werden - eventuell mit Änderung desselben: `-p 80:8080`.
+Auch hier muss das Encoding gesetzt werden - allerdings per Umgebungsvariable.
+Nach dem Start des Containers kann die Anwendung über den spezifizierten Port erreicht werden: http://localhost:8080.
+
+===== Distribution   
 
 Nachdem die Distribution heruntergeladen wurde, kann man ein Startskript `run.bat` (Windows) bzw. `run.sh` (Linux, MacOS) im Wurzelverzeichnis finden.
 Über dieses Skript kann die Anwendung gestartet werden, welche den Port `8080` öffnet, um Anfragen eines Browsers zu beantworten.
