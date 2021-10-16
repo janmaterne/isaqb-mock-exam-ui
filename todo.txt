@@ -40,14 +40,7 @@ Akzeptanztest https://gebish.org/
     
     
 
-Distros
-* Startbares JAR
-* Anwendung mit JRE
-  - Startskript: run.bat, run.sh (Linux)
-  - distro.zip
-      | run.[bat|sh]
-      +-- jre
-      +-- application
+      
 * Docker Image
 
 
