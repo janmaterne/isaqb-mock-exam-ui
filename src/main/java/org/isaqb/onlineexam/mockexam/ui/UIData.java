@@ -20,9 +20,15 @@ public class UIData {
 	static {
 		data.put(Language.DE, Key.MENU_LABEL, "Frage %d (%d Punkte)");
 		data.put(Language.EN, Key.MENU_LABEL, "Question %d (%d points)");
+		data.put(Language.DE, Key.NEXT_LINK_LABEL, "Nächste Frage");
+		data.put(Language.EN, Key.NEXT_LINK_LABEL, "Next question");
+		data.put(Language.DE, Key.FIRST_LINK_LABEL, "Erste Frage");
+		data.put(Language.EN, Key.FIRST_LINK_LABEL, "First question");
 	}
 	enum Key {
-		MENU_LABEL
+		MENU_LABEL,
+		NEXT_LINK_LABEL,
+		FIRST_LINK_LABEL
 	}
 	
 	
@@ -65,6 +71,20 @@ public class UIData {
 			"%.2f / %.2f Punkte (%.2f %%)", 
 			result.totalPoints(), result.pointsMaximum, result.pointsRelative()
 		);
+	}
+	
+	public String nextTaskLink(int currentTaskNumber) {
+		return String.format(
+			"<a href=\"javascript:changeToQuestion(%d)\">%s</a>",
+			(currentTaskNumber % numberOfTasks()) + 1,
+			currentTaskNumber == numberOfTasks()
+				? data.get(currentLanguage, Key.FIRST_LINK_LABEL)
+				: data.get(currentLanguage, Key.NEXT_LINK_LABEL)
+			);
+	}
+	
+	public int numberOfTasks() {
+		return tasks.size();
 	}
 
 	

@@ -36,8 +36,7 @@
           
             <div class="detail_list">
               <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}" th:if="${wrapper.debugShowArticle()}">
-<!-- TODO: Maximal-Anzahl 37 aus Backend -->
-              	  <a th:attr="href='javascript:changeToQuestion(' + ${ (wrapper.nr + 1) % 39} + ')'">Nächste Frage</a>
+                  <div th:utext="${util.nextTaskLink(wrapper.nr)}"/>
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
