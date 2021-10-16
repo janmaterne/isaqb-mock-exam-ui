@@ -20,6 +20,7 @@ Frage 28
     falsch geparst? Es scheint die a)-Antwort im Fragetext zu landen
 Frage 39
     nbsp,  Antwort a in der Frage; Antwort a = null
+--> PR aufgemacht
     
     
 Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit
@@ -32,4 +33,26 @@ Docker-Image ist mit >500MB sehr groß (Basis=110 + JDK=320).
       b) Build dauert mit 15min sehr lange
       c) resultierendes Image ca 120MB
       d) Banner wird nicht geladen 
+                 
+                 
+Akzeptanztest https://gebish.org/
+    (auch zum selber einarbeiten)                 
+    
+    
+
+Distros
+* Startbares JAR
+* Anwendung mit JRE
+  - Startskript: run.bat, run.sh (Linux)
+  - distro.zip
+      | run.[bat|sh]
+      +-- jre
+      +-- application
+* Docker Image
+
+
+    
+    
+    
+    
                  

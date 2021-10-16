@@ -1,0 +1,38 @@
+== isaqb-mock-exam-ui
+
+// [![Gradle Build](https://github.com/janmaterne/isaqb-mock-exam-ui/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/janmaterne/isaqb-mock-exam-ui/actions/workflows/gradle-build.yml)
+
+=== English
+
+Interactive UI for processing the mock foundation exam of the ISAQB
+
+==== Using it
+
+The application requires internet access on startup, because the application loads all tasks directly from the repository on Github.
+
+#TODO: Official statement: how to start#
+
+•	a list of requirements (java, docker, shell)
+•	in addition to the run.bat, a run.sh for mac/linux users
+•	the possibility to use it without docker ("compiled version with embedded JRE") ... but that's christmas and birthday coming together.
+
+
+==== Developing it
+
+** a "developing" section, for motivated devs who want to contribute and enhance it
+
+
+
+=== German
+
+Interaktives UI für das Üben der Mockprüfung des iSAQB Foundation Level.
+
+==== Nutzung
+
+Die Anwendung benötigt Internetzugang zum Startzeitpunkt, da die Anwendung dann alle Fragen direkt aus dem Repository bei Github herunterlädt.
+
+
+==== Weiterentwicklung
+
+
+

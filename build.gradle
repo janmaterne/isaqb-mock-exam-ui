@@ -37,3 +37,106 @@ test {
 bootJar {
 	requiresUnpack '**/asciidoctorj-*.jar'
 }
+
+
+task buildImage(type:Exec) {
+	commandLine 'docker', 'build', '-t', 'janmaterne/mockexam:latest', '.'
+}
+
+
+
+var jdkBaseUrl = "https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL"
+var downloadJdkDir = "build/downloads"
+var distributionBaseDir = "build/distribution"
+
+
+
+tasks.register("createDistributionWin32") {
+	dependsOn "build"
+	doLast {
+		var jdkFileName = "openjdk-17_windows-x64_bin.zip"
+		var destFile = "${downloadJdkDir}/${jdkFileName}"
+		ant.mkdir(dir: downloadJdkDir)
+		ant.get(
+			src: "${jdkBaseUrl}/${jdkFileName}", 
+			dest: destFile,
+			skipexisting: false
+		)
+		ant.mkdir(dir: "${distributionBaseDir}/win32/lib")
+		ant.unzip(
+			src: destFile,
+			dest: "${distributionBaseDir}/win32",
+			overwrite: false
+		)
+		ant.copy(file: "src/main/bin/run.bat", todir: "${distributionBaseDir}/win32")
+		ant.copy(
+			file: "build/libs/${project.name}-0.0.1-SNAPSHOT.jar", 
+			tofile: "${distributionBaseDir}/win32/lib/mockexam.jar"
+		)
+		ant.zip(destfile: "build/mockexam-win32.zip", basedir: "${distributionBaseDir}/win32")
+	}
+}
+
+tasks.register("createDistributionLinux") {
+	dependsOn "build"
+	doLast {
+		var jdkFileName = "openjdk-17_linux-x64_bin.tar.gz"
+		var destFile = "${downloadJdkDir}/${jdkFileName}"
+		ant.mkdir(dir: downloadJdkDir)
+		ant.get(
+			src: "${jdkBaseUrl}/${jdkFileName}", 
+			dest: destFile,
+			skipexisting: false
+		)
+		ant.mkdir(dir: "${distributionBaseDir}/linux/lib")
+		ant.gunzip(src: destFile, dest: "build/tmp/linux-jdk.tar")
+		ant.untar(
+			src: "build/tmp/linux-jdk.tar",
+			dest: "${distributionBaseDir}/linux",
+			overwrite: false
+		)
+		ant.copy(file: "src/main/bin/run.sh", todir: "${distributionBaseDir}/linux")
+		ant.copy(
+			file: "build/libs/${project.name}-0.0.1-SNAPSHOT.jar", 
+			tofile: "${distributionBaseDir}/linux/lib/mockexam.jar"
+		)
+		ant.tar(destfile: "build/mockexam-linux.tar", basedir: "${distributionBaseDir}/linux")
+		ant.gzip(destfile: "build/mockexam-linux.tar.gz", src: "build/mockexam-linux.tar")
+		new File("build/mockexam-linux.tar").delete()
+	}
+}
+
+tasks.register("createDistributionMacOS") {
+	dependsOn "build"
+	doLast {
+		var jdkFileName = "openjdk-17_macos-x64_bin.tar.gz"
+		var destFile = "${downloadJdkDir}/${jdkFileName}"
+		ant.mkdir(dir: downloadJdkDir)
+		ant.get(
+			src: "${jdkBaseUrl}/${jdkFileName}", 
+			dest: destFile,
+			skipexisting: false
+		)
+		ant.mkdir(dir: "${distributionBaseDir}/macos/lib")
+		ant.gunzip(src: destFile, dest: "build/tmp/macos-jdk.tar")
+		ant.untar(
+			src: "build/tmp/macos-jdk.tar",
+			dest: "${distributionBaseDir}/macos",
+			overwrite: false
+		)
+		ant.copy(file: "src/main/bin/run.sh", todir: "${distributionBaseDir}/macos")
+		ant.copy(
+			file: "build/libs/${project.name}-0.0.1-SNAPSHOT.jar", 
+			tofile: "${distributionBaseDir}/macos/lib/mockexam.jar"
+		)
+		ant.tar(destfile: "build/mockexam-macos.tar", basedir: "${distributionBaseDir}/macos")
+		ant.gzip(destfile: "build/mockexam-macos.tar.gz", src: "build/mockexam-macos.tar")
+		new File("build/mockexam-macos.tar").delete()
+	}
+}
+
+tasks.register("distribution") {
+	dependsOn "createDistributionWin32", "createDistributionLinux", "createDistributionMacOS"
+}
+
+
