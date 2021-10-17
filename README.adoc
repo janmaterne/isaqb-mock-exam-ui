@@ -10,13 +10,14 @@ Interactive UI for processing the mock foundation exam of the ISAQB
 
 The application requires internet access on startup, because the application loads all tasks directly from the repository on Github.
 
-#TODO: Upload distro to ... where? GitHub?#
-
 There are three types of distributions:
 
 * as startable JAR file
 * as Docker image
 * as distribution with embedded Java runtime
+
+The docker image is available on https://hub.docker.com/r/janmaterne/mockexam[DockerHub] while the others are released on https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub].
+
 
 ===== Startable JAR
 
@@ -58,6 +59,9 @@ Es gibt drei Arten der Distribution
 * als startbares JAR
 * als Docker Image
 * als Distribution mit mitgebrachter Java Laufzeit
+
+Das Docker Image kann von https://hub.docker.com/r/janmaterne/mockexam[DockerHub] bezogen werden während die anderen Artefakte als Releases auf https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub] erhätlich sind.
+
 
 ===== Starbares JAR
 
