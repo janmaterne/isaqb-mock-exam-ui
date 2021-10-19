@@ -30,6 +30,7 @@ echo git-tag
 git tag %TSTAMP%
 
 echo Publish Git
+git push
 
 echo Publish Image
 docker push janmaterne/mockexam:latest 
@@ -37,7 +38,6 @@ docker push janmaterne/mockexam:%TSTAMP%
 
 echo Erstelle GitHub Release mit Assets
 rem https://cli.github.com/manual/gh_release_create
-rem gh release create %TSTAMP% --title "%TSTAMP%" --notes "Next version" build\*.zip,build\*.tar.gz,build\libs\*.jar
 gh release create %TSTAMP% --title "%TSTAMP%" --notes "Next version" build\mockexam-linux.tar.gz build\mockexam-macos.tar.gz build\mockexam-win32.zip build\libs\mockexam-0.0.1-SNAPSHOT.jar
 
 
