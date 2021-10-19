@@ -38,14 +38,22 @@ Docker-Image ist mit >500MB sehr groß (Basis=110 + JDK=320).
 Akzeptanztest https://gebish.org/
     (auch zum selber einarbeiten)                 
     
-    
-
-      
-* Docker Image
 
 
-    
-    
-    
-    
-                 
+Quiz-Modus: 
+- Zufällig fünf ausgewählte Fragen
+- Zusatzfragen aus anderer Datenquelle     
+
+
+README.adoc
+- Link auf Blogpost (wenn veröffentlicht)
+
+
+userdoc.adoc mit Grafiken /images
+- screenshots      
+               
+               
+               
+Anwendungsversion anzeigen 
+- ui
+- start-log
