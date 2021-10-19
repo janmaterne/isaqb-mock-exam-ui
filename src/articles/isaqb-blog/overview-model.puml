@@ -1,0 +1,42 @@
+@startuml
+
+class Exam {
+	requiredPoints : float
+}
+
+class Task {
+	id : String
+	question : I18NText
+	reachablePoints : float
+	type : TaskType
+	columnHeaders : List<I18NText>
+}
+
+class Option {
+	position : char
+	text : I18NText
+	columnValues : List<Character>
+	correct : boolean
+}
+
+enum TaskType {
+	SINGLE_CHOICE
+	PICK_FROM_MANY
+	CHOOSE
+}
+
+enum Lanugage {
+	DE
+	EN
+}	
+
+class I18NText {
+	text : Map<Language,String>
+	getText(Language lang) : String
+}
+
+
+Exam *- Task : tasks
+Task *- Option : possibleOptions
+
+@enduml

@@ -1,0 +1,108 @@
+//tag::DE
+== Foundation Level Mock-Examen wird interaktiv
+
+Dank dreier Fügungen wird das Foundation Level Mock-Examen nun interaktiv.
+
+Als Backend-Entwickler bekam ich von unseren Enterprise Architekten die Vorgabe, 
+dass zukünftige Entwicklungen auf #SpringBoot# basieren sollen.
+So brauchte ich etwas halbwegs sinnvolles, um mich in diese Materie einzuarbeiten.
+
+Für unseren Bereich wurde ich in Rolle eines Architekten berufen - der gängige Weg eines Senior-Entwicklers ;-)
+Da ich bereits zuvor viel auch in dieser Richtung durch Podcasts und Artikel gelernt hatte, wusste ich, dass ich noch einiges zu lernen hatte.
+So habe ich nach passenden Schulungen gesucht und beim iSAQB fündig geworden. +
+Während ich die Schulungen von meinem Arbeitgeber finanziert bekam, galt dies nicht für das Examen.
+Das wollte ich mir dann selber gönnen.
+Jedoch - ein wenig Bammel hatte ich schon. 
+So war ich froh, mal eine inhaltlich gleichwertige Prüfung mal zur Probe absolvieren zu können.
+Also: 
+
+ * Fragen ausdrucken, 
+ * ankreuzen, 
+ * Lösung ausdrucken, 
+ * Antworten mit Fragen vergleichen, 
+ * Punkte ausrechnen und
+ * prüfen, ob bestanden wurde.
+ 
+So viele manuelle Schritte!   
+
+Die dritte Fügung war, dass der iSAQB das Mockexamen auf #AsciiDoc# umgestellt hat.
+Im Gegensatz zu PDF oder Word ist AsciiDoc ein reines Textformat.
+Und für einen Programmierer bedeutet dies, dass man einen Parser schreiben kann...
+
+
+=== Das Datenmodell
+
+Ein Examen besteht aus mehreren Aufgaben, zu denen es mehrere Antwortmöglichkeiten gibt.
+Die Texte sind mehrsprachig vorzusehen - für Deutsch und Englisch sind bereits Texte vorhanden.
+Es gibt drei verschiedene Arten von Aufgaben:
+
+* A-Fragen, bei denen eine aus mehreren Antworten ausgewählt werden muss,
+* P-Fragen, bei denen mehrere aus der Antwortmenge ausgewählt werden müssen und
+* K-Fragen, bei denen alle Antworten bewertet werden müssen. 
+
+.Klassendiagramm
+plantuml::overview-model.puml[]
+
+
+=== Der Workflow
+
+Wie gesagt, ich bin Backendentwickler und wollte ich keinen weiteren Frontend-Stack wie Angular aufnehmen.
+HTML-Templating erschien mir einfacher und so kam ich zu #Thymeleaf# - der Template-Engine, die auch 
+in https://leanpub.com/hacking-with-springboot-23-reactive-edition[Hacking with Spring Boot 2.3: Reactive Edition],
+dem Buch, mit dem ich mich etwas in SpringBoot eingearbeitet habe, verwendet wird.
+
+Mit Papier und Bleistift ging es dann daran, Skizzen für die UIs zu machen.
+Per Pfeilen miteinander verbunden, um den Ablauf zu definieren.
+An die Skizze auch noch dran schreiben, welche Daten einzugeben oder anzuzeigen sind.
+Dann noch die URLs für den Server.
+
+.Ablauf
+plantuml::overview-workflow.puml[]
+ 
+ 
+=== Layout
+
+Die Suche im Internet ergab für mich als Layout-Laie einen entsprechenden Startpunkt, so dass
+ich ein akzeptables Layout erstellen konnte:
+
+.index.html
+image::./images/screenshot-index.jpg[Index-Seite mit Sprachauswahl]
+
+.intro.html
+image::./images/screenshot-intro.jpg[Einführungsseite mit Kurzanleitung und Cookie-Disclaimer]
+
+.process.html
+image::./images/screenshot-process.jpg[Absolvieren des Tests]
+
+.result.html
+image::./images/screenshot-result.jpg[Kurzergebnis]
+
+.details 1
+image::./images/screenshot-details-select.jpg[Antwortseite mit Details für A- und P-Fragen]
+
+.details 2
+image::./images/screenshot-details-choose.jpg[Antwortseite mit Details für K-Fragen]
+
+
+=== Veröffentlichen
+
+Nachdem das Herumexperimentieren doch tatsächlich etwas verwendbares zur Folge hatte,
+war klar, dass ich das Projekt an den iSAQB stiften wollte. 
+Damit dieser "überzeugt" werden kann, müssen natürlich die Sourcen offen sein.
+Also zur Standardplattform Github und ein Repo öffentlich gemacht: https://github.com/janmaterne/isaqb-mock-exam-ui
+
+
+=== Kontakt zur iSAQB
+
+=== Distribution 
+
+=== Ausblick
+
+
+//end:DE
+
+
+
+
+//tag::EN
+//end::EN

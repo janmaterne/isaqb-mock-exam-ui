@@ -1,0 +1,56 @@
+@startuml
+
+
+start
+
+:start
+* Load ADOC from GitHub;
+
+:index.html
+* Choose Language;
+
+->GET with parameters;
+
+:introduction.html
+* Introduction text about the mock exam
+* Cookie-Disclaimer;
+
+->GET with Cookies;
+
+:process-exam.html
+* Switch between tasks via JavaScript
+* Highlight the current task via CSS
+* Store user input as form fields;
+
+->POST with Cookies;
+
+:calculate
+* Calculate points per task
+* Calculate sum of points
+* Check if exam is passed;
+
+->GET with Cookies;
+
+:result.html
+* Show points
+* Show if passed;
+
+->GET with Cookies;
+
+:result-details
+* Show tasks like in the process step
+* Show chosen options
+* Show right options
+* Show points per task
+* Show sub
+* Show if passed; 
+
+->GET with Cookies;
+
+:end
+* Clear Cookies;
+
+		
+
+
+@enduml
