@@ -5,15 +5,15 @@ Dank dreier Fügungen wird das Foundation Level Mock-Examen nun interaktiv.
 
 Als Backend-Entwickler bekam ich von unseren Enterprise Architekten die Vorgabe, 
 dass zukünftige Entwicklungen auf https://spring.io/projects/spring-boo[SpringBoot] basieren sollen.
-So brauchte ich etwas halbwegs sinnvolles, um mich in diese Materie einzuarbeiten.
+So brauchte ich etwas halbwegs Sinnvolles, um mich in diese Materie einzuarbeiten.
 
 Für unseren Bereich wurde ich in Rolle eines Architekten berufen - der gängige Weg eines Senior-Entwicklers ;-)
-Da ich bereits zuvor viel auch in dieser Richtung durch Podcasts und Artikel gelernt hatte, wusste ich, dass ich noch einiges zu lernen hatte.
+Da ich bereits zuvor viel auch in dieser Richtung durch Podcasts und Artikel gelernt hatte, wusste ich, dass ich noch einiges mehr zu lernen hatte.
 So habe ich nach passenden Schulungen gesucht und beim iSAQB fündig geworden. +
 Während ich die Schulungen von meinem Arbeitgeber finanziert bekam, galt dies nicht für das Examen.
 Das wollte ich mir dann selber gönnen.
 Jedoch - ein wenig Bammel hatte ich schon. 
-So war ich froh, mal eine inhaltlich gleichwertige Prüfung mal zur Probe absolvieren zu können.
+So war ich froh, mal eine inhaltlich gleichwertige Prüfung zur Probe absolvieren zu können.
 Also: 
 
  * Fragen ausdrucken, 
@@ -28,7 +28,10 @@ So viele manuelle Schritte!
 Die dritte Fügung war, dass der iSAQB das Mockexamen auf https://www.asciidoc.org[AsciiDoc] 
 https://www.isaqb.org/de/blog/migrating-the-isaqb-mock-examination-to-asciidoc/[umgestellt] hat.
 Im Gegensatz zu PDF oder Word ist AsciiDoc ein reines Textformat.
-Und für einen Programmierer bedeutet dies, dass man einen Parser schreiben kann...
+Und für einen Programmierer bedeutet dies: Man kann einen Parser schreiben!
+
+So kam ich auf die Idee, eine Webanwendung auf Basis von SpringBoot zu schreiben, bei der man das Mock-Examen interaktiv proben kann.
+Kleine Anregungen kamen auch während meiner eigenen Foundation Prüfung.
 
 
 === Das Datenmodell
@@ -117,10 +120,10 @@ image::./images/screenshot-details-choose.jpg[Antwortseite mit Details für K-Fr
 
 === Veröffentlichen
 
-Nachdem das Herumexperimentieren doch tatsächlich etwas verwendbares zur Folge hatte,
+Nachdem das Herumexperimentieren doch tatsächlich etwas Verwendbares zur Folge hatte,
 war klar, dass ich das Projekt an den iSAQB stiften wollte. 
 Damit dieser "überzeugt" werden kann, müssen natürlich die Sourcen offen sein.
-Also zur Standardplattform Github und ein Repo öffentlich gemacht: https://github.com/janmaterne/isaqb-mock-exam-ui
+Also zur Standardplattform GitHub und ein Repo öffentlich gemacht: https://github.com/janmaterne/isaqb-mock-exam-ui
 
 
 === Kontakt zur iSAQB
@@ -159,13 +162,177 @@ Na ja, das Übliche ...
 * Realisierung weiterer Anforderungen
 * Umzug zur iSAQB
 * Hosting einer laufenden Instanz
+* ein Quiz-Modus für schnelle Wiederauffrischungsüberungen zwischendurch
+* Anzeige der Erläuterungen auf der Ergebnisseite
 * ...
-
-
 //end:DE
 
 
 
 
 //tag::EN
+== Foundation Level Mock Exam becomes interactive
+
+Thanks to three happenings the Foundation Level Mock Exam becomes interactive now.
+
+As a backend developer I got the requirement by our enterprise architects that future development should base on https://spring.io/projects/spring-boo[SpringBoot].
+So I needed something reasonable to dive into that.
+
+In my project I became a software architect - nearly the standard for a senior developer ;-)
+Because I learned much about that before by podcasts and articles, I knew that I already had to learn much more. 
+So I searched for courses and found the iSAQB. +
+While my company would pay the courses, they wont for the exam.
+But I want to do it for my own.
+But - I was nervous.
+So I was happy to find an exam which I could try for free before.
+So:
+
+ * print out the questions
+ * check the answers
+ * print out the solution
+ * compare the answers
+ * calculate the score
+ * check if passed.
+ 
+So many manual steps!
+ 
+The third influence was that the iSAQB changed their primary dataformat for the mock exam to https://www.asciidoc.org[AsciiDoc].
+In contrast to PDF or Word AsciiDoc is just plain text.
+And for a programmer that means: You could write a parser!
+
+So I got the idea to write a web application with SpringBoot for interactive doing the exam.
+Additionally I got some more ideas while doing my own foundation exam.  
+
+
+== data model
+
+An exam consists of many tasks whith each multiple answer options.
+Texts should be multilingual - there are translations for German and English already.
+There are three kinds of tasks:
+
+* A-questions where you have to select one of many options,
+* P-questions where you have to select multiple of many options and
+* K-questions where you have to judge each option.
+
+.class diagram
+plantuml::overview-model.puml[]
+
+
+=== workflow
+
+As I said, I am a backend developer and I dont want to add a full frontend stack like Angular.
+So simple html templating seemed to be a good decision and I came to https://www.thymeleaf.org/[Thymeleaf] - the template engine which was used in
+https://leanpub.com/hacking-with-springboot-23-reactive-edition[Hacking with Spring Boot 2.3: Reactive Edition],
+the book I used to dive into SpringBoot.
+
+With pen and paper I started to draw wiremocks for the UI.
+With arrows I connected them to define the workflow.
+I added notes about the input data and data for visualization.
+And the URLs for the backend.
+
+.workflow
+plantuml::overview-workflow.puml[]
+ 
+
+=== layout
+
+Research in the internet gave me a starting point so I could create an acceptable layout. 
+
+
+
+The page with the selection of the language.
+The selected language will be passed via query parameter to the backend and since then as cookie parameter.
+
+.index.html
+image::./images/screenshot-index.jpg[Index-Seite mit Sprachauswahl]
+
+
+
+The user should know what to do. So the explanation text will be shown.
+Loaded directly as ADOC from GitHub an rendered via AsciiDoctor.
+I also added a short documentation (while I think the application is self explanationary, but the deselection of radio buttons is new).
+I dont forget the cookie disclaimer.
+
+.intro.html
+image::./images/screenshot-intro.jpg[Einführungsseite mit Kurzanleitung und Cookie-Disclaimer]
+
+
+
+While doing the form there arent any surprises.
+You could use the navigation bar for switching between the questions.
+And the nav bar shows how many points you could earn and if you set a "flag".
+
+.process.html
+image::./images/screenshot-process.jpg[Absolvieren des Tests]
+
+
+
+The result is short: just the collected points and if you passed.
+(Dont know if I leave that ...)
+
+.result.html
+image::./images/screenshot-result.jpg[Kurzergebnis]
+
+
+
+After finishing you could see a comparison between your answers and the "solution".
+The layout is like the layout while doing the exam.
+The nav bar shows how many points you could earn and how many you earned.
+If you missed some the question will be marked.
+Per question your selection and the the "right" selection are shown.
+
+.details 1
+image::./images/screenshot-details-select.jpg[Antwortseite mit Details für A- und P-Fragen]
+
+Same for questions with more complex possibilities.
+
+.details 2
+image::./images/screenshot-details-choose.jpg[Antwortseite mit Details für K-Fragen]
+
+
+=== publishing
+
+After a usable result I thought that I want to give the tool to the iSAQB.
+To convince them I surely have to publish the sources.
+So I went to the standard platform and created a repository:  https://github.com/janmaterne/isaqb-mock-exam-ui
+
+
+=== contact
+
+Life is funny. A new collegue of mine is iSAQB-member.
+So I could show him the tool.
+Additionally in a discussion on a PR in another repo I got another contact.
+
+Result: big interest. So we'll see.
+
+
+=== distribution
+
+A startable JAR and for first tests a dockerfile - nothing more.
+But a first wish was a "distribution".
+So added a automatisation for that:
+
+* the startable JAR
+* ZIP file with JDK and launch script for
+  ** Windows
+  ** MacOS
+  ** Linux
+* docker image.
+
+The docker image is on https://hub.docker.com/r/janmaterne/mockexam[DockerHub] 
+and the rest on https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub].
+
+
+=== future
+
+Ok, the usual stuff ...
+
+* more tests
+* refactoring
+* more requirements
+* move to iSAQB
+* hosting of the running instance
+* a quiz mode for fast refreshment
+* show the explantation texts on the detail result page
+* ...
 //end::EN
