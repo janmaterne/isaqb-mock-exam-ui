@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.isaqb.onlineexam.mockexam.BuildInfo;
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.loader.IntroductionLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
@@ -75,6 +76,7 @@ public class UiController {
 		model.addAttribute("html", introductionLoader.getHtml(lang));
 		model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
 		model.addAttribute("howToUse", howToUse.getText(lang));
+		model.addAttribute("appversion", String.format("Version %s - Build %s", BuildInfo.getVersion(), BuildInfo.getBuildTimestamp()));
 		injectAutoReloadJS(model);
 		
 		return "introduction.html";
