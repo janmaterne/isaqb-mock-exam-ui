@@ -1,5 +1,7 @@
 package org.isaqb.onlineexam.mockexam;
 
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,7 +13,12 @@ public class MockexamApplication {
 
 	public static void main(String[] args) {
 		validateEnvironment();
-		SpringApplication.run(MockexamApplication.class, args);
+		SpringApplication app = new SpringApplication(MockexamApplication.class);
+		app.setDefaultProperties(Map.of(
+			"app.version", BuildInfo.getVersion(),
+			"app.buildtime", BuildInfo.getBuildTimestamp()
+		));
+		app.run(args);
 	}
 
 	private static void validateEnvironment() {

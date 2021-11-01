@@ -50,6 +50,3 @@ userdoc.adoc mit Grafiken /images
 org.isaqb.onlineexam.mockexam.ui.UiController.injectAutoReloadJS(Model)
 - Umbauen in unterschiedliche Beans mit Factory method               
                
-Anwendungsversion anzeigen 
-- ui
-- start-log
