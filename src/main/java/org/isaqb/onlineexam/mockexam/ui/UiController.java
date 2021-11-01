@@ -75,12 +75,38 @@ public class UiController {
 		model.addAttribute("html", introductionLoader.getHtml(lang));
 		model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
 		model.addAttribute("howToUse", howToUse.getText(lang));
+		injectAutoReloadJS(model);
 		
 		return "introduction.html";
 	}
 	
 	
-	
+	private void injectAutoReloadJS(Model model) {
+		// Add autoreload script in development mode.
+		String attributeName = "autoReloadJS";
+		if (springDevToolsPresent()) {
+			model.addAttribute(
+				attributeName, 
+				"<!-- Autoreload on local file change -->" +
+				"<script type=\"text/javascript\" src=\"https://livejs.com/live.js\"></script>"
+			);
+		} else {
+			// otherwise define the attribute with "nothing".
+			model.addAttribute(attributeName, "");
+		}
+	}
+
+	private boolean springDevToolsPresent() {
+		try {
+			Class.forName("org.springframework.boot.devtools.RemoteSpringApplication");
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
+
+
+
 	@GetMapping("process-exam.html")
 	public String processExam(Model model, @CookieValue("language") String language, @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson) {
 		List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
@@ -88,6 +114,7 @@ public class UiController {
 		model.addAttribute("exam", exam);
 		model.addAttribute("util", uiData);
 		model.addAttribute("givenAnswers", givenAnswers);
+		injectAutoReloadJS(model);
 		return "process-exam.html";
 	}
 
@@ -106,6 +133,7 @@ public class UiController {
 		Collection<TaskAnswer> givenAnswers = parse(formData);
 		model.addAttribute("givenAnswers", givenAnswers);
 		response.addCookie(new Cookie("givenAnswers", jsonMapper.toString(givenAnswers)));
+		injectAutoReloadJS(model);
 		return answersMissing(givenAnswers) ? "missing-tasks.html" : "redirect:/calculatePoints";
 	}
 
@@ -154,6 +182,7 @@ public class UiController {
 		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
 		model.addAttribute("util", uiData);
 		
+		injectAutoReloadJS(model);
 		return "result.html";
 	}
 	
@@ -169,6 +198,7 @@ public class UiController {
 		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
 		model.addAttribute("util", uiData);
 		
+		injectAutoReloadJS(model);
 		return "result-details.html";
 	}
 	
