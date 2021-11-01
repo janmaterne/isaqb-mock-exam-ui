@@ -14,6 +14,7 @@ public class MockexamApplication {
 	public static void main(String[] args) {
 		validateEnvironment();
 		SpringApplication app = new SpringApplication(MockexamApplication.class);
+		// Inject values into the banner.
 		app.setDefaultProperties(Map.of(
 			"app.version", BuildInfo.getVersion(),
 			"app.buildtime", BuildInfo.getBuildTimestamp()
