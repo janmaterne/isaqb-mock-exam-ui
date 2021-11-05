@@ -42,6 +42,7 @@ public class UiController {
 	private JsonMapper jsonMapper;
 	private I18NText cookieDislaimer;
 	private I18NText howToUse;
+	private AutloadJS autoloadJS;
 	
 
 	public UiController(
@@ -50,13 +51,15 @@ public class UiController {
 			JsonMapper jsonMapper,
 			AsciidocReader adocReader,
 			@Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
-			@Value("classpath:messages/how-to-use.adoc") Resource howToUse
+			@Value("classpath:messages/how-to-use.adoc") Resource howToUse,
+			AutloadJS autloadJS
 	) throws IOException {
 		this.exam = exam;
 		this.introductionLoader = introductionLoader;
 		this.jsonMapper = jsonMapper;
 		this.cookieDislaimer = parseADoc(adocReader, resourceCookieDisclaimer);
 		this.howToUse = parseADoc(adocReader, howToUse);
+		this.autoloadJS = autloadJS;
 	}
 
 
@@ -77,38 +80,13 @@ public class UiController {
 		model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
 		model.addAttribute("howToUse", howToUse.getText(lang));
 		model.addAttribute("appversion", String.format("Version %s - Build %s", BuildInfo.getVersion(), BuildInfo.getBuildTimestamp()));
-		injectAutoReloadJS(model);
+		autoloadJS.injectAutoReloadJS(model);
 		
 		return "introduction.html";
 	}
 	
 	
-	private void injectAutoReloadJS(Model model) {
-		// Add autoreload script in development mode.
-		String attributeName = "autoReloadJS";
-		if (springDevToolsPresent()) {
-			model.addAttribute(
-				attributeName, 
-				"<!-- Autoreload on local file change -->" +
-				"<script type=\"text/javascript\" src=\"https://livejs.com/live.js\"></script>"
-			);
-		} else {
-			// otherwise define the attribute with "nothing".
-			model.addAttribute(attributeName, "");
-		}
-	}
-
-	private boolean springDevToolsPresent() {
-		try {
-			Class.forName("org.springframework.boot.devtools.RemoteSpringApplication");
-			return true;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
-	}
-
-
-
+	
 	@GetMapping("process-exam.html")
 	public String processExam(Model model, @CookieValue("language") String language, @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson) {
 		List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
@@ -116,7 +94,7 @@ public class UiController {
 		model.addAttribute("exam", exam);
 		model.addAttribute("util", uiData);
 		model.addAttribute("givenAnswers", givenAnswers);
-		injectAutoReloadJS(model);
+		autoloadJS.injectAutoReloadJS(model);
 		return "process-exam.html";
 	}
 
@@ -135,7 +113,7 @@ public class UiController {
 		Collection<TaskAnswer> givenAnswers = parse(formData);
 		model.addAttribute("givenAnswers", givenAnswers);
 		response.addCookie(new Cookie("givenAnswers", jsonMapper.toString(givenAnswers)));
-		injectAutoReloadJS(model);
+		autoloadJS.injectAutoReloadJS(model);
 		return answersMissing(givenAnswers) ? "missing-tasks.html" : "redirect:/calculatePoints";
 	}
 
@@ -184,7 +162,7 @@ public class UiController {
 		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
 		model.addAttribute("util", uiData);
 		
-		injectAutoReloadJS(model);
+		autoloadJS.injectAutoReloadJS(model);
 		return "result.html";
 	}
 	
@@ -200,7 +178,7 @@ public class UiController {
 		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
 		model.addAttribute("util", uiData);
 		
-		injectAutoReloadJS(model);
+		autoloadJS.injectAutoReloadJS(model);
 		return "result-details.html";
 	}
 	

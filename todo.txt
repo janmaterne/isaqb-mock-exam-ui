@@ -33,7 +33,6 @@ Akzeptanztest https://gebish.org/
     (auch zum selber einarbeiten)                 
     
 
-
 Quiz-Modus: 
 - Zufällig fünf ausgewählte Fragen
 - Zusatzfragen aus anderer Datenquelle     
@@ -45,8 +44,4 @@ README.adoc
 
 userdoc.adoc mit Grafiken /images
 - screenshots      
-               
-         
-org.isaqb.onlineexam.mockexam.ui.UiController.injectAutoReloadJS(Model)
-- Umbauen in unterschiedliche Beans mit Factory method               
                
