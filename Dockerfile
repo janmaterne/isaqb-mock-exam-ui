@@ -4,8 +4,9 @@ WORKDIR /project
 COPY . /project/
 RUN gradle -x test --no-daemon clean build
 WORKDIR /project/build/libs
-RUN java -Djarmode=layertools -jar mockexam-0.0.1-SNAPSHOT.jar extract
-RUN ls -al 
+RUN rm *-plain.jar \
+ && mv mockexam*.jar mockexam.jar \
+ && java -Djarmode=layertools -jar mockexam.jar extract
 
 
 FROM openjdk:16.0.2
