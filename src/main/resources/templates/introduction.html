@@ -3,6 +3,7 @@
 	<meta charset="utf-8"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" href="style.css"/>
+	<link rel="stylesheet" href="intro-accordion.css"/>
 	<title>ISAQB Foundation - Mock Exam</title>
 	<div th:utext="${autoReloadJS}"/>
 </head>
@@ -11,10 +12,19 @@
 <div class="navigation">
   <a href="process-exam.html">Weiter</a>
 </div>
-<div th:utext="${html}"/>
-<hr>
-<div th:utext="${howToUse}"/>
-<div th:utext="${cookieDisclaimer}"/>
+
+<input type="checkbox" id="about"/>
+<label for="about">Erläuterungen</label>
+<div class="content" th:utext="${html}"/>
+
+
+<input type="checkbox" id="howToUse"/>
+<label for="howToUse">Anleitung</label>
+<div class="content" th:utext="${howToUse}"/>
+
+<input type="checkbox" id="cookies"/>
+<label for="cookies">Cookie Disclaimer</label>
+<div class="content" th:utext="${cookieDisclaimer}"/>
 
 <br>
 <div class="navigation">

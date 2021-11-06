@@ -44,4 +44,3 @@ README.adoc
 
 userdoc.adoc mit Grafiken /images
 - screenshots      
-               
