@@ -27,7 +27,7 @@ public class ExamLoader {
 	private TaskValidator validator;
 	
 	@Bean
-	public Exam loadExam(TaskLoader taskLoader, @Value("${exam.requiredPoints}") double requiredPoints) {
+	public Exam loadExam(TaskLoader taskLoader, @Value("${mock.requiredPoints}") double requiredPoints) {
 		List<Task> tasks = taskLoader.loadTasks();
 		validate(tasks);
 		return new Exam(requiredPoints, tasks);

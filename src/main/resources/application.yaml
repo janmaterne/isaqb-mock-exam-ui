@@ -1,0 +1,44 @@
+mock:
+    # Where is the source of the introduction document?
+    introduction: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/preamble/introduction.adoc
+    # Where to find the original AsciiDoc code with the tasks content?
+    # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
+    url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+    from: 1
+    to: 5
+    #to: 39
+    # How many points are required to pass the exam?
+    requiredPoints: 30
+
+quiz:
+    ddd:
+    - template: xx
+      from: 1
+      to: 2
+    - template: yy
+      from: 1
+      to: 2
+    base:
+    - template: zz
+      from: 4
+      to: 6    
+
+
+#quiz.ddd.template=https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+#quiz.ddd.from=33
+#quiz.ddd.to=35
+
+
+
+# Increase Header-Size to store UIData as cookie
+server:
+    max-http-header-size: 250KB
+
+# https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/html/common-application-properties.html
+spring:
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+    thymeleaf:
+        encoding: UTF-8

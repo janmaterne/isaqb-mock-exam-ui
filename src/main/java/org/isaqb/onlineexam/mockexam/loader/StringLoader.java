@@ -28,9 +28,9 @@ public class StringLoader {
 	private int to;
 	
 	public StringLoader(
-		@Value("${url.template}") String urlTemplate, 
-		@Value("${url.from}") int from, 
-		@Value("${url.to}") int to
+		@Value("${mock.url-template}") String urlTemplate, 
+		@Value("${mock.from}") int from, 
+		@Value("${mock.to}") int to
 	) {
 		this.urlTemplate = urlTemplate;
 		this.from = from;
