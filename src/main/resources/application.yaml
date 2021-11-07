@@ -10,23 +10,31 @@ mock:
     # How many points are required to pass the exam?
     requiredPoints: 30
 
+
+
+# Define possible (additional) questions for the quiz mode.
+# quiz - topic - config
 quiz:
     ddd:
-    - template: xx
+    - name:
+          DE: Domain Driven Design
+          EN: Domain Driven Design
+      url-template: xx
       from: 1
       to: 2
-    - template: yy
+    - name:
+          DE: Test
+          EN: English Test
+      url-template: yy
       from: 1
       to: 2
     base:
-    - template: zz
-      from: 4
-      to: 6    
-
-
-#quiz.ddd.template=https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
-#quiz.ddd.from=33
-#quiz.ddd.to=35
+    - name:
+          DE: Basis
+          EN: Foundation Basis
+      url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+      from: 33
+      to: 35    
 
 
 
