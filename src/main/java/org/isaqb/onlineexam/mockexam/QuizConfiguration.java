@@ -25,7 +25,7 @@ public class QuizConfiguration {
 	private Map<String, QuizConfig> quiz;
 	
 	@Data
-	static class QuizConfig {
+	public static class QuizConfig {
 		private Map<Language, String> name;
 		private List<UrlTemplateConfig> urls = new ArrayList<>();
 		private List<String> refs;
@@ -35,7 +35,7 @@ public class QuizConfiguration {
 	}
 	
 	@Data
-	static class UrlTemplateConfig {
+	public static class UrlTemplateConfig {
 		// camelCase (urlTemplate) is mapped to snake-case (url-template)
 		private String urlTemplate;
 		private int from;

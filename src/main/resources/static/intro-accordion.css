@@ -38,11 +38,16 @@ input:checked + label + .content {
 
 
 
-
 label::before {
     content: '+ ';
 }
 
 input:checked + label::before {
     content: '- ';
+}
+
+
+
+form input {
+	display: inline;
 }

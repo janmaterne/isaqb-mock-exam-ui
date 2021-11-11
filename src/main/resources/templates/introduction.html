@@ -19,12 +19,26 @@
 
 
 <input type="checkbox" id="howToUse"/>
-<label for="howToUse">Anleitung</label>
+<label for="howToUse">Anleitung zum Mock-Test</label>
 <div class="content" th:utext="${howToUse}"/>
 
 <input type="checkbox" id="cookies"/>
 <label for="cookies">Cookie Disclaimer</label>
 <div class="content" th:utext="${cookieDisclaimer}"/>
+
+<input type="checkbox" id="quiz"/>
+<label for="quiz">Quiz-Modus</label>
+<div class="content">
+	<form action="process-exam.html" method="get">
+		Auswahl des Bereichs:
+		<select name="mode" id="mode">
+			<option value="-ALL">Alle Fragen</option>
+			<option th:each="val : ${quizOptions}" th:attr="value=${val.value}" th:utext="${val.text}"/>
+		</select>
+		<input type="hidden" name="language" value="DE" />
+		<input type="submit" value="Quiz starten" />
+	</form>
+</div>
 
 <br>
 <div class="navigation">

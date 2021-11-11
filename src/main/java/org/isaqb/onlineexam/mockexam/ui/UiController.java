@@ -2,6 +2,7 @@ package org.isaqb.onlineexam.mockexam.ui;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.isaqb.onlineexam.mockexam.BuildInfo;
+import org.isaqb.onlineexam.mockexam.QuizConfiguration;
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.loader.IntroductionLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
@@ -43,6 +45,7 @@ public class UiController {
 	private I18NText cookieDislaimer;
 	private I18NText howToUse;
 	private AutloadJS autoloadJS;
+	private QuizConfiguration quizConfiguration;
 	
 
 	public UiController(
@@ -52,7 +55,8 @@ public class UiController {
 			AsciidocReader adocReader,
 			@Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
 			@Value("classpath:messages/how-to-use.adoc") Resource howToUse,
-			AutloadJS autloadJS
+			AutloadJS autloadJS,
+			QuizConfiguration quizConfiguration
 	) throws IOException {
 		this.exam = exam;
 		this.introductionLoader = introductionLoader;
@@ -60,6 +64,7 @@ public class UiController {
 		this.cookieDislaimer = parseADoc(adocReader, resourceCookieDisclaimer);
 		this.howToUse = parseADoc(adocReader, howToUse);
 		this.autoloadJS = autloadJS;
+		this.quizConfiguration = quizConfiguration;
 	}
 
 
@@ -80,24 +85,47 @@ public class UiController {
 		model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
 		model.addAttribute("howToUse", howToUse.getText(lang));
 		model.addAttribute("appversion", String.format("Version %s - Build %s", BuildInfo.getVersion(), BuildInfo.getBuildTimestamp()));
+		model.addAttribute("quizOptions", possibleQuizOptions(lang));
 		autoloadJS.injectAutoReloadJS(model);
 		
 		return "introduction.html";
 	}
-	
-	
-	
+
+	private List<QuizOptions> possibleQuizOptions(Language lang) {
+		return quizConfiguration.getQuiz().entrySet().stream()
+			.map( e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)) )
+			.toList();
+	}
+
+
+
 	@GetMapping("process-exam.html")
-	public String processExam(Model model, @CookieValue("language") String language, @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson) {
+	public String processExam(
+			Model model, 
+			@RequestParam String language,
+			@RequestParam String mode,
+			@CookieValue(name = "language", required = false) String languageFromCookie, 
+			@CookieValue(name = "quizmode", required = false) String quizmodeFromCookie,
+			@CookieValue(name = "givenAnswers", required = false) String givenAnswersJson
+	) {
+		String quizmode = cookieOverParameter(quizmodeFromCookie, mode);
+		String lang = cookieOverParameter(languageFromCookie, language);
 		List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
-		UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, null);
+
+		UIData uiData = new UIData(exam, Language.valueOf(languageFromCookie), givenAnswers, null);
 		model.addAttribute("exam", exam);
 		model.addAttribute("util", uiData);
 		model.addAttribute("givenAnswers", givenAnswers);
+		model.addAttribute("language", lang);
 		autoloadJS.injectAutoReloadJS(model);
+		
 		return "process-exam.html";
 	}
-
+	
+	private String cookieOverParameter(String cookieValue, String paramValue) {
+		return cookieValue != null ? cookieValue : paramValue;
+	}
+	
 
 
 	private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
