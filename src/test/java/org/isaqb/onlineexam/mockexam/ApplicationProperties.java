@@ -1,36 +1,21 @@
 package org.isaqb.onlineexam.mockexam;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Properties;
-
 public class ApplicationProperties {
 
-	Properties props;
-	
-	public ApplicationProperties() {
-		props = new Properties();
-		try {
-			props.load(getClass().getResourceAsStream("/application.properties"));
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-	
 	public String urlTemplate() {
-		return props.getProperty("url.template");
+		return "https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc";
 	}
 	
 	public int urlFrom() {
-		return Integer.parseInt(props.getProperty("url.from"));
+		return 1;
 	}
 	
 	public int urlTo() {
-		return Integer.parseInt(props.getProperty("url.to"));
+		return 5;
 	}
 
 	public int examRequiredPoints() {
-		return Integer.parseInt(props.getProperty("exam.requiredPoints"));
+		return 30;
 	}
 
 }
