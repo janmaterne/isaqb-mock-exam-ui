@@ -11,6 +11,8 @@ mock:
     requiredPoints: 30
 
 
+quizmode:
+    max-numbers-of-questions: 5
 
 # Define possible (additional) questions for the quiz mode.
 # quiz - topic - config
