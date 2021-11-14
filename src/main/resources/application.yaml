@@ -14,9 +14,20 @@ mock:
 quizmode:
     max-numbers-of-questions: 5
 
+exams:
+    mock:
+        name:
+            DE: Foundation Level Mock Prüfung
+            EN: Foundation Level Mock Exam
+        required-points: 30
+        max-time-in-minutes: 60
+        task-refs:
+        - foundation
+    
+
 # Define possible (additional) questions for the quiz mode.
 # quiz - topic - config
-quiz:
+tasks:
     ddd:
         name:
             DE: Domain Driven Design
