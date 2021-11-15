@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import org.isaqb.onlineexam.mockexam.DataConfiguration.ExamConfig;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -103,12 +104,13 @@ public class ExamFactoryTest {
         @Test
         public void allTopics() {
             var exam = new FactoryBuilder()
-                .mockTasks(1)
-                .quizTask("ddd", 1)
-                .quizTask("adoc", 1)
+                .task("mock", 1)
+                .task("ddd", 1)
+                .task("adoc", 1)
                 .maxNumOfQuestions(5)
                 .build()
                 .examByTopic("-ALL");
+            exam.getTasks().stream().forEach(t->System.out.println(t.getId()));
             assertEquals(3, exam.getTasks().size());
             var ids = exam.getTasks().stream().map(Task::getId).toList();
             assertTrue(ids.contains("mock-01"));
@@ -128,24 +130,24 @@ public class ExamFactoryTest {
     public FactoryBuilder standardFactoryBuilder() {
         return new FactoryBuilder()
             .maxNumOfQuestions(5)
-            .mockTasks(39)
-            .quizTask("ddd", 12)
-            .quizTask("adoc", 10)
-            .quizTask("cloudinfra", 7)
-            .quizTask("foundation-chapter1", 8)
-            .quizTask("foundation-chapter2", 7)
-            .quizTask("foundation-chapter3", 12)
-            .quizTask("foundation-chapter4", 6)
-            .quizTask("foundation", 33);
+            .task("mock", 39)
+            .task("ddd", 12)
+            .task("adoc", 10)
+            .task("cloudinfra", 7)
+            .task("foundation-chapter1", 8)
+            .task("foundation-chapter2", 7)
+            .task("foundation-chapter3", 12)
+            .task("foundation-chapter4", 6)
+            .task("foundation", 33);
     }
 
     class FactoryBuilder {
         private int maxNumOfQuestions = 5;
-        private List<Task> mockTasks = new ArrayList<>();
+        private Map<String, ExamConfig> exams = new HashMap<>();
         private Map<String, List<Task>> tasks = new HashMap<>();
 
         public ExamFactory build() {
-            return new ExamFactory(maxNumOfQuestions, new Exam(42, mockTasks), tasks);
+            return ExamFactory.testInstance(maxNumOfQuestions, exams, tasks);
         }
 
         public FactoryBuilder maxNumOfQuestions(int max) {
@@ -153,31 +155,30 @@ public class ExamFactoryTest {
             return this;
         }
 
-        public FactoryBuilder mockTask(String id) {
-            Task task = new Task();
-            task.setId(id);
-            mockTasks.add(task);
-            return this;
-        }
-
-        public FactoryBuilder mockTasks(int count) {
-            IntStream.rangeClosed(1, count)
-                .mapToObj( i -> String.format("mock-%02d", i) )
-                .forEach(this::mockTask);
-            return this;
-        }
-
-        public FactoryBuilder quizTask(String topic, String taskId) {
-            Task task = new Task();
-            task.setId(taskId);
-            tasks.computeIfAbsent(topic, (s) -> new ArrayList<>() ).add(task);
-            return this;
-        }
-
-        public FactoryBuilder quizTask(String topic, int count) {
+        public FactoryBuilder task(String topic, int count) {
+            exam(topic);
+            List<Task> list = tasks.computeIfAbsent(topic, (s) -> new ArrayList<Task>());
             IntStream.rangeClosed(1, count)
                 .mapToObj( i -> String.format("%s-%02d", topic, i) )
-                .forEach( id -> quizTask(topic, id) );
+                .map(this::task)
+                .forEach(list::add);
+            return this;
+        }
+
+        private Task task(String id) {
+            Task task = new Task();
+            task.setId(id);
+            return task;
+        }
+
+        public FactoryBuilder exam(String name) {
+            ExamConfig cfg = exams.computeIfAbsent(name, (s) -> new ExamConfig());
+            if (cfg.getTaskRefs() == null) {
+                cfg.setTaskRefs(new ArrayList<>());
+            }
+            if (!cfg.getTaskRefs().contains(name)) {
+                cfg.getTaskRefs().add(name);
+            }
             return this;
         }
     }

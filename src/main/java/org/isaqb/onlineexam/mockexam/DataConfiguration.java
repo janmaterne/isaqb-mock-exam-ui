@@ -8,17 +8,18 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.isaqb.onlineexam.mockexam.model.I18NText;
 import org.isaqb.onlineexam.mockexam.model.Language;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Component
 // Map to all values of application.yaml
 @ConfigurationProperties
 @Data
+@Accessors(chain = true)
 public class DataConfiguration {
 
     // Map key "tasks" according to its name.

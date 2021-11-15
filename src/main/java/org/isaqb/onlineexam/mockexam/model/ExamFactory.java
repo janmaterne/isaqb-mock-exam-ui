@@ -9,6 +9,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
+import org.isaqb.onlineexam.mockexam.DataConfiguration;
+import org.isaqb.onlineexam.mockexam.DataConfiguration.ExamConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,20 +20,32 @@ public class ExamFactory {
     private static final String ALL_TOPIC = "-all";
     
     private Random random = new SecureRandom(UUID.randomUUID().toString().getBytes());
-
     int quizmodeMaxNumbersOfQuestions;
-    Exam mockExam;
     Map<String, List<Task>> tasks;
+    private Map<String, ExamConfig> exams;
+
 
     public ExamFactory(
-            @Value("quizmode.max-numbers-of-questions")
+            @Value("${quizmode.max-numbers-of-questions}")
             int quizmodeMaxNumbersOfQuestions,
-            Exam mockExam,
-            Map<String, List<Task>> tasks
+            DataConfiguration config,
+            TaskMap taskMap
     ) {
         this.quizmodeMaxNumbersOfQuestions = quizmodeMaxNumbersOfQuestions;
-        this.mockExam = mockExam;
-        this.tasks = tasks;
+        this.exams = config.getExams();
+        this.tasks = taskMap.getTasks();
+    }
+
+    protected static ExamFactory testInstance(
+            int quizmodeMaxNumbersOfQuestions,
+            Map<String, ExamConfig> exams,
+            Map<String, List<Task>> tasks
+    ) {
+        return new ExamFactory(
+            quizmodeMaxNumbersOfQuestions, 
+            new DataConfiguration().setExams(exams),
+            new TaskMap().setTasks(tasks)
+        );
     }
 
 
@@ -45,7 +59,15 @@ public class ExamFactory {
     }
 
     public Exam mockExam() {
-        return mockExam;
+        return examByName("mock");
+    }
+    
+    public Exam examByName(String name) {
+        ExamConfig examConfig = exams.get(name);
+        var taskRefs = examConfig.getTaskRefs();
+        List<Task> examTasks = new ArrayList<>();
+        taskRefs.forEach( ref -> examTasks.addAll(tasks.get(ref)));
+        return new Exam(examConfig.getRequiredPoints(), examTasks);
     }
 
     public Exam examByQuestionIds(String questionIdsSeparatedByComma) {
@@ -77,7 +99,6 @@ public class ExamFactory {
 
     private List<Task> allTasks() {
         List<Task> allTasks = new ArrayList<>();
-        allTasks.addAll(mockExam.getTasks());
         tasks.values().forEach(allTasks::addAll);
         return allTasks;
     }
