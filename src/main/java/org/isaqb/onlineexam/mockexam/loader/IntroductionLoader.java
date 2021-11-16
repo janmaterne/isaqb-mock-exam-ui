@@ -10,7 +10,7 @@ public class IntroductionLoader {
 
 	private I18NText text = new I18NText();
 	
-	public IntroductionLoader(@Value("${mock.introduction}") String url, StringLoader stringLoader, AsciidocReader reader) {
+	public IntroductionLoader(@Value("${mock.introduction}") String url, Loader stringLoader, AsciidocReader reader) {
 		String adoc = stringLoader.loadAsString(url).orElse("No content loaded");
 		text = reader.parse(adoc);
 	}

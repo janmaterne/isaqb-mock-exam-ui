@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 public class ExamFactory {
 
     private static final String ALL_TOPIC = "-all";
-    
+
     private Random random = new SecureRandom(UUID.randomUUID().toString().getBytes());
-    int quizmodeMaxNumbersOfQuestions;
-    Map<String, List<Task>> tasks;
+    private int quizmodeMaxNumbersOfQuestions;
+    private Map<String, List<Task>> tasks;
     private Map<String, ExamConfig> exams;
 
 
@@ -61,7 +61,7 @@ public class ExamFactory {
     public Exam mockExam() {
         return examByName("mock");
     }
-    
+
     public Exam examByName(String name) {
         ExamConfig examConfig = exams.get(name);
         var taskRefs = examConfig.getTaskRefs();

@@ -1,19 +1,80 @@
-mock:
-    # Where is the source of the introduction document?
-    introduction: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/preamble/introduction.adoc
-    # Where to find the original AsciiDoc code with the tasks content?
-    # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
-    url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
-    from: 1
-    to: 5
-    #to: 39
-    # How many points are required to pass the exam?
-    requiredPoints: 30
+# Where is the source of the introduction document?
+introduction: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/preamble/introduction.adoc
 
 
+# Configure the quizmode.
 quizmode:
     max-numbers-of-questions: 5
 
+
+
+# Define the source for the tasks and group them by topic.
+tasks:
+    # Start a new topic with key 'ddd'
+    ddd:
+        # International name for displaying.
+        name:
+            DE: Domain Driven Design
+            EN: Domain Driven Design
+        # Where to find the original AsciiDoc code with the tasks content?
+        # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
+        urls:
+        - url-template: xx 
+          from: 1
+          to: 2
+          # URLs to load generated from a template replacing the placeholder {NR}
+          # with a 2-digit value between 'from' and 'to' (inclusive).
+          # URLs which cant be loaded are ignored.
+          # Topics without any URLs are also ignored.
+    foundation-part1:
+        name:
+            DE: Foundation Teil 1
+            EN: Foundation Part 1
+        urls:
+        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+          from: 1
+          to: 10
+    foundation-part2:
+        name:
+            DE: Foundation Teil 2
+            EN: Foundation Part 2
+        urls:
+        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+          from: 11
+          to: 20
+    foundation-part3:
+        name:
+            DE: Foundation Teil 3
+            EN: Foundation Part 3
+        urls:
+        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+          from: 21
+          to: 30
+    foundation-part4:
+        name:
+            DE: Foundation Teil 4
+            EN: Foundation Part 4
+        urls:
+        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+          from: 31
+          to: 39
+    foundation:
+        name:
+            DE: Foundation
+            EN: Foundation
+        # You also could reference topics.
+        refs:
+        - foundation-part1
+        - foundation-part2
+        - foundation-part3
+        - foundation-part4
+
+
+
+# Topics can be grouped to exams.
+# An exam has additional requirements for passing:
+# - a minimum of points to achieve
+# - a maximum amount of time
 exams:
     mock:
         name:
@@ -23,53 +84,6 @@ exams:
         max-time-in-minutes: 60
         task-refs:
         - foundation
-    
-
-# Define possible (additional) questions for the quiz mode.
-# quiz - topic - config
-tasks:
-    ddd:
-        name:
-            DE: Domain Driven Design
-            EN: Domain Driven Design
-        urls:
-        - url-template: xx 
-          from: 1
-          to: 2
-        - url-template: yy
-          from: 1
-          to: 2
-    base:
-        name:
-            DE: Basis
-            EN: Foundation Basis
-        urls:
-        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
-          from: 33
-          to: 35    
-    foundation-chapter1:
-        name:
-            DE: Foundation Kapitel 1
-            EN: Foundation Chapter 1
-        urls:
-        - url-template: url
-          from: 1
-          to: 2
-    foundation-chapter2:
-        name:
-            DE: Foundation Kapitel 2
-            EN: Foundation Chapter 2
-        urls:
-        - url-template: url
-          from: 1
-          to: 2
-    foundation:
-        name:
-            DE: Foundation
-            EN: Foundation
-        refs:
-        - foundation-chapter1
-        - foundation-chapter2
 
 
 

@@ -2,7 +2,6 @@ package org.isaqb.onlineexam.mockexam.ui;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import org.isaqb.onlineexam.mockexam.DataConfiguration;
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.loader.IntroductionLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
+import org.isaqb.onlineexam.mockexam.model.ExamFactory;
 import org.isaqb.onlineexam.mockexam.model.I18NText;
 import org.isaqb.onlineexam.mockexam.model.Language;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
@@ -39,20 +39,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UiController {
 
-    private Exam exam;
     private IntroductionLoader introductionLoader;
     private JsonMapper jsonMapper;
     private I18NText cookieDislaimer;
     private I18NText howToUse;
     private AutloadJS autoloadJS;
     private DataConfiguration quizConfiguration;
+    private ExamFactory examFactory;
 
-    public UiController(Exam exam, IntroductionLoader introductionLoader, JsonMapper jsonMapper,
+    public UiController(
+            ExamFactory examFactory,
+            IntroductionLoader introductionLoader, 
+            JsonMapper jsonMapper,
             AsciidocReader adocReader,
             @Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
             @Value("classpath:messages/how-to-use.adoc") Resource howToUse, AutloadJS autloadJS,
             DataConfiguration quizConfiguration) throws IOException {
-        this.exam = exam;
+        this.examFactory = examFactory;
         this.introductionLoader = introductionLoader;
         this.jsonMapper = jsonMapper;
         this.cookieDislaimer = parseADoc(adocReader, resourceCookieDisclaimer);
@@ -97,7 +100,7 @@ public class UiController {
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson 
     ) {
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
-        Exam e = getExam(quizmode, questionIds);
+        Exam exam = examFactory.mockExam();
 
         UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, null);
         model.addAttribute("exam", exam);
@@ -107,29 +110,6 @@ public class UiController {
         autoloadJS.injectAutoReloadJS(model);
 
         return "process-exam.html";
-    }
-
-    private Exam getExam(String quizmode, String questionIds) {
-        System.out.println("getExam()");
-        System.out.printf("- mode: %s%n", quizmode);
-        System.out.printf("- ids: %s%n", questionIds);
-        if (questionIds != null) {
-            return getExamFromQuestionIds(questionIds);
-        } else {
-            return quizmode == null ? getMockExam() : getQuizExam(quizmode);
-        }
-    }
-
-    private Exam getExamFromQuestionIds(String questionIds) {
-        return null;
-    }
-
-    private Exam getMockExam() {
-        return exam;
-    }
-
-    private Exam getQuizExam(String quizmode) {
-        return null;
     }
 
     private String cookieOverParameter(String cookieValue, String paramValue) {
@@ -151,7 +131,7 @@ public class UiController {
     }
 
     private boolean answersMissing(Collection<TaskAnswer> givenAnswers) {
-        return givenAnswers.stream().filter(a -> !a.getOptionSelections().isEmpty()).count() < exam.getTasks().size();
+        return givenAnswers.stream().filter(a -> !a.getOptionSelections().isEmpty()).count() < examFactory.mockExam().getTasks().size();
     }
 
     private Collection<TaskAnswer> parse(MultiValueMap<String, String> formData) {
@@ -186,6 +166,8 @@ public class UiController {
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64) {
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
+        Exam exam = examFactory.mockExam();
+
         Calculator calc = new Calculator();
         var result = calc.calculate(exam, givenAnswers);
         model.addAttribute("result", result);
@@ -207,6 +189,7 @@ public class UiController {
         var result = jsonMapper.fromStringToCalculationResult(resultJsonBase64);
         model.addAttribute("result", result);
 
+        Exam exam = examFactory.mockExam();
         UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
         model.addAttribute("util", uiData);
 

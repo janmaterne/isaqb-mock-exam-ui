@@ -44,6 +44,16 @@ public class DataConfiguration {
         private String urlTemplate;
         private int from;
         private int to;
+        
+        public List<String> generateUrls() {
+            List<String> list = new ArrayList<>();
+            for(int nr=from; nr<=to; nr++) {
+                String nrAsString = (nr < 10) ? "0" + nr : String.valueOf(nr);
+                String url = urlTemplate.replace("{NR}", nrAsString);
+                list.add(url);
+            }
+            return list;
+        }
     }
 
     public Set<String> topics() {
