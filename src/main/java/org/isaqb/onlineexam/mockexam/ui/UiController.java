@@ -1,7 +1,7 @@
 package org.isaqb.onlineexam.mockexam.ui;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,6 +47,8 @@ public class UiController {
     private DataConfiguration quizConfiguration;
     private ExamFactory examFactory;
 
+
+
     public UiController(
             ExamFactory examFactory,
             IntroductionLoader introductionLoader, 
@@ -65,10 +67,13 @@ public class UiController {
     }
 
     private I18NText parseADoc(AsciidocReader adocReader, Resource resourceCookieDisclaimer) throws IOException {
-        String adocCookieDisclaimer = IOUtils.toString(resourceCookieDisclaimer.getInputStream(),
-                Charset.defaultCharset());
+        String adocCookieDisclaimer = IOUtils.toString(
+            resourceCookieDisclaimer.getInputStream(),
+            StandardCharsets.UTF_8);
         return adocReader.parse(adocCookieDisclaimer);
     }
+
+
 
     @GetMapping("introduction.html")
     public String introduction(HttpServletResponse response, Model model, @RequestParam("language") String language) {
@@ -90,6 +95,8 @@ public class UiController {
         return quizConfiguration.getTasks().entrySet().stream()
                 .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang))).toList();
     }
+
+
 
     @GetMapping("process-exam.html")
     public String processExam(
@@ -120,9 +127,13 @@ public class UiController {
         return givenAnswersJson == null ? Collections.emptyList() : jsonMapper.fromStringToAnswers(givenAnswersJson);
     }
 
+
+
     @PostMapping(value = "send-exam")
-    public String sendExam(HttpServletResponse response, Model model,
-            @RequestBody(required = false) MultiValueMap<String, String> formData) {
+    public String sendExam(
+            HttpServletResponse response, Model model,
+            @RequestBody(required = false) MultiValueMap<String, String> formData
+    ) {
         Collection<TaskAnswer> givenAnswers = parse(formData);
         model.addAttribute("givenAnswers", givenAnswers);
         response.addCookie(new Cookie("givenAnswers", jsonMapper.toString(givenAnswers)));
@@ -161,9 +172,16 @@ public class UiController {
         return answers.values();
     }
 
+
+
     @GetMapping("calculatePoints")
-    public String calculatePoints(HttpServletResponse response, Model model, @CookieValue("language") String language,
-            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64) {
+    public String calculatePoints(
+            HttpServletResponse response, 
+            Model model, 
+            @CookieValue("language") String language,
+            @CookieValue(name = "questionIds", required = false) String questionIds,
+            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64
+    ) {
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
         Exam exam = examFactory.mockExam();
@@ -180,10 +198,15 @@ public class UiController {
         return "result.html";
     }
 
+
+
     @GetMapping("result-details.html")
-    public String resultDetails(Model model, @CookieValue("language") String language,
+    public String resultDetails(
+            Model model, 
+            @CookieValue("language") String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64,
-            @CookieValue("result") String resultJsonBase64) {
+            @CookieValue("result") String resultJsonBase64
+    ) {
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
         var result = jsonMapper.fromStringToCalculationResult(resultJsonBase64);
@@ -196,6 +219,8 @@ public class UiController {
         autoloadJS.injectAutoReloadJS(model);
         return "result-details.html";
     }
+
+
 
     @GetMapping("end")
     public String end(HttpServletResponse response, HttpServletRequest request) {
