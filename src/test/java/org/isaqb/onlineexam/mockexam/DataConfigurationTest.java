@@ -33,14 +33,14 @@ public class DataConfigurationTest {
         assertEquals("xx", ddd.getUrls().get(0).getUrlTemplate());
         assertEquals(1, ddd.getUrls().get(0).getFrom());
         assertEquals(2, ddd.getUrls().get(0).getTo());
-        assertEquals(2, ddd.getUrls().size());
+        assertEquals(1, ddd.getUrls().size());
     }
 
     @Test
     public void resolveTaskRefs() {
         var conf = config.getTasks().get("foundation");
         assertTrue(conf.getRefs().isEmpty(), () -> conf.toString());
-        assertEquals(2, conf.getUrls().size(), () -> conf.toString());
+        assertEquals(4, conf.getUrls().size(), () -> conf.toString());
     }
 
     @Test
