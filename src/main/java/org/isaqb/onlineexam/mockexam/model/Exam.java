@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class Exam {
 	
 	@Getter

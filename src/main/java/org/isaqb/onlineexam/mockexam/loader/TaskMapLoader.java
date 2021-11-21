@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeSet;
 
 import org.isaqb.onlineexam.mockexam.DataConfiguration;
 import org.isaqb.onlineexam.mockexam.DataConfiguration.UrlTemplateConfig;
@@ -16,9 +17,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Component
+@Slf4j
 public class TaskMapLoader {
 
     private DataConfiguration config;
@@ -52,30 +55,43 @@ public class TaskMapLoader {
         return taskMap;
     }
 
-    private Task validate(Task task, Map<String, List<String>> errorMap) {
+    protected Task validate(Task task, Map<String, List<String>> errorMap) {
         var errors = validator.validate(task);
         var key = task.getId() != null 
                 ? "id=" + task.getId() 
-                : "hash" + task.hashCode();
+                : "hash=" + task.hashCode();
         if (!errors.isEmpty()) {
             errorMap.put(key, errors);
         }
         return task;
     }
 
-    private void printErrors(HashMap<String, List<String>> errorMap) {
+    private void printErrors(Map<String, List<String>> errorMap) {
+        String errorMessage = errors2string(errorMap);
+        if (errorMessage.isBlank()) {
+            log.error(errorMessage);
+        } else {
+            log.debug("All tasks are valid.");
+        }
+    }
+
+    protected String errors2string(Map<String, List<String>> errorMap) {
+        StringBuilder sb = new StringBuilder();
         long numOfErrors = errorMap.values().stream()
             .map(Collection::stream)
             .count();
         if (numOfErrors > 0) {
-            System.err.println("Tasks with validation errors:");
-            for(var e : errorMap.entrySet()) {
-                System.err.printf("- topic '%s'%n", e.getKey());
-                e.getValue().forEach(err -> System.out.printf("  -- %s%n", err) );
+            sb.append("Tasks with validation errors:\n");
+            var keys = new TreeSet<>(errorMap.keySet());
+            for(var key : keys) {
+                var list = errorMap.get(key);
+                if (!list.isEmpty()) {
+                    sb.append("- topic ").append(key).append("\n");
+                    list.forEach(err -> sb.append("  -- ").append(err).append("\n") );
+                }
             }
-        } else {
-            System.err.println("All tasks are valid.");
         }
+        return sb.toString();
     }
 
 }

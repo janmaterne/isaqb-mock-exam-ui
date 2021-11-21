@@ -7,7 +7,7 @@ quizmode:
     max-numbers-of-questions: 5
 
 
-
+#TODO At the moment only the fixed 'foundation' is supported.
 # Define the source for the tasks and group them by topic.
 tasks:
     # Start a new topic with key 'ddd'
@@ -86,6 +86,10 @@ exams:
         - foundation
 
 
+cache:
+    # How long should an entry live in the ADOC-Cache?
+    ttl-hours: 72
+
 
 # Increase Header-Size to store UIData as cookie
 server:
@@ -93,9 +97,20 @@ server:
 
 # https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/html/common-application-properties.html
 spring:
+    # Encoding for handling Umlauts
     http:
         encoding:
             charset: UTF-8
             enabled: true
     thymeleaf:
         encoding: UTF-8
+    # JPA for Cache
+    datasource:
+        url: jdbc:h2:~/mock-cache # jdbc:h2:mem:mock-cache
+        username: sa
+        password: password
+        driverClassName: org.h2.Driver
+    jpa:
+        spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: update

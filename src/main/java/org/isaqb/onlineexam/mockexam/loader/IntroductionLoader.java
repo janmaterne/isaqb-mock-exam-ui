@@ -10,8 +10,8 @@ public class IntroductionLoader {
 
 	private I18NText text = new I18NText();
 	
-	public IntroductionLoader(@Value("${introduction}") String url, Loader stringLoader, AsciidocReader reader) {
-		String adoc = stringLoader.loadAsString(url).orElse("No content loaded");
+	public IntroductionLoader(@Value("${introduction}") String url, Loader loader, AsciidocReader reader) {
+		String adoc = loader.loadAsString(url).orElse("No content loaded");
 		text = reader.parse(adoc);
 	}
 
