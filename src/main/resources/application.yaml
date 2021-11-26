@@ -83,7 +83,7 @@ exams:
         required-points: 30
         max-time-in-minutes: 60
         task-refs:
-        - foundation-part1
+        - foundation
 
 
 cache:

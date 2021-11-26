@@ -83,10 +83,14 @@ public class UiController {
 
     @GetMapping("introduction.html")
     public String introduction(
+            HttpServletRequest request,
             HttpServletResponse response,
             Model model,
             @RequestParam("language") String language
     ) {
+
+        new CookieHelper(request, response, base64).deleteAllCookies();
+
         response.addCookie(new Cookie("language", language));
         Language lang = Language.valueOf(language);
 
@@ -117,8 +121,6 @@ public class UiController {
             @CookieValue(name = "language", required = false) String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson
     ) {
-
-        System.out.printf("process() : lang='%s'%n", language);
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
         Exam exam = examHttpAdapter.from(request);
         examHttpAdapter.send(response, exam);

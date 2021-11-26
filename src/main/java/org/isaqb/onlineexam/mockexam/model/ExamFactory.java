@@ -58,7 +58,6 @@ public class ExamFactory {
     }
 
     public Exam examByName(String name) {
-        System.out.printf("examByName: '%s'%n", name);
         ExamConfig examConfig = exams.get(name);
         var taskRefs = examConfig.getTaskRefs();
         List<Task> examTasks = new ArrayList<>();
@@ -89,8 +88,15 @@ public class ExamFactory {
     }
 
     public Exam examByTopics(List<String> topics) {
-        System.out.printf("examByTopics: '%s'%n", topics);
-        throw new UnsupportedOperationException("implement me");
+        List<Task> possibleTasks;
+        if (topics.isEmpty() || topics.contains(ALL_TOPIC)) {
+            possibleTasks = allTasks().values().stream().toList();
+        } else {
+            possibleTasks = new ArrayList<Task>();
+            topics.forEach( topic -> possibleTasks.addAll(tasks.getOrDefault(topic, new ArrayList<>())));
+        }
+        List<Task> randomTasks = randomElements(possibleTasks, quizmodeMaxNumbersOfQuestions);
+        return Exam.createQuiz(randomTasks);
     }
 
     public Exam examByTopic(String topic) {

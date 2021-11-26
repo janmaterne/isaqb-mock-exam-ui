@@ -110,7 +110,6 @@ public class ExamFactoryTest {
                 .maxNumOfQuestions(5)
                 .build()
                 .examByTopic("-ALL");
-            exam.getTasks().stream().forEach(t->System.out.println(t.getId()));
             assertEquals(3, exam.getTasks().size());
             var ids = exam.getTasks().stream().map(Task::getId).toList();
             assertTrue(ids.contains("mock-01"));

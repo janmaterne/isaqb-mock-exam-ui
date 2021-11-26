@@ -39,14 +39,6 @@ public class ExamHttpAdapter {
         Mode mode = Mode.of(orElse);
         List<String> questionIds = getListFromRequest(request, KEY_QUESTIONIDS);
         List<String> topics = getListFromRequest(request, KEY_TOPICS);
-
-        System.out.println("from(request)");
-        System.out.printf("- req: %s%n", fromRequest);
-        System.out.printf("- orElse: %s%n", orElse);
-        System.out.printf("- mode: %s%n", mode);
-        System.out.printf("- questionIds: %s%n", questionIds);
-        System.out.printf("- topics: %s%n", topics);
-
         return from(mode, trail(questionIds), trail(topics));
     }
 
@@ -62,8 +54,6 @@ public class ExamHttpAdapter {
                 return factory.examByQuestionIds(questionIds).setMode(mode);
             }
         } else {
-            System.out.printf("- topics.size: %s - %s%n", topics.size(), topics);
-            topics.forEach(t->System.out.printf("  -- '%s'%n", t));
             if (topics.isEmpty()) {
                 return factory.mockExam().setMode(mode);
             }
