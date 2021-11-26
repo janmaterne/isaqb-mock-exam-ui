@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.isaqb.onlineexam.mockexam.DataConfiguration.UrlTemplateConfig;
 import org.isaqb.onlineexam.mockexam.model.Language;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,24 @@ public class DataConfigurationTest {
         assertEquals(30, conf.getRequiredPoints());
         assertEquals(60, conf.getMaxTimeInMinutes());
         assertEquals("foundation", conf.getTaskRefs().get(0));
+    }
+
+
+
+    @Nested
+    public class DataConfiguration_UrlTemplateConfig {
+
+        @Test
+        public void remoteUrls() {
+            UrlTemplateConfig cfg = new UrlTemplateConfig()
+                .setUrlTemplate("http://question-{NR}.adoc")
+                .setFrom(9)
+                .setTo(11);
+            var remoteUrls = cfg.generateUrls();
+            assertEquals(3, remoteUrls.size());
+            assertTrue(remoteUrls.contains("http://question-09.adoc"));
+            assertTrue(remoteUrls.contains("http://question-10.adoc"));
+            assertTrue(remoteUrls.contains("http://question-11.adoc"));
+        }
     }
 }

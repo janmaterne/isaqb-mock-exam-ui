@@ -82,11 +82,11 @@ public class TaskMapLoader {
             .count();
         if (numOfErrors > 0) {
             sb.append("Tasks with validation errors:\n");
-            var keys = new TreeSet<>(errorMap.keySet());
-            for(var key : keys) {
-                var list = errorMap.get(key);
+            var topics = new TreeSet<>(errorMap.keySet());
+            for(var topic : topics) {
+                var list = errorMap.get(topic);
                 if (!list.isEmpty()) {
-                    sb.append("- topic ").append(key).append("\n");
+                    sb.append("- topic ").append(topic).append("\n");
                     list.forEach(err -> sb.append("  -- ").append(err).append("\n") );
                 }
             }
