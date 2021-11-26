@@ -9,8 +9,6 @@ import java.util.Map;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
 import org.isaqb.onlineexam.mockexam.model.calculation.CalculationResult;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,12 +17,6 @@ public class JsonMapperTest {
 
     @Autowired
     private JsonMapper mapper;
-
-    @ParameterizedTest
-    @ValueSource(strings = { "test", "äöüß", "{\"key\":\"value\"}" })
-    public void encode(String in) {
-        assertEquals(in, mapper.decode(mapper.encode(in)));
-    }
 
     @Test
     public void answer() {

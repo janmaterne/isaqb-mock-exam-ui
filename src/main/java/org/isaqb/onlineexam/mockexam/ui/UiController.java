@@ -19,11 +19,12 @@ import org.isaqb.onlineexam.mockexam.DataConfiguration;
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.loader.IntroductionLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
-import org.isaqb.onlineexam.mockexam.model.ExamFactory;
 import org.isaqb.onlineexam.mockexam.model.I18NText;
 import org.isaqb.onlineexam.mockexam.model.Language;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
 import org.isaqb.onlineexam.mockexam.model.calculation.Calculator;
+import org.isaqb.onlineexam.mockexam.util.Base64Handler;
+import org.isaqb.onlineexam.mockexam.util.CookieHelper;
 import org.isaqb.onlineexam.mockexam.util.JsonMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -45,25 +46,30 @@ public class UiController {
     private I18NText howToUse;
     private AutloadJS autoloadJS;
     private DataConfiguration quizConfiguration;
-    private ExamFactory examFactory;
+    private ExamHttpAdapter examHttpAdapter;
+    private Base64Handler base64;
 
 
 
     public UiController(
-            ExamFactory examFactory,
-            IntroductionLoader introductionLoader, 
+            ExamHttpAdapter examHttpAdapter,
+            IntroductionLoader introductionLoader,
             JsonMapper jsonMapper,
             AsciidocReader adocReader,
             @Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
-            @Value("classpath:messages/how-to-use.adoc") Resource howToUse, AutloadJS autloadJS,
-            DataConfiguration quizConfiguration) throws IOException {
-        this.examFactory = examFactory;
+            @Value("classpath:messages/how-to-use.adoc") Resource howToUse,
+            AutloadJS autloadJS,
+            DataConfiguration quizConfiguration,
+            Base64Handler base64
+    ) throws IOException {
+        this.examHttpAdapter = examHttpAdapter;
         this.introductionLoader = introductionLoader;
         this.jsonMapper = jsonMapper;
         this.cookieDislaimer = parseADoc(adocReader, resourceCookieDisclaimer);
         this.howToUse = parseADoc(adocReader, howToUse);
         this.autoloadJS = autloadJS;
         this.quizConfiguration = quizConfiguration;
+        this.base64 = base64;
     }
 
     private I18NText parseADoc(AsciidocReader adocReader, Resource resourceCookieDisclaimer) throws IOException {
@@ -76,7 +82,11 @@ public class UiController {
 
 
     @GetMapping("introduction.html")
-    public String introduction(HttpServletResponse response, Model model, @RequestParam("language") String language) {
+    public String introduction(
+            HttpServletResponse response,
+            Model model,
+            @RequestParam("language") String language
+    ) {
         response.addCookie(new Cookie("language", language));
         Language lang = Language.valueOf(language);
 
@@ -93,21 +103,25 @@ public class UiController {
 
     private List<QuizOptions> possibleQuizOptions(Language lang) {
         return quizConfiguration.getTasks().entrySet().stream()
-                .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang))).toList();
+                .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
+                .toList();
     }
 
 
 
     @GetMapping("process-exam.html")
     public String processExam(
-            Model model, 
-            @RequestParam(required = false) String quizmode,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Model model,
             @CookieValue(name = "language", required = false) String language,
-            @CookieValue(name = "questionIds", required = false) String questionIds,
-            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson 
+            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson
     ) {
+
+        System.out.printf("process() : lang='%s'%n", language);
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
-        Exam exam = examFactory.mockExam();
+        Exam exam = examHttpAdapter.from(request);
+        examHttpAdapter.send(response, exam);
 
         UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, null);
         model.addAttribute("exam", exam);
@@ -119,10 +133,6 @@ public class UiController {
         return "process-exam.html";
     }
 
-    private String cookieOverParameter(String cookieValue, String paramValue) {
-        return cookieValue != null ? cookieValue : paramValue;
-    }
-
     private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
         return givenAnswersJson == null ? Collections.emptyList() : jsonMapper.fromStringToAnswers(givenAnswersJson);
     }
@@ -131,18 +141,21 @@ public class UiController {
 
     @PostMapping(value = "send-exam")
     public String sendExam(
-            HttpServletResponse response, Model model,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Model model,
             @RequestBody(required = false) MultiValueMap<String, String> formData
     ) {
+        Exam exam = examHttpAdapter.from(request);
         Collection<TaskAnswer> givenAnswers = parse(formData);
         model.addAttribute("givenAnswers", givenAnswers);
         response.addCookie(new Cookie("givenAnswers", jsonMapper.toString(givenAnswers)));
         autoloadJS.injectAutoReloadJS(model);
-        return answersMissing(givenAnswers) ? "missing-tasks.html" : "redirect:/calculatePoints";
+        return answersMissing(exam, givenAnswers) ? "missing-tasks.html" : "redirect:/calculatePoints";
     }
 
-    private boolean answersMissing(Collection<TaskAnswer> givenAnswers) {
-        return givenAnswers.stream().filter(a -> !a.getOptionSelections().isEmpty()).count() < examFactory.mockExam().getTasks().size();
+    private boolean answersMissing(Exam exam, Collection<TaskAnswer> givenAnswers) {
+        return givenAnswers.stream().filter(a -> !a.getOptionSelections().isEmpty()).count() < exam.getTasks().size();
     }
 
     private Collection<TaskAnswer> parse(MultiValueMap<String, String> formData) {
@@ -176,15 +189,15 @@ public class UiController {
 
     @GetMapping("calculatePoints")
     public String calculatePoints(
-            HttpServletResponse response, 
-            Model model, 
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Model model,
+            Base64Handler base64,
             @CookieValue("language") String language,
-            @CookieValue(name = "questionIds", required = false) String questionIds,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64
     ) {
+        Exam exam = examHttpAdapter.from(request);
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
-
-        Exam exam = examFactory.mockExam();
 
         Calculator calc = new Calculator();
         var result = calc.calculate(exam, givenAnswers);
@@ -202,17 +215,18 @@ public class UiController {
 
     @GetMapping("result-details.html")
     public String resultDetails(
-            Model model, 
+            HttpServletRequest request,
+            Model model,
             @CookieValue("language") String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64,
             @CookieValue("result") String resultJsonBase64
     ) {
+        Exam exam = examHttpAdapter.from(request);
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJsonBase64);
 
         var result = jsonMapper.fromStringToCalculationResult(resultJsonBase64);
         model.addAttribute("result", result);
 
-        Exam exam = examFactory.mockExam();
         UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
         model.addAttribute("util", uiData);
 
@@ -224,20 +238,8 @@ public class UiController {
 
     @GetMapping("end")
     public String end(HttpServletResponse response, HttpServletRequest request) {
-        deleteCookies(response, request);
+        new CookieHelper(request, response, base64).deleteAllCookies();
         return "index.html";
-    }
-
-    private void deleteCookies(HttpServletResponse response, HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                // bandwidth
-                cookie.setValue("");
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-        }
     }
 
 }

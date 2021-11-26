@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 public class CalculationTest {
-	
+
 	@Nested
 	public class CalcDataSelectionEquals {
-		
+
 		@Test
 		public void equals() {
 			assertTrue(new Calculator.CalcTaskData(null, null).selectionEquals(
@@ -45,7 +45,7 @@ public class CalculationTest {
 				null
 			));
 		}
-		
+
 		@Test
 		public void differ() {
 			assertFalse(new Calculator.CalcTaskData(null, null).selectionEquals(
@@ -55,11 +55,11 @@ public class CalculationTest {
 		}
 	}
 
-	
-	
+
+
 	@Nested
 	public class CalcDataAnalyze {
-		
+
 		@Test
 		public void noGivenAnswer() {
 			var data = new Calculator.CalcTaskData(
@@ -74,7 +74,7 @@ public class CalculationTest {
 			assertEquals(0, map.get(AnswerResult.INCORRECT));
 			assertEquals(1, map.get(AnswerResult.UNSELECTED));
 		}
-		
+
 		@Test
 		public void checkboxOk() {
 			var data = new Calculator.CalcTaskData(
@@ -88,7 +88,7 @@ public class CalculationTest {
 			assertEquals(0, map.get(AnswerResult.INCORRECT));
 			assertEquals(0, map.get(AnswerResult.UNSELECTED));
 		}
-		
+
 		@Test
 		public void checkboxWrong() {
 			var data = new Calculator.CalcTaskData(
@@ -102,7 +102,7 @@ public class CalculationTest {
 			assertEquals(1, map.get(AnswerResult.INCORRECT));
 			assertEquals(1, map.get(AnswerResult.UNSELECTED));
 		}
-		
+
 		@Test
 		public void checkboxBothOk() {
 			var data = new Calculator.CalcTaskData(
@@ -116,7 +116,7 @@ public class CalculationTest {
 			assertEquals(0, map.get(AnswerResult.INCORRECT));
 			assertEquals(0, map.get(AnswerResult.UNSELECTED));
 		}
-		
+
 		@Test
 		public void checkboxBothWrong() {
 			var data = new Calculator.CalcTaskData(
@@ -129,14 +129,14 @@ public class CalculationTest {
 			assertEquals(0, map.get(AnswerResult.CORRECT));
 			assertEquals(2, map.get(AnswerResult.INCORRECT));
 			assertEquals(0, map.get(AnswerResult.UNSELECTED));
-		}		
+		}
 	}
-	
-	
-	
+
+
+
 	@Nested
 	public class CalcDataCalculate {
-		
+
 		@Test
 		public void fourOfFour() {
 			var data = new Calculator.CalcTaskData(
@@ -149,7 +149,7 @@ public class CalculationTest {
 			);
 			assertEquals(10, data.calculate());
 		}
-		
+
 		@Test
 		public void threeOfFour() {
 			var data = new Calculator.CalcTaskData(
@@ -163,19 +163,19 @@ public class CalculationTest {
 			assertEquals(5, data.calculate());
 		}
 	}
-	
-	
-	
+
+
+
 	@Nested
 	public class CalculateRealworldData {
-		
+
 		TaskLoader4Test taskLoader = TaskLoader4Test.create("ParserTest");
 		Calculator calculator = new Calculator();
-		
+
 		@Test
 		public void question01_3of3() throws IOException {
 			Task task = taskLoader.loadTask("question-01.adoc");
-			Exam exam = new Exam(42, task);
+			Exam exam = Exam.createExam(42, task);
 			TaskAnswer answer = new TaskAnswer(1)
 				.put("a", "n")
 				.put("b", "n")
@@ -184,11 +184,11 @@ public class CalculationTest {
 			var points = result.points.get(task.getId());
 			assertEquals(1, points);
 		}
-		
+
 		@Test
 		public void question01_3of3_asViaUI() throws IOException {
 			Task task = taskLoader.loadTask("question-01.adoc");
-			Exam exam = new Exam(42, task);
+			Exam exam = Exam.createExam(42, task);
 			TaskAnswer answer = new TaskAnswer(1)
 				// not selected checkboxes are not transfered, so no "n"-values
 				.put("c", "on");
@@ -196,11 +196,11 @@ public class CalculationTest {
 			var points = result.points.get(task.getId());
 			assertEquals(1, points);
 		}
-				
+
 		@Test
 		public void question01_0of3() throws IOException {
 			Task task = taskLoader.loadTask("question-01.adoc");
-			Exam exam = new Exam(42, task);
+			Exam exam = Exam.createExam(42, task);
 			TaskAnswer answer = new TaskAnswer(1)
 				.put("a", "y")
 				.put("b", "y")
@@ -209,11 +209,11 @@ public class CalculationTest {
 			var points = result.points.get(task.getId());
 			assertEquals(0, points);
 		}
-		
+
 		@Test
 		public void question01_2of3() throws IOException {
 			Task task = taskLoader.loadTask("question-01.adoc");
-			Exam exam = new Exam(42, task);
+			Exam exam = Exam.createExam(42, task);
 			TaskAnswer answer = new TaskAnswer(1)
 				.put("a", "y")
 				.put("b", "n")
@@ -222,11 +222,11 @@ public class CalculationTest {
 			var points = result.points.get(task.getId());
 			assertEquals(0.33, points);
 		}
-		
+
 //		@Test
 		public void question04() throws IOException {
 			Task task = taskLoader.loadTask("question-04.adoc");
-			Exam exam = new Exam(42, task);
+			Exam exam = Exam.createExam(42, task);
 			TaskAnswer answer = new TaskAnswer(1)
 				.put("a", asList("y", "n"))
 				.put("b", asList("y", "n"))

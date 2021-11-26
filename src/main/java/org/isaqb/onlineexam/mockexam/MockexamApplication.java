@@ -2,6 +2,9 @@ package org.isaqb.onlineexam.mockexam;
 
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,7 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MockexamApplication {
 
-	public static void main(String[] args) {
+    @Value("${spring.h2.console.enabled}")
+    private boolean h2ConsoleEnabled;
+
+
+
+    public static void main(String[] args) {
 		validateEnvironment();
 		SpringApplication app = new SpringApplication(MockexamApplication.class);
 		// Inject values into the banner.
@@ -27,6 +35,13 @@ public class MockexamApplication {
 			log.info("Die Anwendung muss mit -Dfile.encoding=UTF-8 gestartet werden.");
 			System.exit(1);
 		}
+	}
+
+	@PostConstruct
+	public void logConsole() {
+	    if (h2ConsoleEnabled) {
+	        log.info("H2-Console available at http://localhost:8080/h2-console");
+	    }
 	}
 
 }

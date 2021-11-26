@@ -46,3 +46,14 @@ README.adoc
 
 userdoc.adoc mit Grafiken /images
 - screenshots      
+
+
+
+
+Refactor
+- ExamHttpAdapter, CookieHelper, Base64Handler, ?
+--> ClientCommunication(Request,Response)
+   * cookies
+   * parameter
+   * getFromParameterOrCookie
+

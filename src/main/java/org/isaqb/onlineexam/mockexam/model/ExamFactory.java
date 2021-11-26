@@ -3,11 +3,14 @@ package org.isaqb.onlineexam.mockexam.model;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.isaqb.onlineexam.mockexam.DataConfiguration;
 import org.isaqb.onlineexam.mockexam.DataConfiguration.ExamConfig;
@@ -17,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExamFactory {
 
-    private static final String ALL_TOPIC = "-all";
+    public static final String ALL_TOPIC = "-all";
 
     private Random random = new SecureRandom(UUID.randomUUID().toString().getBytes());
     private int quizmodeMaxNumbersOfQuestions;
@@ -42,7 +45,7 @@ public class ExamFactory {
             Map<String, List<Task>> tasks
     ) {
         return new ExamFactory(
-            quizmodeMaxNumbersOfQuestions, 
+            quizmodeMaxNumbersOfQuestions,
             new DataConfiguration().setExams(exams),
             new TaskMap().setTasks(tasks)
         );
@@ -50,57 +53,65 @@ public class ExamFactory {
 
 
 
-    public Exam examByRequest(String quizTopic, String questionIds) {
-        if (questionIds != null) {
-            return examByQuestionIds(questionIds);
-        } else {
-            return quizTopic == null ? mockExam() : examByTopic(quizTopic);
-        }
-    }
-
     public Exam mockExam() {
         return examByName("mock");
     }
 
     public Exam examByName(String name) {
+        System.out.printf("examByName: '%s'%n", name);
         ExamConfig examConfig = exams.get(name);
         var taskRefs = examConfig.getTaskRefs();
         List<Task> examTasks = new ArrayList<>();
         taskRefs.forEach( ref -> examTasks.addAll(tasks.get(ref)));
-        return new Exam(examConfig.getRequiredPoints(), examTasks);
+        return Exam.createExam(examConfig.getRequiredPoints(), examTasks);
     }
+
+
 
     public Exam examByQuestionIds(String questionIdsSeparatedByComma) {
         Objects.requireNonNull(questionIdsSeparatedByComma, "comma-separated ID-List required");
-        return examByQuestionIds(questionIdsSeparatedByComma.split(","));
+        return examByQuestionIds(Arrays.asList(questionIdsSeparatedByComma.split(",")));
     }
 
-    public Exam examByQuestionIds(String... questionsIds) {
-        Objects.requireNonNull(questionsIds, "ID-List required");
-        var ids = Arrays.asList(questionsIds);
-        var examTasks = allTasks().stream()
-            .filter( t -> ids.contains(t.getId()) )
+    public Exam examByQuestionIds(List<String> questionsIds) {
+        var allTasks = allTasks();
+        var examTasks = questionsIds.stream()
+            .map(allTasks::get)
+            .filter(Objects::nonNull)
             .toList();
-        return new Exam(0, examTasks);
+        return Exam.createQuiz(examTasks);
+    }
+
+
+
+    public Exam examByTopics(String topics) {
+        return examByTopics(Arrays.asList(topics.split(",")));
+    }
+
+    public Exam examByTopics(List<String> topics) {
+        System.out.printf("examByTopics: '%s'%n", topics);
+        throw new UnsupportedOperationException("implement me");
     }
 
     public Exam examByTopic(String topic) {
         if (ALL_TOPIC.equalsIgnoreCase(topic)) {
-            List<Task> allTasks = allTasks();
+            List<Task> allTasks = new ArrayList<>(allTasks().values());
             List<Task> randomTasks = randomElements(allTasks, quizmodeMaxNumbersOfQuestions);
-            return new Exam(0, randomTasks);
+            return Exam.createQuiz(randomTasks);
         } else {
             List<Task> randomTasks = randomElements(tasks.getOrDefault(topic, new ArrayList<>()), quizmodeMaxNumbersOfQuestions);
-            return new Exam(0, randomTasks);
+            return Exam.createQuiz(randomTasks);
         }
     }
 
 
 
-    private List<Task> allTasks() {
-        List<Task> allTasks = new ArrayList<>();
-        tasks.values().forEach(allTasks::addAll);
-        return allTasks;
+    private Map<String, Task> allTasks() {
+        return tasks.values().stream()
+            // flatten Stream<List<Task>> to Stream<Task>
+            .flatMap(Collection::stream)
+            // create a Map with the "first value wins"
+            .collect(Collectors.toMap(Task::getId, Function.identity(), (t1,t2)->t1));
     }
 
     private <T> List<T> randomElements(List<T> list, int numberOfElements) {

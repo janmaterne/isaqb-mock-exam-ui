@@ -48,7 +48,7 @@ public class TaskMapLoader {
             if (!tasks.isEmpty()) {
                 taskMap.getTasks().put(topic, tasks);
             } else {
-                System.err.printf("Task topic '%s' configured without any tasks.%n", topic);
+                log.error("Task topic '{}' configured without any tasks.", topic);
             }
         }
         printErrors(errorMap);
@@ -57,8 +57,8 @@ public class TaskMapLoader {
 
     protected Task validate(Task task, Map<String, List<String>> errorMap) {
         var errors = validator.validate(task);
-        var key = task.getId() != null 
-                ? "id=" + task.getId() 
+        var key = task.getId() != null
+                ? "id=" + task.getId()
                 : "hash=" + task.hashCode();
         if (!errors.isEmpty()) {
             errorMap.put(key, errors);

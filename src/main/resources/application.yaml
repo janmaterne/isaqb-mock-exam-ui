@@ -33,7 +33,7 @@ tasks:
         urls:
         - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
           from: 1
-          to: 10
+          to: 5 # 10
     foundation-part2:
         name:
             DE: Foundation Teil 2
@@ -83,7 +83,7 @@ exams:
         required-points: 30
         max-time-in-minutes: 60
         task-refs:
-        - foundation
+        - foundation-part1
 
 
 cache:
@@ -110,7 +110,11 @@ spring:
         username: sa
         password: password
         driverClassName: org.h2.Driver
+    h2:
+        # on 'true' see http://localhost:8080/h2-console
+        console.enabled: false
     jpa:
-        spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+        database-platform: org.hibernate.dialect.H2Dialect
         hibernate:
             ddl-auto: update
+        open-in-view: false
