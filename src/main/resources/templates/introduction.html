@@ -1,16 +1,16 @@
 <html>
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="style.css"/>
-	<link rel="stylesheet" href="intro-accordion.css"/>
-	<title>ISAQB Foundation - Mock Exam</title>
-	<div th:utext="${autoReloadJS}"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="intro-accordion.css"/>
+    <title>ISAQB Foundation - Mock Exam</title>
+    <div th:utext="${autoReloadJS}" th:remove="tag"/>
 </head>
 <body class="introduction">
 
 <div class="navigation">
-  <a href="process-exam.html?mode=exam">Weiter</a>
+  <a href="process-exam.html?mode=exam">Foundation Mock Prüfung</a>
 </div>
 
 <input type="checkbox" id="about"/>
@@ -29,19 +29,23 @@
 <input type="checkbox" id="quiz"/>
 <label for="quiz">Quiz-Modus</label>
 <div class="content">
-	<form action="process-exam.html" method="get">
-		Auswahl des Bereichs:
-		<select name="quizmode" id="quizmode">
-			<option value="-ALL">Alle Fragen</option>
-			<option th:each="val : ${quizOptions}" th:attr="value=${val.value}" th:utext="${val.text}"/>
-		</select>
-		<input type="submit" value="Quiz starten" />
-	</form>
+    <form action="process-exam.html" method="get">
+        <b>Auswahl der Bereiche:</b><br>
+        <input type="hidden" name="language" th:attr="value=${language}"/>
+        <input type="checkbox" name="topic--ALL">Alle Fragen</input><br>
+        <div th:remove="tag" th:each="val : ${quizOptions}">
+            <input type="checkbox" 
+                th:attr="name='topic-' + ${val.value}" 
+                th:utext="${val.text}"
+            /><br>
+        </div>
+        <input type="submit" value="Quiz starten" />
+    </form>
 </div>
 
 <br>
 <div class="navigation">
-  <a href="process-exam.html?mode=exam">Weiter</a>
+  <a href="process-exam.html?mode=exam">Foundation Mock Prüfung</a>
 </div>
 
 <hr>

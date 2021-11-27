@@ -39,11 +39,23 @@ public class ExamHttpAdapter {
         Mode mode = Mode.of(orElse);
         List<String> questionIds = getListFromRequest(request, KEY_QUESTIONIDS);
         List<String> topics = getListFromRequest(request, KEY_TOPICS);
+        if (topics.isEmpty()) {
+            topics = parseTopicsFromQueryString(request);
+        }
         return from(mode, trail(questionIds), trail(topics));
     }
 
     private List<String> trail(List<String> list) {
         return list.stream().filter(s->!s.isBlank()).toList();
+    }
+
+    private List<String> parseTopicsFromQueryString(HttpServletRequest request) {
+        String prefix = "topic-";
+        return request.getParameterMap().keySet().stream()
+            .filter( e -> e.startsWith(prefix) )
+            .map( s -> s.substring(prefix.length()) )
+            .distinct()
+            .toList();
     }
 
     private Exam from(Mode mode, List<String> questionIds, List<String> topics) {

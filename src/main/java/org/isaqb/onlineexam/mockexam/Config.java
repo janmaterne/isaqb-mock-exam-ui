@@ -4,7 +4,7 @@ import org.isaqb.onlineexam.mockexam.cache.CacheRepository;
 import org.isaqb.onlineexam.mockexam.cache.JpaBasedCacheLoader;
 import org.isaqb.onlineexam.mockexam.loader.Loader;
 import org.isaqb.onlineexam.mockexam.loader.UrlLoader;
-import org.isaqb.onlineexam.mockexam.ui.AutloadJS;
+import org.isaqb.onlineexam.mockexam.ui.AutoloadJS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +20,13 @@ public class Config {
     }
 
     @Bean
-    public static AutloadJS create() {
-        return springDevToolsPresent()
-            ? new AutloadJS(
+    public static AutoloadJS create(@Value("${inject-autoload-js}") boolean injectAutoloadJS) {
+        return springDevToolsPresent() && injectAutoloadJS
+            ? new AutoloadJS(
                 "<!-- Autoreload on local file change -->" +
                 "<script type=\"text/javascript\" src=\"https://livejs.com/live.js\"></script>")
-            : new AutloadJS("");
-	}	
+            : new AutoloadJS("");
+	}
 
     private static boolean springDevToolsPresent() {
         try {

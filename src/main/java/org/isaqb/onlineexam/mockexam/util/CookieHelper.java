@@ -40,6 +40,9 @@ public class CookieHelper {
 
 
     public Optional<String> readCookie(String key) {
+        if (request.getCookies() == null) {
+            return Optional.empty();
+        }
         return Stream.of(request.getCookies())
             .filter( c -> c.getName().equals(key) )
             .map(Cookie::getValue)
@@ -50,15 +53,19 @@ public class CookieHelper {
 
 
     public void deleteAllCookies() {
-        Stream.of(request.getCookies())
-            .forEach(this::deleteCookie);
+        if (request.getCookies() != null) {
+            Stream.of(request.getCookies())
+                .forEach(this::deleteCookie);
+        }
     }
 
     public void deleteCookie(String... names) {
-        var nameList = Arrays.asList(names);
-        Stream.of(request.getCookies())
-            .filter( c -> nameList.contains(c.getName()))
-            .forEach(this::deleteCookie);
+        if (request.getCookies() != null) {
+            var nameList = Arrays.asList(names);
+            Stream.of(request.getCookies())
+                .filter( c -> nameList.contains(c.getName()))
+                .forEach(this::deleteCookie);
+        }
     }
 
     private void deleteCookie(Cookie cookie) {

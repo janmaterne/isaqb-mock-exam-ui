@@ -2,6 +2,9 @@
 introduction: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/preamble/introduction.adoc
 
 
+# Inject a JS-Snippet for Autoreload of the page. (Works only if DevTools are available.)
+inject-autoload-js: false
+
 # Configure the quizmode.
 quizmode:
     max-numbers-of-questions: 5

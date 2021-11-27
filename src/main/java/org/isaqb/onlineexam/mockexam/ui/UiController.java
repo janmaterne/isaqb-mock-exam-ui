@@ -19,6 +19,7 @@ import org.isaqb.onlineexam.mockexam.DataConfiguration;
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.loader.IntroductionLoader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
+import org.isaqb.onlineexam.mockexam.model.Exam.Mode;
 import org.isaqb.onlineexam.mockexam.model.I18NText;
 import org.isaqb.onlineexam.mockexam.model.Language;
 import org.isaqb.onlineexam.mockexam.model.TaskAnswer;
@@ -44,7 +45,7 @@ public class UiController {
     private JsonMapper jsonMapper;
     private I18NText cookieDislaimer;
     private I18NText howToUse;
-    private AutloadJS autoloadJS;
+    private AutoloadJS autoloadJS;
     private DataConfiguration quizConfiguration;
     private ExamHttpAdapter examHttpAdapter;
     private Base64Handler base64;
@@ -58,7 +59,7 @@ public class UiController {
             AsciidocReader adocReader,
             @Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
             @Value("classpath:messages/how-to-use.adoc") Resource howToUse,
-            AutloadJS autloadJS,
+            AutoloadJS autloadJS,
             DataConfiguration quizConfiguration,
             Base64Handler base64
     ) throws IOException {
@@ -94,6 +95,7 @@ public class UiController {
         response.addCookie(new Cookie("language", language));
         Language lang = Language.valueOf(language);
 
+        model.addAttribute("language", language);
         model.addAttribute("html", introductionLoader.getHtml(lang));
         model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
         model.addAttribute("howToUse", howToUse.getText(lang));
@@ -118,20 +120,30 @@ public class UiController {
             HttpServletRequest request,
             HttpServletResponse response,
             Model model,
+            @RequestParam(name = "language", required = false) String langParam,
             @CookieValue(name = "language", required = false) String language,
-            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson
+            @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson,
+            @RequestBody(required = false) MultiValueMap<String, String> formData
     ) {
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
         Exam exam = examHttpAdapter.from(request);
         examHttpAdapter.send(response, exam);
 
-        UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, null);
+        String realLanguage = language != null ? language : langParam;
+
+        UIData uiData = new UIData(exam, Language.valueOf(realLanguage), givenAnswers, null);
         model.addAttribute("exam", exam);
         model.addAttribute("util", uiData);
         model.addAttribute("givenAnswers", givenAnswers);
-        model.addAttribute("language", language);
+        model.addAttribute("language", realLanguage);
         autoloadJS.injectAutoReloadJS(model);
+        if (exam.getMode() == Mode.QUIZ) {
+            model.addAttribute("quizhint", "Sie können diese URL speichern, um zukünftig direkt ein Quiz mit den gewählten Themen zu starten.");
+        } else {
+            model.addAttribute("quizhint", "");
+        }
 
+        response.addCookie(new Cookie("language", realLanguage));
         return "process-exam.html";
     }
 
