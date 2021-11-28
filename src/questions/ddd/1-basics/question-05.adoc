@@ -1,6 +1,6 @@
 // tag::DE[]
 === Frage 4
-**ID: DDD-21-11-04**
+**ID: DDD-21-11-05**
 
 [cols="2,8,2", frame=ends, grid=rows]
 |===
@@ -26,22 +26,22 @@ Was gilt für Entities?
 
 | {y} 
 | {n}
-| (a)
+| (b)
 | Sie sind vergleichbar
 
 | {n}
 | {y} 
-| (a)
+| (c)
 | Sie werden von Value Objects referenziert
 
 | {n}
 | {y} 
-| (a)
+| (d)
 | beinhalten ein Statusmodell
 
 | {n}
 | {y} 
-| (a)
+| (e)
 | Benötigen eine relationale Datenbank
 
 |===
@@ -51,7 +51,7 @@ Was gilt für Entities?
 // tag::EN[]
 === Question 4
 
-**ID: DDD-21-11-04**
+**ID: DDD-21-11-05**
 
 [cols="2,8,2", frame=ends, grid=rows]
 |===
