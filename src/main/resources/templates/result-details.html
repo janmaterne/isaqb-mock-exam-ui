@@ -1,12 +1,12 @@
 <html>
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="style.css"/>
-	<title>ISAQB Foundation - Mock Exam</title>
-	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
-	<div th:utext="${autoReloadJS}"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ISAQB Foundation - Mock Exam</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+    <div th:utext="${autoReloadJS}"/>
 </head>
 <body>
 
@@ -20,19 +20,20 @@
           
             <div class="master_list">
               <div class="list-group">
-              	
-              	  <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}">
-                  	  <span th:utext="${task.getMenuLabelForResultPage()}"/>
-                  	  <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png" th:if="${task.missingPoints}">
-                  </button> 
-              	  <hr>
-              	  <span th:text="${util.statistik()}"/>
-              	
-              	  <br>
-              	  <br>
-				  <button type="button" class="link-button" value="end">Beenden</button>
-				  <button type="button" class="link-button" value="result.html">Zurück</button>
-				  
+                  
+                    <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}">
+                        <span th:utext="${task.getMenuLabelForResultPage()}"/>
+                        <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png" th:if="${task.missingPoints}">
+                        <img th:attr="id='menuitem-' + ${task.nr}" src="information.png" th:if="${task.hasExplanation()}">
+                    </button> 
+                    <hr>
+                    <span th:text="${util.statistik()}"/>
+                  
+                    <br>
+                    <br>
+                  <button type="button" class="link-button" value="end">Beenden</button>
+                  <button type="button" class="link-button" value="result.html">Zurück</button>
+                  
               </div>
             </div>
             
@@ -49,51 +50,57 @@
                   <br>
                   <div th:switch="${wrapper.task.type.name()}" th:remove="tag">
                   
-                  	 <div th:case="'CHOOSE'" th:remove="tag">
-	                    <table border="1">
-	                      <tr>
-	                        <th 
-	                        	th:each="header : ${wrapper.task.columnHeaders}" 
-	                        	th:text="${header.getText('DE')}"
-	                        	colspan="2"/>
-	                        <th/>
-	                        <th/>
-	                      </tr>
-	                      <tr th:each="option : ${wrapper.task.possibleOptions}">
-	                        <div th:each="col,iter : ${option.columnValues}" th:remove="tag">
-		                      <td>
-		                        <input type="radio"
-		                        	th:attr="
-		                        		name='frage-' + ${wrapper.nr} + '-' + ${option.position}, 
-		                        		value=${col}"
-	                        		th:checked="${wrapper.optionSelected(option, iter.index)}"
-	                        		disabled="disabled"
-		                        /> 
-		                      </td>
-		                      <td><img src="haken-gruen.png" th:if="${option.isCorrect(iter.index)}"></td>
-	                        </div>
-	                        <td class="choice" th:text="${option.position} + ')'"/>
-	                        <td class="choice" th:text="${option.text.getText('DE')}"/>
-	                      </tr>
-	                    </table>
-                  	 </div>
-                  	 
-                  	 <div th:case="*" th:remove="tag">
-						<table>
-							<tr th:each="option,iter : ${wrapper.task.possibleOptions}">
-							  <td><input 
-							  	type="checkbox" 
-							  	th:attr="name='frage-' + ${wrapper.nr} + '-' + ${option.position}"
-							  	disabled="disabled" 
-							  	th:checked="${wrapper.optionSelected(option, iter.index)}"
-							  	>
-							  </td>
-							  <td><img src="haken-gruen.png" th:if="${option.isCorrect()}"></td>
-							  <td th:text="${option.position} + ') ' + ${option.text.getText('DE')}"/>
-							</tr>
-						</table>                 
-                  	 </div>
-                  	 
+                       <div th:case="'CHOOSE'" th:remove="tag">
+                        <table border="1">
+                          <tr>
+                            <th 
+                                th:each="header : ${wrapper.task.columnHeaders}" 
+                                th:text="${header.getText('DE')}"
+                                colspan="2"/>
+                            <th/>
+                            <th/>
+                          </tr>
+                          <tr th:each="option : ${wrapper.task.possibleOptions}">
+                            <div th:each="col,iter : ${option.columnValues}" th:remove="tag">
+                              <td>
+                                <input type="radio"
+                                    th:attr="
+                                        name='frage-' + ${wrapper.nr} + '-' + ${option.position}, 
+                                        value=${col}"
+                                    th:checked="${wrapper.optionSelected(option, iter.index)}"
+                                    disabled="disabled"
+                                /> 
+                              </td>
+                              <td><img src="haken-gruen.png" th:if="${option.isCorrect(iter.index)}"></td>
+                            </div>
+                            <td class="choice" th:text="${option.position} + ')'"/>
+                            <td class="choice" th:text="${option.text.getText('DE')}"/>
+                          </tr>
+                        </table>
+                       </div>
+                       
+                       <div th:case="*" th:remove="tag">
+                        <table>
+                            <tr th:each="option,iter : ${wrapper.task.possibleOptions}">
+                              <td><input 
+                                  type="checkbox" 
+                                  th:attr="name='frage-' + ${wrapper.nr} + '-' + ${option.position}"
+                                  disabled="disabled" 
+                                  th:checked="${wrapper.optionSelected(option, iter.index)}"
+                                  >
+                              </td>
+                              <td><img src="haken-gruen.png" th:if="${option.isCorrect()}"></td>
+                              <td th:text="${option.position} + ') ' + ${option.text.getText('DE')}"/>
+                            </tr>
+                        </table>
+                       </div>
+
+                       <div th:if="${wrapper.hasExplanation()}" th:remove="tag">
+	                       <hr>
+	                       <h4>Explanation</h4>
+	                       <p th:utext="${wrapper.getExplanation()}"></p>
+                       </div>
+
                   </div>
               </article>
             
@@ -130,12 +137,12 @@ $(document).ready(function () {
 
 <script id="link-buttons">
 $(document).ready(function() {
-	var $body = $('body');
-	$body.on('click', '.link-button', function() {
-		var $button = $(this);
-		var href = $button.attr('value');
-		window.location.href = href;
-	});
+    var $body = $('body');
+    $body.on('click', '.link-button', function() {
+        var $button = $(this);
+        var href = $button.attr('value');
+        window.location.href = href;
+    });
 });
 </script>
 

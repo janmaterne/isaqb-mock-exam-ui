@@ -1,7 +1,7 @@
 package org.isaqb.onlineexam.mockexam.parser;
 
 public enum TaskParserState {
-	
+
 	START,
 	ID,
 	TYPE,
@@ -9,6 +9,7 @@ public enum TaskParserState {
 	TEXT,
 	ANSWER_CORRECT,
 	ANSWER_POSITION,
-	ANSWER_TEXT;
-	
+	ANSWER_TEXT,
+	EXPLANATION;
+
 }

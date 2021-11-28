@@ -49,6 +49,7 @@ public class UiController {
     private DataConfiguration quizConfiguration;
     private ExamHttpAdapter examHttpAdapter;
     private Base64Handler base64;
+    private AsciidocReader adocReader;
 
 
 
@@ -71,6 +72,7 @@ public class UiController {
         this.autoloadJS = autloadJS;
         this.quizConfiguration = quizConfiguration;
         this.base64 = base64;
+        this.adocReader = adocReader;
     }
 
     private I18NText parseADoc(AsciidocReader adocReader, Resource resourceCookieDisclaimer) throws IOException {
@@ -131,7 +133,7 @@ public class UiController {
 
         String realLanguage = language != null ? language : langParam;
 
-        UIData uiData = new UIData(exam, Language.valueOf(realLanguage), givenAnswers, null);
+        UIData uiData = new UIData(adocReader, exam, Language.valueOf(realLanguage), givenAnswers, null);
         model.addAttribute("exam", exam);
         model.addAttribute("util", uiData);
         model.addAttribute("givenAnswers", givenAnswers);
@@ -218,7 +220,7 @@ public class UiController {
         model.addAttribute("result", result);
         response.addCookie(new Cookie("result", jsonMapper.toString(result)));
 
-        UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
+        UIData uiData = new UIData(adocReader, exam, Language.valueOf(language), givenAnswers, result);
         model.addAttribute("util", uiData);
 
         autoloadJS.injectAutoReloadJS(model);
@@ -241,7 +243,7 @@ public class UiController {
         var result = jsonMapper.fromStringToCalculationResult(resultJsonBase64);
         model.addAttribute("result", result);
 
-        UIData uiData = new UIData(exam, Language.valueOf(language), givenAnswers, result);
+        UIData uiData = new UIData(adocReader, exam, Language.valueOf(language), givenAnswers, result);
         model.addAttribute("util", uiData);
 
         autoloadJS.injectAutoReloadJS(model);
