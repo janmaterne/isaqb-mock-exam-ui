@@ -224,7 +224,7 @@ public class UiController {
         model.addAttribute("util", uiData);
 
         autoloadJS.injectAutoReloadJS(model);
-        return "result.html";
+        return "redirect:result-details.html";
     }
 
 

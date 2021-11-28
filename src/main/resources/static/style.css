@@ -96,8 +96,14 @@ button img {
 }
 
 
-
-
 list-group-item img {
 	width: 10px;
+}
+
+
+.passed {
+  color: green;
+}
+.failed {
+  color: red;
 }

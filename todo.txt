@@ -3,8 +3,7 @@ Internationalisierung der Oberflächen
 - Seite 2 introduction: "weiter"
 - Seite 3 process: Header "Fragen", Button "Berechnen", Fragetexte
 - Seite 4 send-exam: komplett
-- Seite 5 result: komplett
-- Seite 6 details: komplett, lang übertragen?
+- Seite 5 details: komplett, lang übertragen?
 
 
 auf developer sandbox @ redhat / heroku / knative?
@@ -20,6 +19,7 @@ Frage 39
     
     
 Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit
+exam: NAME: max-time-minutes: 30
 
 
 Docker-Image ist mit >500MB sehr groß (Basis=110 + JDK=320).
@@ -35,18 +35,12 @@ Akzeptanztest https://gebish.org/
     (auch zum selber einarbeiten)                 
     
 
-Quiz-Modus: 
-- Zufällig fünf ausgewählte Fragen
-- Zusatzfragen aus anderer Datenquelle     
-
-
 README.adoc
 - Link auf Blogpost (wenn veröffentlicht)
 
 
 userdoc.adoc mit Grafiken /images
 - screenshots      
-
 
 
 
@@ -57,3 +51,13 @@ Refactor
    * parameter
    * getFromParameterOrCookie
 
+
+introduction:   <accordeon> ... </>
+
+
+
+
+Umbennen: OnlineTrainer
+- Banner
+- Repository
+- ...

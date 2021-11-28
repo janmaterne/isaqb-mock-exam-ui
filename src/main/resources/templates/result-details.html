@@ -27,7 +27,7 @@
                         <img th:attr="id='menuitem-' + ${task.nr}" src="information.png" th:if="${task.hasExplanation()}">
                     </button> 
                     <hr>
-                    <span th:text="${util.statistik()}"/>
+                    <span th:utext="${util.statistik()}"/>
                   
                     <br>
                     <br>

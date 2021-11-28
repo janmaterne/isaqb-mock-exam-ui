@@ -70,8 +70,11 @@ public class UIData {
     public String statistik() {
         //TODO Sprache
         return String.format(
-            "%.2f / %.2f Punkte (%.2f %%)",
-            result.totalPoints(), result.pointsMaximum, result.pointsRelative()
+            "%.2f / %.2f Punkte (%.2f %%)<br>%s",
+            result.totalPoints(), result.pointsMaximum, result.pointsRelative(),
+            result.passed
+              ? "<result class=\"passed\">Sie haben bestanden.<result>"
+              : "<result class=\"failed\">Es hat leider nicht gereicht.<result>"
         );
     }
 
