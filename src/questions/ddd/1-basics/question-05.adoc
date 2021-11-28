@@ -77,22 +77,22 @@ What is correct for entities?
 
 | {y} 
 | {n}
-| (a)
+| (b)
 | They are comparable
 
 | {n}
 | {y} 
-| (a)
+| (c)
 | They are referenced by value objects
 
 | {n}
 | {y} 
-| (a)
+| (d)
 | they contain a state machine
 
 | {n}
 | {y} 
-| (a)
+| (e)
 | they require a relational database
 
 // end::EN[]
