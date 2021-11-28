@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.isaqb.onlineexam.mockexam.loader.AsciidocReader;
 import org.isaqb.onlineexam.mockexam.model.Exam;
+import org.isaqb.onlineexam.mockexam.model.Exam.Mode;
 import org.isaqb.onlineexam.mockexam.model.Language;
 import org.isaqb.onlineexam.mockexam.model.Option;
 import org.isaqb.onlineexam.mockexam.model.Task;
@@ -72,10 +73,19 @@ public class UIData {
         return String.format(
             "%.2f / %.2f Punkte (%.2f %%)<br>%s",
             result.totalPoints(), result.pointsMaximum, result.pointsRelative(),
-            result.passed
-              ? "<result class=\"passed\">Sie haben bestanden.<result>"
-              : "<result class=\"failed\">Es hat leider nicht gereicht.<result>"
+            resultStatement()
         );
+    }
+
+    private String resultStatement() {
+        if (exam.getMode() == Mode.QUIZ) {
+            // You don't have to 'pass' a quiz.
+            return "";
+        } else {
+            return result.passed
+              ? "<result class=\"passed\">Sie haben bestanden.<result>"
+              : "<result class=\"failed\">Es hat leider nicht gereicht.<result>";
+        }
     }
 
     public String nextTaskLink(int currentTaskNumber) {
