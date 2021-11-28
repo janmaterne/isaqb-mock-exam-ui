@@ -1,0 +1,50 @@
+Was sind Begriffe oder Konzepte aus dem Domain Driven Design?
+N   Universal Language
+J   Factory, Repository
+N   Entity Manager
+J   Modules
+J   Domain Events (Vernon, 2013)
+
+
+J   Ubiquitous Language
+J   Entity, Value Object, Aggregate, Service
+N   Domain Specific Language
+N   Service Provider
+N   Data Access Object
+
+
+--> 2 Fragen; Check, 1 Punkt
+
+
+**ID: DDD-21-11-03**
+Wer beeinflusst die Ubiquitous Language?
+J   Entwickler
+J   Fachexperten
+N   Journalisten
+J   Tester
+N   Hausmeister
+--> Check, 1 Punkt
+
+
+**ID: DDD-21-11-04**
+Was gilt für Value Objects?
+Ordne zu.
+J   Sie stellen elementare Wert-Typen aus der fachlichen Welt dar. 
+J   Sie können andere Value Objects enthalten. 
+N   Sie können Entities enthalten.
+N   Value Objects haben einen Identifier
+J   Sie sind vergleichbar
+--> 1 Punkt
+
+
+**ID: DDD-21-11-05**
+Was gilt für Entities?
+J   Sie sind identifiziertbar
+J   Sie sind vergleichbar
+N   Sie werden von Value Object referenziert
+N   beinhalten ein Statusmodell
+N   Benötigen eine relationale Datenbank
+--> ordne zu, 1 Punkt 
+
+
+question-01.adoc

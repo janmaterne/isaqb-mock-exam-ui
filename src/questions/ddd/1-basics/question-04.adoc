@@ -1,0 +1,102 @@
+// tag::DE[]
+=== Frage 4
+**ID: DDD-21-11-04**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+|K-Frage: 
+|Ordne zu 
+| 1 Punkte
+|===
+
+Was gilt für Value Objects?
+
+[cols="2a,2a,1, 7", frame=none, grid=none]
+|===
+
+| Gilt
+| Gilt nicht
+|
+|
+
+| {y} 
+| {n}
+| (a)
+| Sie stellen elementare Wert-Typen aus der fachlichen Welt dar. 
+
+| {y} 
+| {n}
+| (b)
+| Sie können andere Value Objects enthalten. 
+
+| {n}
+| {y} 
+| (c)
+| Sie können Entities enthalten.
+
+| {n}
+| {y} 
+| (d)
+| Value Objects haben einen Identifier
+
+| {y} 
+| {n}
+| (e)
+| Sie sind vergleichbar
+
+|===
+
+// end::DE[]
+
+// tag::EN[]
+=== Question 4
+
+**ID: DDD-21-11-04**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+|K-Frage: 
+|Assign each statement 
+| 1 Punkte
+|===
+
+What is correct for value objects?
+
+[cols="2a,2a,1, 7", frame=none, grid=none]
+|===
+
+| correct
+| incorrect
+|
+|
+
+| {y} 
+| {n}
+| (a)
+| They represent an elementary value type of the domain.
+
+| {y} 
+| {n}
+| (b)
+| They could contain other value objects. 
+
+| {n}
+| {y} 
+| (c)
+| They could contain entities
+
+| {n}
+| {y} 
+| (d)
+| They do have an identifier
+
+| {y} 
+| {n}
+| (e)
+| They are comparable
+
+// end::EN[]
+
+// tag::EXPLANATION[]
+// end::EXPLANATION[]
+

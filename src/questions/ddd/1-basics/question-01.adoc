@@ -1,0 +1,84 @@
+// tag::DE[]
+
+=== Frage 1 
+**ID: DDD-21-11-01**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+| A-Frage:
+| Wählen die korrekten Optionen aus
+| 1 Punkt
+|===
+
+Was sind Begriffe oder Konzepte aus dem Domain Driven Design?
+
+[cols="1a,1,8", frame="none", grid="none"]
+|===
+
+| {n} 
+| (a)
+| Universal Language
+
+| {y} 
+| (b)
+| Factory
+
+| {n} 
+| (c)
+| Entity Manager
+
+| {y} 
+| (d)
+| Modules
+
+| {y} 
+| (e)
+| Domain Events
+
+|===
+
+// end::DE[]
+
+// tag::EN[]
+=== Question 1
+**ID: DDD-21-11-01**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+| A-Question:
+| Select the correct options
+| 1 point
+|===
+
+What are names or concepts of domain driven design?
+
+[cols="1a,1,8", frame="none", grid="none"]
+|===
+
+| {n} 
+| (a)
+| Universal Language
+
+| {y} 
+| (b)
+| Factory
+
+| {n} 
+| (c)
+| Entity Manager
+
+| {y} 
+| (d)
+| Modules
+
+| {y} 
+| (e)
+| Domain Events
+
+|===
+
+// end::EN[]
+
+
+// tag::EXPLANATION[]
+// end::EXPLANATION[]

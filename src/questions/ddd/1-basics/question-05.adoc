@@ -1,0 +1,102 @@
+// tag::DE[]
+=== Frage 4
+**ID: DDD-21-11-04**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+|K-Frage: 
+|Ordne zu 
+| 1 Punkte
+|===
+
+Was gilt für Entities?
+
+[cols="2a,2a,1, 7", frame=none, grid=none]
+|===
+
+| Gilt
+| Gilt nicht
+|
+|
+
+| {y} 
+| {n}
+| (a)
+| Sie sind identifiziertbar
+
+| {y} 
+| {n}
+| (a)
+| Sie sind vergleichbar
+
+| {n}
+| {y} 
+| (a)
+| Sie werden von Value Objects referenziert
+
+| {n}
+| {y} 
+| (a)
+| beinhalten ein Statusmodell
+
+| {n}
+| {y} 
+| (a)
+| Benötigen eine relationale Datenbank
+
+|===
+
+// end::DE[]
+
+// tag::EN[]
+=== Question 4
+
+**ID: DDD-21-11-04**
+
+[cols="2,8,2", frame=ends, grid=rows]
+|===
+|K-Frage: 
+|Assign each statement 
+| 1 Punkte
+|===
+
+What is correct for entities?
+
+[cols="2a,2a,1, 7", frame=none, grid=none]
+|===
+
+| correct
+| incorrect
+|
+|
+
+| {y} 
+| {n}
+| (a)
+| They are identifiable
+
+| {y} 
+| {n}
+| (a)
+| They are comparable
+
+| {n}
+| {y} 
+| (a)
+| They are referenced by value objects
+
+| {n}
+| {y} 
+| (a)
+| they contain a state machine
+
+| {n}
+| {y} 
+| (a)
+| they require a relational database
+
+// end::EN[]
+
+// tag::EXPLANATION[]
+// end::EXPLANATION[]
+

@@ -22,9 +22,9 @@ tasks:
         # Where to find the original AsciiDoc code with the tasks content?
         # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
         urls:
-        - url-template: xx 
+        - url-template: https://raw.githubusercontent.com/janmaterne/isaqb-mock-exam-ui/master/src/questions/ddd/1-basics/question-{NR}.adoc
           from: 1
-          to: 2
+          to: 5
           # URLs to load generated from a template replacing the placeholder {NR}
           # with a 2-digit value between 'from' and 'to' (inclusive).
           # URLs which cant be loaded are ignored.
