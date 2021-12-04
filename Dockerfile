@@ -1,4 +1,4 @@
-FROM gradle:7.2.0-jdk16 as builder
+FROM gradle:7.2.0-jdk17 as builder
 RUN ln -s /home/gradle/project /project
 WORKDIR /project
 COPY . /project/
@@ -9,11 +9,11 @@ RUN rm *-plain.jar \
  && java -Djarmode=layertools -jar mockexam.jar extract
 
 
-FROM openjdk:16.0.2
+FROM openjdk:17.0.1-slim
 EXPOSE 8080
 RUN mkdir /app 
 WORKDIR /app
-ENTRYPOINT ["java","--add-opens","java.base/sun.nio.ch=ALL-UNNAMED","--add-opens","java.base/java.io=ALL-UNNAMED","org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java","--add-opens","java.base/sun.nio.ch=ALL-UNNAMED","--add-opens","java.base/java.io=ALL-UNNAMED","-Dfile.encoding=UTF-8","org.springframework.boot.loader.JarLauncher"]
 COPY --from=builder /project/build/libs/spring-boot-loader    /app
 COPY --from=builder /project/build/libs/dependencies          /app
 COPY --from=builder /project/build/libs/snapshot-dependencies /app
