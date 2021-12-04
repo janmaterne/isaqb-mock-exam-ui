@@ -32,10 +32,11 @@ public class DataConfigurationTest {
     public void simpleTasks() {
         var ddd = config.getTasks().get("ddd");
         assertEquals("Domain Driven Design", ddd.getName().get(Language.DE));
-        assertEquals("xx", ddd.getUrls().get(0).getUrlTemplate());
-        assertEquals(1, ddd.getUrls().get(0).getFrom());
-        assertEquals(2, ddd.getUrls().get(0).getTo());
         assertEquals(1, ddd.getUrls().size());
+        assertTrue(ddd.getUrls().get(0).getUrlTemplate().contains("questions/ddd"));
+        assertEquals(1, ddd.getUrls().get(0).getFrom());
+        assertEquals(5, ddd.getUrls().get(0).getTo());
+        assertEquals(5, ddd.getUrls().get(0).generateUrls().size());
     }
 
     @Test
