@@ -22,16 +22,15 @@ The docker image is available on https://hub.docker.com/r/janmaterne/mockexam[Do
 ===== Startable JAR
 
 If you have a Java runtime installed (required Java16+), you could download the JAR and start it as any startable JAR:
-`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar`
+`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar mockexam-{VERSION}.jar`
 Here you have to specify the file encoding, as the application produces UTF-8 characters.
 Additionally you should "open" the Java module system.
 
 ===== Docker image
 
 You could start the application by starting the docker image:
-`docker run -p 8080:8080 --env JAVA_OPTS="-Dfile.encoding=UTF-8" janmaterne/mockexam:latest`
+`docker run -p 8080:8080 janmaterne/mockexam:latest`
 Here you have to publish port - maybe with changing it `-p 80:8080`.
-You have to specify the file encoding via environment variable.
 After starting the container you could access the application via the specified port on http://localhost:8080.
 
 ===== Distribution
@@ -66,16 +65,15 @@ Das Docker Image kann von https://hub.docker.com/r/janmaterne/mockexam[DockerHub
 ===== Starbares JAR
 
 Wenn eine Java Laufzeit installiert ist (es wird mindestens ein Java 16 benötigt), kann einfach das JAR heruntergeladen und wie gewohnt gestartet werden:
-`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build\libs\mockexam-0.0.1-SNAPSHOT.jar`
+`java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar mockexam-{VERSION}.jar`
 Dabei muss das Encoding gesetzt werden, da die Anwendung UTF-8 Zeichen erzeugt.
 Auch sollte das Java Modulsystem befriedigt werden.
 
 ===== Docker Image
 
 Man kann die Anwendung durch per Docker Image starten:
-`docker run -p 8080:8080 --env JAVA_OPTS="-Dfile.encoding=UTF-8" janmaterne/mockexam:latest`
+`docker run -p 8080:8080 janmaterne/mockexam:latest`
 Hier muss der Port veröffentlicht werden - eventuell mit Änderung desselben: `-p 80:8080`.
-Auch hier muss das Encoding gesetzt werden - allerdings per Umgebungsvariable.
 Nach dem Start des Containers kann die Anwendung über den spezifizierten Port erreicht werden: http://localhost:8080.
 
 ===== Distribution   
