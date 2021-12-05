@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,14 +129,20 @@ public class TaskParser {
             return;
         }
         if (line.matches("\\w.*")) {
-            if (state == TaskParserState.ANSWER_TEXT) {
+            if (state == TaskParserState.ANSWER_TEXT || state == TaskParserState.ANSWER_POSITION) {
                 currentLanguage().ifPresent( lang -> {
-                    if (currentOption==null) {
+                    if (currentOption == null) {
                         currentOption = new Option();
                     }
-                    currentOption.getText().addText(lang, line.trim());
-                });
 
+                    var pattern = Pattern.compile(".\\|(.+)");
+                    var matcher = pattern.matcher(line);
+                    var text = matcher.matches()
+                        ? matcher.group(1)
+                        : line;
+
+                    currentOption.getText().addText(lang, text.trim());
+                });
             } else {
                 state = TaskParserState.TEXT;
                 currentLanguage().ifPresent( lang -> {

@@ -145,6 +145,14 @@ public class TaskParserTest {
         assertTrue(task.getExplanation().trim().endsWith("good informations."));
     }
 
+    @Test
+    public void optionWithAsciidoc() throws IOException {
+        Task task = taskLoader.loadTask("question-28.adoc");
+        Option option = task.getPossibleOptions().stream().filter( o -> o.getPosition()=='d' ).findFirst().get();
+        assertTrue(option.getText().getText(Language.DE).contains("{nbsp}"));
+        assertFalse(option.getText().getText(Language.DE).contains("|"));
+    }
+
 
 
     private void assertHeaderContains(Task task, String expected) {

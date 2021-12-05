@@ -9,15 +9,6 @@ Internationalisierung der Oberflächen
 auf developer sandbox @ redhat / heroku / knative?
 
 
-Frage 28
-    falsch geparst? Es scheint die a)-Antwort im Fragetext zu landen
-Frage 39
-    nbsp,  Antwort a in der Frage; Antwort a = null
---> PR aufgemacht
-===> muss leider wegen AsciiDoc-Formatierung der Werte (a=AsciiDoc in der Tabellenzelle) so bleiben
-===> Umbau des Parsers von stateless auf stateful (Parser weiß, was als nächstes kommen kann)
-    
-    
 Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit
 exam: NAME: max-time-minutes: 30
 
@@ -52,12 +43,8 @@ Refactor
    * getFromParameterOrCookie
 
 
-introduction:   <accordeon> ... </>
-
-
-
-
 Umbennen: OnlineTrainer
 - Banner
 - Repository
 - ...
+
