@@ -22,7 +22,7 @@ tasks:
         # Where to find the original AsciiDoc code with the tasks content?
         # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
         urls:
-        - url-template: https://raw.githubusercontent.com/janmaterne/isaqb-mock-exam-ui/master/src/questions/ddd/1-basics/question-{NR}.adoc
+        - url-template: https://raw.githubusercontent.com/janmaterne/isaqb-quiz-questions/master/src/questions/ddd/1-basics/question-{NR}.adoc
           from: 1
           to: 5
           # URLs to load generated from a template replacing the placeholder {NR}
@@ -107,7 +107,7 @@ spring:
             enabled: true
     thymeleaf:
         encoding: UTF-8
-    # JPA for Cache
+    # JPA for Caching the remote access (loading the adoc sources)
     datasource:
         url: jdbc:h2:~/mock-cache # jdbc:h2:mem:mock-cache
         username: sa
