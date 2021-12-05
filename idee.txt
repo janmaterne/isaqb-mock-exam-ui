@@ -40,4 +40,36 @@ TODO
 i18n
 https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#a-multi-language-welcome
                
+    
+    
+    
+    
+=====
+
+Editor:
+
+task:
+    id: <ID>
+    points: 1
+    mode: check|choose|many
+    question:
+        DE: <adoc>
+        EN: <adoc>
+    columnHeader:    <optional>
+    - DE: ...
+      EN: ...
+    - ...
+    options:
+    - values: ynny
+      text:
+        DE: <adoc>
+        EN: <adoc>
+
+Checks:
+- Alle Options haben alle Sprachen, wie in 'questions' definiert.
+- Alle Values haben gleich viele Eintragungen (Buchstaben), wie in 'columnHeaders' definiert (oder 1)
+
+
+
+
                
