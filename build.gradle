@@ -6,7 +6,7 @@ plugins {
 
 group = 'org.isaqb.onlineexam'
 version = '0.3'
-sourceCompatibility = '16'
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
