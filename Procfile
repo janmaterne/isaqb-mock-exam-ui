@@ -1,0 +1,1 @@
+web: java -jar build/libs/mockexam-0.3.jar
