@@ -1,0 +1,17 @@
+## Version 0.3
+
+Major improvements
+
+* Quiz Mode - ask 5 random questions of selected topics
+* Support multiple origins of tasks, sorted by topics
+* show explanations on answer pages
+* skip simple result page (inline into result-details)
+* cache remote adoc content in local database 
+
+Fixes
+
+* TaskParser now supports AsciiDoc-marker in options (like in question 28)
+
+Minor changes
+
+* use Java17 as environment
