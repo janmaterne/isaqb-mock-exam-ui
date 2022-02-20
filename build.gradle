@@ -55,9 +55,9 @@ task buildImage(type:Exec) {
 def buildTimeStamp = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date()); 
 compileJava { 
     doFirst {
-        ant.mkdir(dir: "${projectDir}/src/main/java/org/isaqb/onlineexam/mockexam")
-        def newBuildInfo = new File("${projectDir}/src/main/java/org/isaqb/onlineexam/mockexam/BuildInfo.java")
-        def templateBuildInfo = new File("${projectDir}/src/main/templates/org/isaqb/onlineexam/mockexam/BuildInfo.java")
+        ant.mkdir(dir: "${projectDir}/src/main/java/org/isaqb/onlineexam")
+        def newBuildInfo = new File("${projectDir}/src/main/java/org/isaqb/onlineexam/BuildInfo.java")
+        def templateBuildInfo = new File("${projectDir}/src/main/templates/org/isaqb/onlineexam/BuildInfo.java")
 
         newBuildInfo.withWriter { def writer ->
             templateBuildInfo.eachLine { def line ->
