@@ -36,7 +36,7 @@ tasks:
         urls:
         - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
           from: 1
-          to: 5 # 10
+          to: 10
     foundation-part2:
         name:
             DE: Foundation Teil 2
@@ -87,6 +87,13 @@ exams:
         max-time-in-minutes: 60
         task-refs:
         - foundation
+        urls:
+        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+          from: 4
+          to: 4
+
+
+
 
 
 cache:
