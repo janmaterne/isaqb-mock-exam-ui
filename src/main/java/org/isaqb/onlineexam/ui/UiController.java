@@ -158,7 +158,7 @@ public class UiController {
     }
 
     private void logProcessed(String realLanguage, Exam exam) {
-        log.debug(
+        log.info(
             "Exam processed: Language={}, mode={}, taskIDs: {}",
             realLanguage,
             exam.getMode().name(),
