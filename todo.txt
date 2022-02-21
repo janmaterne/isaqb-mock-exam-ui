@@ -6,7 +6,6 @@ Internationalisierung der Oberflächen
 - Seite 5 details: komplett, lang übertragen?
 
 
-auf developer sandbox @ redhat / heroku / knative?
 
 
 Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit

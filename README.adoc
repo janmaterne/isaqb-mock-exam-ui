@@ -18,6 +18,7 @@ There are three types of distributions:
 
 The docker image is available on https://hub.docker.com/r/janmaterne/mockexam[DockerHub] while the others are released on https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub].
 
+There is (hopefully ;) a running instance at https://isaqb-onlinetrainer.herokuapp.com/
 
 ===== Startable JAR
 
@@ -61,6 +62,7 @@ Es gibt drei Arten der Distribution
 
 Das Docker Image kann von https://hub.docker.com/r/janmaterne/mockexam[DockerHub] bezogen werden während die anderen Artefakte als Releases auf https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub] erhätlich sind.
 
+Eine laufende Instanz ist (hoffentlich ;) unter https://isaqb-onlinetrainer.herokuapp.com/
 
 ===== Starbares JAR
 
