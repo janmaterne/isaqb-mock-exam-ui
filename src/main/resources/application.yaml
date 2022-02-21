@@ -87,10 +87,42 @@ exams:
         max-time-in-minutes: 60
         task-refs:
         - foundation
-        urls:
-        - url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
-          from: 4
-          to: 4
+        #urls:
+        #- url-template: https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-{NR}.adoc
+        #  from: 4
+        #  to: 4
+    found-test-1:
+        name:
+            DE: Foundation Part 1
+            EN: Foundation Part 1
+        required-points: 30
+        max-time-in-minutes: 60
+        task-refs:
+        - foundation-part1
+    found-test-2:
+        name:
+            DE: Foundation Part 2
+            EN: Foundation Part 2
+        required-points: 30
+        max-time-in-minutes: 60
+        task-refs:
+        - foundation-part2
+    found-test-3:
+        name:
+            DE: Foundation Part 3
+            EN: Foundation Part 3
+        required-points: 30
+        max-time-in-minutes: 60
+        task-refs:
+        - foundation-part3
+    found-test-4:
+        name:
+            DE: Foundation Part 4
+            EN: Foundation Part 4
+        required-points: 30
+        max-time-in-minutes: 60
+        task-refs:
+        - foundation-part4
 
 
 
@@ -128,3 +160,10 @@ spring:
         hibernate:
             ddl-auto: update
         open-in-view: false
+
+# Specify Logging
+logging:
+    level:
+        org:
+            isaqb:
+                onlineexam: TRACE

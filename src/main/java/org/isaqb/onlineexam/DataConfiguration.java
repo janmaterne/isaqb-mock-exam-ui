@@ -14,12 +14,14 @@ import org.springframework.stereotype.Component;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 // Map to all values of application.yaml
 @ConfigurationProperties
 @Data
 @Accessors(chain = true)
+@Slf4j
 public class DataConfiguration {
 
     // Map key "tasks" according to its name.
@@ -83,6 +85,18 @@ public class DataConfiguration {
             requiresResolve = configsWithRequiredResolves();
         }
         assertAllRefererencesResolved();
+        logData();
+    }
+
+    private void logData() {
+        log.debug("Available Exams:");
+        exams.entrySet().stream()
+            .map( e -> String.format("- %s: %s", e.getKey(), e.getValue().getName().get(Language.EN)))
+            .forEach(log::debug);
+        log.debug("Available Quizzes:");
+        tasks.entrySet().stream()
+            .map( e -> String.format("- %s: %s", e.getKey(), e.getValue().getName().get(Language.EN)))
+            .forEach(log::debug);
     }
 
     private void assertAllRefererencesResolved() {
