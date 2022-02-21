@@ -1,8 +1,10 @@
 package org.isaqb.onlineexam.ui;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,8 @@ public class UiController {
     private ExamHttpAdapter examHttpAdapter;
     private Base64Handler base64;
     private AsciidocReader adocReader;
+    
+    private String startTime;
 
 
 
@@ -71,6 +75,7 @@ public class UiController {
         this.quizConfiguration = quizConfiguration;
         this.base64 = base64;
         this.adocReader = adocReader;
+        this.startTime = new SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date());
     }
 
 
@@ -92,8 +97,10 @@ public class UiController {
         model.addAttribute("html", introductionLoader.getHtml(lang));
         model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
         model.addAttribute("howToUse", howToUse.getText(lang));
-        model.addAttribute("appversion",
-                String.format("Version %s - Build %s", BuildInfo.getVersion(), BuildInfo.getBuildTimestamp()));
+        model.addAttribute("appversion", String.format(
+    		"Version %s - Build %s - Start %s", 
+    		BuildInfo.getVersion(), BuildInfo.getBuildTimestamp(), startTime
+		));
         model.addAttribute("quizOptions", possibleQuizOptions(lang));
         autoloadJS.injectAutoReloadJS(model);
 
