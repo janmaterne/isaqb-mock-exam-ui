@@ -69,7 +69,7 @@ public class TaskMapLoader {
 
     private void printErrors(Map<String, List<String>> errorMap) {
         String errorMessage = errors2string(errorMap);
-        if (errorMessage.isBlank()) {
+        if (!errorMessage.isBlank()) {
             log.error(errorMessage);
         } else {
             log.debug("All tasks are valid.");
