@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.isaqb.onlineexam.model.Exam;
 import org.isaqb.onlineexam.model.Exam.Mode;
 import org.isaqb.onlineexam.model.I18NText;
 import org.isaqb.onlineexam.model.Language;
+import org.isaqb.onlineexam.model.Task;
 import org.isaqb.onlineexam.model.TaskAnswer;
 import org.isaqb.onlineexam.util.Base64Handler;
 import org.isaqb.onlineexam.util.CookieHelper;
@@ -38,7 +40,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class UiController {
 
     private IntroductionLoader introductionLoader;
@@ -144,12 +149,22 @@ public class UiController {
         }
 
         response.addCookie(new Cookie("language", realLanguage));
+        logProcessed(realLanguage, exam);
         return "process-exam.html";
     }
 
-    private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
+	private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
         return givenAnswersJson == null ? Collections.emptyList() : jsonMapper.fromStringToAnswers(givenAnswersJson);
     }
+
+    private void logProcessed(String realLanguage, Exam exam) {
+        log.debug(
+            "Exam processed: Language={}, mode={}, taskIDs: {}",
+            realLanguage,
+            exam.getMode().name(),
+            exam.getTasks().stream().map(Task::getId).collect(Collectors.joining(", "))
+        );
+	}
 
 
 
