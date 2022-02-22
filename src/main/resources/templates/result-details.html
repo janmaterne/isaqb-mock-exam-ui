@@ -45,6 +45,7 @@
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
+                  <span class="task-id" th:text="${wrapper.task.id}"/>
                   <p th:text="${wrapper.task.question.getText('DE')}"/>
                   
                   <br>

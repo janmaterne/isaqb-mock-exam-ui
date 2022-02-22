@@ -6,7 +6,7 @@ import javax.annotation.Generated;
 public class BuildInfo {
 	
 	private static String VERSION = "0.3";
-	private static String BUILD_TIMESTAMP = "2022.02.20 18:02";
+	private static String BUILD_TIMESTAMP = "2022.02.22 16:36";
 	
 	public static String getVersion() {
         return VERSION;

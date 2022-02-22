@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 
 @AllArgsConstructor
 @ToString
+@Accessors(chain = true)
 public class Exam {
 
     public static enum Mode {
@@ -32,8 +33,10 @@ public class Exam {
 	private Map<Task, List<Character>> givenAnswers;
 	@Getter
 	@Setter
-	@Accessors(chain = true)
 	private Mode mode;
+	@Getter
+	@Setter
+	private String name;
 
 
 
@@ -42,11 +45,11 @@ public class Exam {
 	}
 
     public static Exam createExam(double requiredPoints, List<Task> tasks) {
-        return new Exam(requiredPoints, tasks, new HashMap<>(), Mode.EXAM);
+        return new Exam(requiredPoints, tasks, new HashMap<>(), Mode.EXAM, null);
     }
 
     public static Exam createQuiz(List<Task> tasks) {
-        return new Exam(0, tasks, new HashMap<>(), Mode.QUIZ);
+        return new Exam(0, tasks, new HashMap<>(), Mode.QUIZ, null);
     }
 
 

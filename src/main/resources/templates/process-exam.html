@@ -1,12 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="style.css"/>
-	<title>ISAQB Foundation - Mock Exam</title>
-	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
-	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
-	<div th:utext="${autoReloadJS}"/>
+  <meta charset="utf-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" href="style.css"/>
+  <title>ISAQB Foundation - Mock Exam</title>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+  <div th:utext="${autoReloadJS}"/>
 </head>
 <body>
 
@@ -18,66 +18,67 @@
     <div class="master_detail">
       <div class="row">
           <div class="col-md-3 col-sm-12 col-xs-12">
-          
+
             <div class="master_list">
               <div class="list-group">
                   <button th:each="task : ${util.tasks}" type="button" class="list-group-item" th:attr="data-option='option' + ${task.nr}, id='button-' + ${task.nr}">
-                  	  <span th:utext="${task.getMenuLabel}"/>
-                  	  <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png">
-                  	  <img th:attr="id='flag-' + ${task.nr}" src="red-flag.svg">
+                      <span th:utext="${task.getMenuLabel}"/>
+                      <img th:attr="id='menuitem-' + ${task.nr}" src="red-exclamation-mark.png">
+                      <img th:attr="id='flag-' + ${task.nr}" src="red-flag.svg">
                   </button>
                   <br>
                   <button type="submit">Berechnen</button>
               </div>
             </div>
-            
+
           </div>
           <div class="col-md-9 col-sm-12 col-xs-12">
-          
+
             <div class="detail_list">
               <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}" th:if="${wrapper.debugShowArticle()}">
                   <div th:utext="${util.nextTaskLink(wrapper.nr)}"/>
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
+                  <span class="task-id" th:text="${wrapper.task.id}"/>
                   <p th:text="${wrapper.task.question.getText('DE')}"/>
-                  
+
                   <br>
                   <div th:switch="${wrapper.task.type.name()}" th:remove="tag">
-                  	 <div th:case="'CHOOSE'" th:remove="tag">
-	                    <table border="1">
-	                      <tr>
-	                        <th th:each="header : ${wrapper.task.columnHeaders}" th:text="${header.getText('DE')}"/>
-	                        <th/>
-	                        <th/>
-	                      </tr>
-	                      <tr th:each="option : ${wrapper.task.possibleOptions}">
-	                        <div th:each="col,iter : ${wrapper.task.columnValues()}" th:remove="tag">
-		                      <td>
-		                        <input type="radio"
-		                        	th:attr="
-		                        		name='frage-' + ${wrapper.nr} + '-' + ${option.position}, 
-		                        		value=${col}"
-	                        		th:checked="${wrapper.optionSelected(option, iter.index)}"
-		                        /> 
-		                      </td>
-	                        </div>
-	                        <td class="choice" th:text="${option.position} + ')'"/>
-	                        <td class="choice" th:text="${option.text.getText('DE')}"/>
-	                      </tr>
-	                    </table>
-                  	 </div>
-                  	 <div th:case="*" th:remove="tag">
-                  	 	<div th:remove="tag" th:each="option : ${wrapper.task.possibleOptions}">
-		              		<input type="checkbox" 
-		              			th:attr="name='frage-' + ${wrapper.nr} + '-' + ${option.position}" 
-		              			th:text="' ' + ${option.text.getText('DE')}"
-		              			th:checked="${wrapper.optionSelected(option.position)}"
-		              		/><br>
-                  	 	</div>
-                  	 </div>
+                     <div th:case="'CHOOSE'" th:remove="tag">
+                      <table border="1">
+                        <tr>
+                          <th th:each="header : ${wrapper.task.columnHeaders}" th:text="${header.getText('DE')}"/>
+                          <th/>
+                          <th/>
+                        </tr>
+                        <tr th:each="option : ${wrapper.task.possibleOptions}">
+                          <div th:each="col,iter : ${wrapper.task.columnValues()}" th:remove="tag">
+                          <td>
+                            <input type="radio"
+                              th:attr="
+                                name='frage-' + ${wrapper.nr} + '-' + ${option.position}, 
+                                value=${col}"
+                              th:checked="${wrapper.optionSelected(option, iter.index)}"
+                            /> 
+                          </td>
+                          </div>
+                          <td class="choice" th:text="${option.position} + ')'"/>
+                          <td class="choice" th:text="${option.text.getText('DE')}"/>
+                        </tr>
+                      </table>
+                     </div>
+                     <div th:case="*" th:remove="tag">
+                       <div th:remove="tag" th:each="option : ${wrapper.task.possibleOptions}">
+                      <input type="checkbox" 
+                        th:attr="name='frage-' + ${wrapper.nr} + '-' + ${option.position}" 
+                        th:text="' ' + ${option.text.getText('DE')}"
+                        th:checked="${wrapper.optionSelected(option.position)}"
+                      /><br>
+                       </div>
+                     </div>
                   </div>
-                  
+
                   <hr>
                   <input type="checkbox" class="flag" th:attr="name='flag-' + ${wrapper.nr}" th:checked="${wrapper.flagSelected()}">Flag this</input>
               </article>
@@ -110,14 +111,14 @@ $(document).ready(function () {
     $master_detail.find('article').removeClass('grow fadeIn');
 
     $article.addClass('grow fadeIn');
-	window.scrollTo(0,0);
+  window.scrollTo(0,0);
   });
 });
 </script>
 
 <script id="">
 function changeToQuestion(nr) {
-	document.getElementById("button-" + nr).click();
+  document.getElementById("button-" + nr).click();
 }
 </script>
 
@@ -125,11 +126,11 @@ function changeToQuestion(nr) {
 
 <script id="deselect-radiogroup">
 $(document).ready(function() {
-	var $body = $('body');
-	$body.on('click', 'td.choice', function() {
-		var $currentRow = $(this).closest('tr');
-		$currentRow.find('input').removeAttr('checked');
-	});
+  var $body = $('body');
+  $body.on('click', 'td.choice', function() {
+    var $currentRow = $(this).closest('tr');
+    $currentRow.find('input').removeAttr('checked');
+  });
 });
 </script>
 
@@ -137,17 +138,17 @@ $(document).ready(function() {
 
 <script id="handle-flag-checkbox">
 $(document).ready(function() {
-	var $body = $('body');
-	$body.on('click', 'input.flag', function() {
-		var name = $(this).attr('name');
-		var img = $('#' + name);
-		if ($(this).is(':checked')) {
-			img.show();
-			//img.css('visibility','visible');
-		} else {
-			img.hide();
-		}
-	});
+  var $body = $('body');
+  $body.on('click', 'input.flag', function() {
+    var name = $(this).attr('name');
+    var img = $('#' + name);
+    if ($(this).is(':checked')) {
+      img.show();
+      //img.css('visibility','visible');
+    } else {
+      img.hide();
+    }
+  });
 });
 </script>
 
@@ -155,17 +156,17 @@ $(document).ready(function() {
 
 <script id="handle-check">
 $(document).ready(function() {
-	var $body = $('body');
-	$body.on('click', 'article', function() {
-		var nr = $(this).attr('class').replace(/option([0-9]+).*/, "$1");
-		var countSelected = $(this).find('input[class!=flag]:checked').length;
-		var imgFlag = $('#menuitem-' + nr);
-		if (countSelected) {
-			imgFlag.hide();
-		} else {
-			imgFlag.show();
-		}
-	});
+  var $body = $('body');
+  $body.on('click', 'article', function() {
+    var nr = $(this).attr('class').replace(/option([0-9]+).*/, "$1");
+    var countSelected = $(this).find('input[class!=flag]:checked').length;
+    var imgFlag = $('#menuitem-' + nr);
+    if (countSelected) {
+      imgFlag.hide();
+    } else {
+      imgFlag.show();
+    }
+  });
 });
 </script>
 
@@ -173,16 +174,16 @@ $(document).ready(function() {
 
 <script id="init-flags-and-checks">
 $(document).ready(function() {
-	$('article input.flag').each(function() {
-		var name = $(this).attr('name');
-		var img = $('#' + name);
-		if ($(this).is(':checked')) {
-			img.show();
-		} else {
-			img.hide();
-		}
-	});
-	$('article').click();
+  $('article input.flag').each(function() {
+    var name = $(this).attr('name');
+    var img = $('#' + name);
+    if ($(this).is(':checked')) {
+      img.show();
+    } else {
+      img.hide();
+    }
+  });
+  $('article').click();
 });
 </script>
 

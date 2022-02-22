@@ -13,10 +13,10 @@ public class TaskValidator {
 
     public List<String> validate(Task task) {
         return Stream.of(
-            assertFieldNotNull(task, Task::getId, "id"),
-            assertFieldNotNull(task, Task::getType, "type"),
+            assertFieldNotEmpty(task, Task::getId, "id"),
+            assertFieldNotEmpty(task, Task::getType, "type"),
             assertTrue(task, "'reachablePoints' ungültig", t->t.getReachablePoints()>0),
-            assertFieldNotNull(task, Task::getQuestion, "question"),
+            assertFieldNotEmpty(task, Task::getQuestion, "question"),
             assertTrue(task, "'question' ist leer", t->!t.getQuestion().isEmpty())
         )
             .filter(Optional::isPresent)
@@ -28,10 +28,26 @@ public class TaskValidator {
         return check.test(task) ? Optional.empty() : Optional.of(errorMessage);
     }
 
-    private Optional<String> assertFieldNotNull(Task task, Function<Task,Object> fieldAccessor, String fieldName) {
-        return fieldAccessor.apply(task) == null
-                ? Optional.of(String.format("'%s' is null", fieldName))
+    private Optional<String> assertFieldNotEmpty(Task task, Function<Task,Object> fieldAccessor, String fieldName) {
+        return isEmpty(fieldAccessor.apply(task))
+                ? Optional.of(String.format("'%s' is null or empty", fieldName))
                 : Optional.empty();
+    }
+
+    private boolean isEmpty(Object value) {
+        if (value == null) {
+            return true;
+        }
+        if (value instanceof String) {
+        	String asString = (String) value;
+            if (asString.isBlank()) {
+                return true;
+            }
+            if (asString.trim().equals("null")) {
+            	return true;
+            }
+        }
+        return false;
     }
 
 }

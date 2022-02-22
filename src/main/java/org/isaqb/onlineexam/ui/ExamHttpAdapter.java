@@ -34,9 +34,8 @@ public class ExamHttpAdapter {
 
 
     public Exam from(HttpServletRequest request) {
-        Optional<String> fromRequest = getFromRequest(request, KEY_MODE);
-        String orElse = fromRequest.orElse("quiz");
-        Mode mode = Mode.of(orElse);
+        String modeAsString = getFromRequest(request, KEY_MODE).orElse("quiz");
+        Mode mode = Mode.of(modeAsString);
         List<String> questionIds = getListFromRequest(request, KEY_QUESTIONIDS);
         List<String> topics = getListFromRequest(request, KEY_TOPICS);
         if (topics.isEmpty()) {

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
@@ -74,7 +75,8 @@ public class ExamFactory {
             if (topics.size() != 1) {
                 throw new RuntimeException("You could only select 1 topic for an exam!");
             }
-            return examByTopic(topics.get(0)).setMode(mode);
+            String name = topics.get(0);
+            return examByName(name).setMode(mode);
         }
     }
 
@@ -86,10 +88,14 @@ public class ExamFactory {
 
     public Exam examByName(String name) {
         ExamConfig examConfig = exams.get(name);
-        var taskRefs = examConfig.getTaskRefs();
-        List<Task> examTasks = new ArrayList<>();
-        taskRefs.forEach( ref -> examTasks.addAll(tasks.get(ref)));
-        return Exam.createExam(examConfig.getRequiredPoints(), examTasks);
+        if (examConfig != null) {
+            var taskRefs = examConfig.getTaskRefs();
+            List<Task> examTasks = new ArrayList<>();
+            taskRefs.forEach( ref -> examTasks.addAll(tasks.get(ref)));
+            return Exam.createExam(examConfig.getRequiredPoints(), examTasks).setName(name);
+        } else {
+        	throw new RuntimeException(String.format("Kein Examen mit Namen '%s' gefunden.", name));
+        }
     }
 
 

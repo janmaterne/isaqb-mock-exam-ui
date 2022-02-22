@@ -1,19 +1,19 @@
 /* Index-Page */
 
 .index {
-	text-align: center;
+  text-align: center;
 }
 
 
 .lang-choice {
-	padding-top: 1em;
+  padding-top: 1em;
 }
 .lang-choice div {
-	display: inline-block;
+  display: inline-block;
 }
 .lang-choice img {
-	width: 20em;
-	height: 10em;
+  width: 20em;
+  height: 10em;
 }
 
 
@@ -22,10 +22,10 @@
 /* Introduction */
 
 .introduction h1 {
-	text-align: center;
+  text-align: center;
 }
 .introduction .navigation {
-	text-align: center;
+  text-align: center;
 }
 
 
@@ -34,29 +34,31 @@
 /** Processing Exam and showing result */
 
 article {
-	padding: 1em;
+  padding: 1em;
 }
 article p {
-	padding-top: 0.5em;
+  padding-top: 0.5em;
 }
 article td {
-	text-align: center;
+  text-align: center;
 }
 article th {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 article td:last-child {
-	text-align: left;
+  text-align: left;
 }
 /* only while doing the exam */
 form article td:last-child {
-	padding-left: 1em;
+  padding-left: 1em;
 }
 button img {
-	width: 1em;
+  width: 1em;
 }
-
+.task-id {
+  font-size: 70%;
+}
 
 
 
@@ -97,7 +99,7 @@ button img {
 
 
 list-group-item img {
-	width: 10px;
+  width: 10px;
 }
 
 

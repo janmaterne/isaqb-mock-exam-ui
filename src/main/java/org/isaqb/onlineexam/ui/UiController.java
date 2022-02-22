@@ -103,22 +103,29 @@ public class UiController {
         model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
         model.addAttribute("howToUse", howToUse.getText(lang));
         model.addAttribute("appversion", String.format(
-    		"Version %s - Build %s - Start %s", 
-    		BuildInfo.getVersion(), BuildInfo.getBuildTimestamp(), startTime
-		));
+            "Version %s - Build %s - Start %s", 
+            BuildInfo.getVersion(), BuildInfo.getBuildTimestamp(), startTime
+        ));
         model.addAttribute("quizOptions", possibleQuizOptions(lang));
+        model.addAttribute("exams", possibleExams(lang));
         autoloadJS.injectAutoReloadJS(model);
 
         return "introduction.html";
     }
 
-    private List<QuizOptions> possibleQuizOptions(Language lang) {
+	private List<QuizOptions> possibleQuizOptions(Language lang) {
         return quizConfiguration.getTasks().entrySet().stream()
-                .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
-                .toList();
+            .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
+            .toList();
     }
 
-
+    private List<QuizOptions> possibleExams(Language lang) {
+        return quizConfiguration.getExams().entrySet().stream()
+            .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
+            .toList();
+	}
+    
+    
 
     @GetMapping("process-exam.html")
     public String processExam(
@@ -153,18 +160,26 @@ public class UiController {
         return "process-exam.html";
     }
 
-	private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
+    private List<TaskAnswer> givenAnswersFromCookie(String givenAnswersJson) {
         return givenAnswersJson == null ? Collections.emptyList() : jsonMapper.fromStringToAnswers(givenAnswersJson);
     }
 
     private void logProcessed(String realLanguage, Exam exam) {
         log.info(
-            "Exam processed: Language={}, mode={}, taskIDs: {}",
+            "Exam processed: Language={}, mode={}, {}",
             realLanguage,
             exam.getMode().name(),
-            exam.getTasks().stream().map(Task::getId).collect(Collectors.joining(", "))
+            examIdentifier(exam)
         );
-	}
+    }
+
+    private String examIdentifier(Exam exam) {
+        String rv = switch (exam.getMode()) {
+            case EXAM -> "examName: " + exam.getName();
+            case QUIZ -> "taskIDs: "  + exam.getTasks().stream().map(Task::getId).collect(Collectors.joining(", "));
+        };
+        return rv;
+    }
 
 
 
