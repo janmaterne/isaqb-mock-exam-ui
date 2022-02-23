@@ -1,1 +1,1 @@
-web: java --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build/libs/mockexam-0.3.jar --server.port=$PORT
+web: java --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar build/libs/onlinetrainer-0.3.jar --server.port=$PORT
