@@ -42,7 +42,19 @@ Refactor
    * getFromParameterOrCookie
 
 
-Umbennen: OnlineTrainer
-- Banner
-- Repository
-- ...
+
+Bei Absolvieren eines "normalen" Quizzes funktioniert die Berechnung nicht. Es wird anstelle "foundation-part1" das komplette "foundation" verwendet.
+
+
+
+Changelog in der Introduction
+
+
+
+Banner-Erzeugung
+    https://manytools.org/hacker-tools/ascii-banner/
+    Banner text: OnlineTrainer
+    Font: Big
+    Horizontal Spacing: Normal
+    Vertical Spacing  : Normal
+    
