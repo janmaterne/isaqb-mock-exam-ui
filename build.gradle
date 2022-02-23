@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.0'
+    id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -30,8 +30,8 @@ dependencies {
     implementation 'org.asciidoctor:asciidoctorj:2.5.1'
 
     // H2 for caching the remote data between runs
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.0'
-    implementation 'com.h2database:h2:1.4.200'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2:1.4.200' // not an in-place update to latest 2.1.210 
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.apache.commons:commons-lang3:3.12.0'
