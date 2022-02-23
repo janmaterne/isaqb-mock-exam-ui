@@ -90,11 +90,14 @@ public class UIData {
 
     public String nextTaskLink(int currentTaskNumber) {
         return String.format(
-            "<a href=\"javascript:changeToQuestion(%d)\">%s</a>",
+            "<a href=\"javascript:changeToQuestion(%d)\">%s</a>%s",
             (currentTaskNumber % numberOfTasks()) + 1,
             currentTaskNumber == numberOfTasks()
                 ? data.get(currentLanguage, Key.FIRST_LINK_LABEL)
-                : data.get(currentLanguage, Key.NEXT_LINK_LABEL)
+                : data.get(currentLanguage, Key.NEXT_LINK_LABEL),
+            currentTaskNumber == numberOfTasks()
+                ? " <button type=\"submit\">Berechnen</button>"
+                : ""
             );
     }
 

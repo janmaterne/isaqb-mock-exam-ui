@@ -36,7 +36,7 @@
 
             <div class="detail_list">
               <article th:each="wrapper : ${util.tasks}" th:attr="class='option' + ${wrapper.nr}" th:if="${wrapper.debugShowArticle()}">
-                  <div th:utext="${util.nextTaskLink(wrapper.nr)}"/>
+                  <div class="next-task-link" th:utext="${util.nextTaskLink(wrapper.nr)}"/>
                   <h3 th:text="'Frage ' + ${wrapper.nr}"/>
                   <i th:text="${wrapper.reachablePoints}"/><br>
                   <b th:text="${wrapper.kind}"/><br>
@@ -81,6 +81,7 @@
 
                   <hr>
                   <input type="checkbox" class="flag" th:attr="name='flag-' + ${wrapper.nr}" th:checked="${wrapper.flagSelected()}">Flag this</input>
+                  <div class="next-task-link" th:utext="${util.nextTaskLink(wrapper.nr)}"/>
               </article>
 
           </div>

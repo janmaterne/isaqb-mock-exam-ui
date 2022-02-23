@@ -17,3 +17,5 @@ Minor changes
 
 * use Java17 as environment
 * update to SpringBoot 2.6.3
+* add the "next task"-link at the buttom too, so it's easier to select (UX)
+* add a submit button to the "next task"-link for the last question
