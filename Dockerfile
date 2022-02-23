@@ -5,8 +5,8 @@ COPY . /project/
 RUN gradle -x test --no-daemon clean build
 WORKDIR /project/build/libs
 RUN rm *-plain.jar \
- && mv mockexam*.jar mockexam.jar \
- && java -Djarmode=layertools -jar mockexam.jar extract
+ && mv onlinetrainer*.jar onlinetrainer.jar \
+ && java -Djarmode=layertools -jar onlinetrainer.jar extract
 
 
 FROM openjdk:17.0.1-slim

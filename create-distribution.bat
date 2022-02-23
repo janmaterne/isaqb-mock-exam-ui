@@ -14,7 +14,7 @@ rd /Q/S build
 
 :build
 echo Docker Build 
-docker build -t janmaterne/mockexam:latest -t janmaterne/mockexam:%TSTAMP% -t janmaterne/mockexam:%APP_VERSION% .
+docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
 
 echo Gradle Distribution
 call gradlew distribution
@@ -34,13 +34,14 @@ echo Publish Git
 git push
 
 echo Publish Image
-docker push janmaterne/mockexam:latest 
-docker push janmaterne/mockexam:%TSTAMP%
-docker push janmaterne/mockexam:%APP_VERSION%
+docker push janmaterne/onlinetrainer:latest 
+docker push janmaterne/onlinetrainer:%TSTAMP%
+docker push janmaterne/onlinetrainer:%APP_VERSION%
 
 echo Erstelle GitHub Release mit Assets
 rem https://cli.github.com/manual/gh_release_create
-gh release create %APP_VERSION% --title "iSAQB MockUI %APP_VERSION% - %TSTAMP%" --notes "Version %APP_VERSION%" build\mockexam-linux.tar.gz build\mockexam-macos.tar.gz build\mockexam-win32.zip build\libs\mockexam-%APP_VERSION%.jar
+rem gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes "Version %APP_VERSION%" build\onlinetrainer-linux.tar.gz build\onlinetrainer-macos.tar.gz build\onlinetrainer-win32.zip build\libs\onlinetrainer-%APP_VERSION%.jar
+gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc build\onlinetrainer-linux.tar.gz build\onlinetrainer-macos.tar.gz build\onlinetrainer-win32.zip build\libs\onlinetrainer-%APP_VERSION%.jar
 
 
 
