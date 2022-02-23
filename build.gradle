@@ -103,9 +103,9 @@ tasks.register("createDistributionWin32") {
         ant.copy(file: "src/main/bin/run.bat", todir: "${distributionBaseDir}/win32")
         ant.copy(
             file: "build/libs/${project.name}-${project.version}.jar", 
-            tofile: "${distributionBaseDir}/win32/lib/mockexam.jar"
+            tofile: "${distributionBaseDir}/win32/lib/onlinetrainer.jar"
         )
-        ant.zip(destfile: "build/mockexam-win32.zip", basedir: "${distributionBaseDir}/win32")
+        ant.zip(destfile: "build/onlinetrainer-win32.zip", basedir: "${distributionBaseDir}/win32")
     }
 }
 
@@ -130,11 +130,11 @@ tasks.register("createDistributionLinux") {
         ant.copy(file: "src/main/bin/run.sh", todir: "${distributionBaseDir}/linux")
         ant.copy(
             file: "build/libs/${project.name}-${project.version}.jar", 
-            tofile: "${distributionBaseDir}/linux/lib/mockexam.jar"
+            tofile: "${distributionBaseDir}/linux/lib/onlinetrainer.jar"
         )
-        ant.tar(destfile: "build/mockexam-linux.tar", basedir: "${distributionBaseDir}/linux")
-        ant.gzip(destfile: "build/mockexam-linux.tar.gz", src: "build/mockexam-linux.tar")
-        new File("build/mockexam-linux.tar").delete()
+        ant.tar(destfile: "build/onlinetrainer-linux.tar", basedir: "${distributionBaseDir}/linux")
+        ant.gzip(destfile: "build/onlinetrainer-linux.tar.gz", src: "build/onlinetrainer-linux.tar")
+        new File("build/onlinetrainer-linux.tar").delete()
     }
 }
 
@@ -159,11 +159,11 @@ tasks.register("createDistributionMacOS") {
         ant.copy(file: "src/main/bin/run.sh", todir: "${distributionBaseDir}/macos")
         ant.copy(
             file: "build/libs/${project.name}-${project.version}.jar", 
-            tofile: "${distributionBaseDir}/macos/lib/mockexam.jar"
+            tofile: "${distributionBaseDir}/macos/lib/onlinetrainer.jar"
         )
-        ant.tar(destfile: "build/mockexam-macos.tar", basedir: "${distributionBaseDir}/macos")
-        ant.gzip(destfile: "build/mockexam-macos.tar.gz", src: "build/mockexam-macos.tar")
-        new File("build/mockexam-macos.tar").delete()
+        ant.tar(destfile: "build/onlinetrainer-macos.tar", basedir: "${distributionBaseDir}/macos")
+        ant.gzip(destfile: "build/onlinetrainer-macos.tar.gz", src: "build/onlinetrainer-macos.tar")
+        new File("build/onlinetrainer-macos.tar").delete()
     }
 }
 
