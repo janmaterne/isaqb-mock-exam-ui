@@ -1,0 +1,15 @@
+## Version 0.3
+
+Major improvements
+
+* cache remote adoc content in local database 
+* rename to OnlineTrainer as this tool more than just the Mock Foundation Exam
+
+Fixes
+
+
+Minor changes
+
+* update to SpringBoot 2.6.3
+* add the "next task"-link at the buttom too, so it's easier to select (UX)
+* add a submit button to the "next task"-link for the last question

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.isaqb.onlinetrainer'
-version = '0.3'
+version = '0.4'
 sourceCompatibility = '17'
 
 configurations {
