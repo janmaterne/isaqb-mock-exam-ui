@@ -7,6 +7,7 @@ Major improvements
 * show explanations on answer pages
 * skip simple result page (inline into result-details)
 * cache remote adoc content in local database 
+* rename to OnlineTrainer as this tool more than just the Mock Foundation Exam
 
 Fixes
 
@@ -15,3 +16,4 @@ Fixes
 Minor changes
 
 * use Java17 as environment
+* update to SpringBoot 2.6.3
