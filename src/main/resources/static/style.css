@@ -60,6 +60,14 @@ button img {
   font-size: 70%;
 }
 
+/* All links 'next question please' */
+.next-task-link {
+}
+/* Just the link at the buttom */
+input + .next-task-link {
+    padding-top: 1em;
+}
+
 
 
 
