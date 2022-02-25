@@ -1,0 +1,14 @@
+<html>
+<body>
+<table>
+<tr>
+  <th>Key</th>
+  <th>Value</th>
+</tr>
+<tr th:each="row : ${data}">
+    <td th:text="${row.key}"/>
+    <td th:text="${row.value}"/>
+</tr>
+</table>
+</body>
+</html>

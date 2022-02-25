@@ -26,6 +26,7 @@ import org.isaqb.onlinetrainer.model.I18NText;
 import org.isaqb.onlinetrainer.model.Language;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskAnswer;
+import org.isaqb.onlinetrainer.statistics.StatisticService;
 import org.isaqb.onlinetrainer.util.Base64Handler;
 import org.isaqb.onlinetrainer.util.CookieHelper;
 import org.isaqb.onlinetrainer.util.JsonMapper;
@@ -55,7 +56,8 @@ public class UiController {
     private ExamHttpAdapter examHttpAdapter;
     private Base64Handler base64;
     private AsciidocReader adocReader;
-    
+    private StatisticService statisticService;
+
     private String startTime;
 
 
@@ -69,7 +71,8 @@ public class UiController {
             @Value("classpath:messages/how-to-use.adoc") Resource howToUse,
             AutoloadJS autloadJS,
             DataConfiguration quizConfiguration,
-            Base64Handler base64
+            Base64Handler base64,
+            StatisticService statisticService
     ) throws IOException {
         this.examHttpAdapter = examHttpAdapter;
         this.introductionLoader = introductionLoader;
@@ -81,6 +84,7 @@ public class UiController {
         this.base64 = base64;
         this.adocReader = adocReader;
         this.startTime = new SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date());
+        this.statisticService = statisticService;
     }
 
 
@@ -165,6 +169,7 @@ public class UiController {
     }
 
     private void logProcessed(String realLanguage, Exam exam) {
+        statisticService.processed(exam);
         log.info(
             "Exam processed: Language={}, mode={}, {}",
             realLanguage,

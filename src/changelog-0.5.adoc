@@ -1,7 +1,7 @@
 ## Version 0.5
 
 Major improvements
-
+* store statistics: how often are exams processed?
 
 Fixes
 
