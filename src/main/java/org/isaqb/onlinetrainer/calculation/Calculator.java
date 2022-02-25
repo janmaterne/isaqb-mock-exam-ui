@@ -136,12 +136,20 @@ public class Calculator {
 			}
 			for(int i=0; i<correctColumnsIndices.size(); i++) {
 				int correctValue = correctColumnsIndices.get(i);
-				int givenValue = Integer.parseInt(given.get(i));
+				int givenValue = parseInt(given.get(i));
 				if (correctValue != givenValue) {
 					return false;
 				}
 			}
 			return true;
+		}
+		
+		private int parseInt(String value) {
+		    try {
+		        return Integer.parseInt(value);
+		    } catch (NumberFormatException e) {
+		        return 0;
+		    }
 		}
 
 		public Map<AnswerResult, Integer> analyze() {
