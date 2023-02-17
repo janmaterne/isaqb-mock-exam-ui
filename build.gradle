@@ -54,6 +54,10 @@ task buildImage(type:Exec) {
 
 // Create BuildInfo-class and Batchfile with actual Version and Build-TStamp.
 def buildTimeStamp = new java.text.SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date()); 
+def gitCommit = ["git", "log", "-n", "1", "--pretty=%h ::: %s ::: %ai"].execute().text.trim().split(":::")
+def gitCommitShortHash = gitCommit[0].trim()
+def gitCommitMessage = gitCommit[1].trim()
+def gitCommitTstamp = gitCommit[2].trim()
 compileJava { 
     doFirst {
         ant.mkdir(dir: "${projectDir}/src/main/java/org/isaqb/onlinetrainer")
@@ -64,13 +68,20 @@ compileJava {
             templateBuildInfo.eachLine { def line ->
                 def newLine = line.replace("__VERSION", project.version)
                                   .replace("__BUILD_TIMESTAMP", buildTimeStamp)
+                                  .replace("__GIT_COMMIT_HASH", gitCommitShortHash)
+                                  .replace("__GIT_COMMIT_MESSAGE", gitCommitMessage)
+                                  .replace("__GIT_COMMIT_TSTAMP", gitCommitTstamp)
                 writer.write(newLine + "\n")
             }
         }
         
         def versionBatchfile = new File(".version.bat")
         versionBatchfile.withWriter { def writer ->
-            writer.write("set APP_VERSION=" + project.version)
+            writer.writeLine("set APP_VERSION=" + project.version)
+            writer.writeLine("set APP_BUILT_TSTAMP=$buildTimeStamp")
+            writer.writeLine("set APP_GIT_COMMIT_SHORTHASH=$gitCommitShortHash")
+            writer.writeLine("set APP_GIT_COMMIT_MESSAGE=$gitCommitMessage")
+            writer.writeLine("set APP_GIT_COMMIT_TSTAMP=$gitCommitTstamp")
         }
     }
 }
