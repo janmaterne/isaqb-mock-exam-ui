@@ -1,7 +1,8 @@
 package org.isaqb.onlinetrainer.loader;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -16,8 +17,8 @@ public class UrlLoader implements Loader {
     public Optional<String> loadAsString(String remoteUrl) {
         log.debug("Load {}", remoteUrl);
         try {
-            return Optional.of(IOUtils.toString(new URL(remoteUrl), StandardCharsets.UTF_8));
-        } catch (IOException e) {
+            return Optional.of(IOUtils.toString(new URI(remoteUrl).toURL(), StandardCharsets.UTF_8));
+        } catch (IOException | URISyntaxException e) {
             log.error("{}: remoteUrl='{}'", e.getMessage(), remoteUrl);
             return Optional.empty();
         }
