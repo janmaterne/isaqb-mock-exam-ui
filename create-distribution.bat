@@ -10,14 +10,14 @@ echo APP_VERSION: %APP_VERSION%
 
 
 echo Clean
-rd /Q/S build
+rd /Q/S target
 
 :build
-echo Docker Build 
-docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
+rem echo Docker Build 
+rem docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
 
-echo Gradle Distribution
-call gradlew distribution
+echo Maven Distribution
+call mvn package -Pdistribution
 
 
 if "%1"=="publish" goto publish

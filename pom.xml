@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.13</version>
+        <!--
+        <version>2.7.17</version>
+        -->
+		<relativePath /> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>org.isaqb.onlinetrainer</groupId>
+    <artifactId>onlinetrainer</artifactId>
+    <version>0.5-SNAPSHOT</version>
+    
+    
+    <properties>
+        <!-- Basis-Settings -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+
+        <!-- Build -->
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy.MM.dd HH:mm</maven.build.timestamp.format>        
+        <lombok.version>1.18.30</lombok.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+
+        <!-- Runtime -->
+        <asciidoctorj.version>2.5.1</asciidoctorj.version>
+        <commons-io.version>2.15.0</commons-io.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+
+        <!-- Test -->
+        <hamcrest.version>2.2</hamcrest.version>
+        
+        <!-- Distribution -->
+        <jdk.base-url>https://download.java.net/java/GA/jdk21.0.1/415e3f918a1f4062a0074a2794853d0d/12/GPL</jdk.base-url>
+		<jdk.file.win64>openjdk-21.0.1_windows-x64_bin.zip</jdk.file.win64>
+		<jdk.file.linux>openjdk-21.0.1_linux-x64_bin.tar.gz</jdk.file.linux>
+		<jdk.file.macos>openjdk-21.0.1_macos-x64_bin.tar.gz</jdk.file.macos>
+		<jdk.download-dir>${project.build.directory}/downloads</jdk.download-dir>
+		<distro.basedir>${project.build.directory}/distribution</distro.basedir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>${asciidoctorj.version}</version>
+        </dependency>
+
+        <!-- H2 for caching the remote data between runs -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        
+        <!-- Mapping parsed Yaml to BusinessObject -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+    </dependencies>
+
+   
+    <build>
+        <plugins>
+			<plugin>
+			    <groupId>io.github.git-commit-id</groupId>
+			    <artifactId>git-commit-id-maven-plugin</artifactId>
+			    <version>7.0.0</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.message.full$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
+					</includeOnlyProperties>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+				</configuration>
+			</plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/java</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/templates</directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+										<exclude>.version.bat</exclude>
+									</excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-batch</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/templates</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+										<include>.version.bat</include>
+									</includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+            	</executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        <arg>-Xlint:unchecked</arg>
+                    </compilerArgs>                
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctorj</artifactId>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctorj-api</artifactId>
+                        </dependency>
+                    </requiresUnpack>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+	<profiles>
+		<profile>
+			<id>distribution</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<phase>packages</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<echo>Creating Win64 Distribution</echo>
+										<property name="win64.destfile" value="${jdk.download-dir}/${jdk.file.win64}"/>
+										<mkdir dir="${jdk.download-dir}"/>
+										<get src="${jdk.base-url}/${jdk.file.win64}" dest="${win64.destfile}" skipexisting="true"/>
+										<mkdir dir="${distro.basedir}/win64/lib"/>
+										<unzip src="${win64.destfile}" dest="${distro.basedir}/win64" overwrite="false"/>
+										<copy file="src/main/bin/run.bat" todir="${distro.basedir}/win64"/>
+										<copy file="${project.build.directory}/${project.name}-${project.version}.jar" tofile="${distro.basedir}/win32/lib/onlinetrainer.jar"/>
+										<zip destfile="${project.build.directory}/onlinetrainer-win64.zip" basedir="${distro.basedir}/win64/"/>
+
+										<echo>Creating Linux Distribution</echo>
+										<property name="linux.destfile" value="${jdk.download-dir}/${jdk.file.linux}"/>
+										<mkdir dir="${jdk.download-dir}"/>
+										<get src="${jdk.base-url}/${jdk.file.linux}" dest="${linux.destfile}" skipexisting="true"/>
+										<mkdir dir="${distro.basedir}/linux/lib"/>
+										<mkdir dir="${project.build.directory}/tmp"/>
+										<gunzip src="${linux.destfile}" dest="${project.build.directory}/tmp/linux-jdk.tar"/>
+										<untar src="${project.build.directory}/tmp/linux-jdk.tar" dest="${distro.basedir}/linux" overwrite="false"/>
+										<copy file="src/main/bin/run-macos.sh" todir="${distro.basedir}/linux/run.sh"/>
+										<copy file="${project.build.directory}/${project.name}-${project.version}.jar" tofile="${distro.basedir}/linux/lib/onlinetrainer.jar"/>
+										<tar destfile="${project.build.directory}/onlinetrainer-linux.tar" basedir="${distro.basedir}/linux"/>
+										<gzip destfile="${project.build.directory}/onlinetrainer-linux.tar.gz" src="${project.build.directory}/onlinetrainer-linux.tar"/>
+										<delete file="${project.build.directory}/onlinetrainer-linux.tar"/>
+										<delete dir="${project.build.directory}/tmp"/>
+
+										<echo>Creating MacOS Distribution</echo>
+										<property name="macos.destfile" value="${jdk.download-dir}/${jdk.file.macos}"/>
+										<mkdir dir="${jdk.download-dir}"/>
+										<get src="${jdk.base-url}/${jdk.file.macos}" dest="${macos.destfile}" skipexisting="true"/>
+										<mkdir dir="${distro.basedir}/macos/lib"/>
+										<mkdir dir="${project.build.directory}/tmp"/>
+										<gunzip src="${macos.destfile}" dest="${project.build.directory}/tmp/macos-jdk.tar"/>
+										<untar src="${project.build.directory}/tmp/macos-jdk.tar" dest="${distro.basedir}/macos" overwrite="false"/>
+										<copy file="src/main/bin/run.sh" todir="${distro.basedir}/macos"/>
+										<copy file="${project.build.directory}/${project.name}-${project.version}.jar" tofile="${distro.basedir}/macos/lib/onlinetrainer.jar"/>
+										<tar destfile="${project.build.directory}/onlinetrainer-macos.tar" basedir="${distro.basedir}/macos"/>
+										<gzip destfile="${project.build.directory}/onlinetrainer-macos.tar.gz" src="${project.build.directory}/onlinetrainer-macos.tar"/>
+										<delete file="${project.build.directory}/onlinetrainer-macos.tar"/>
+										<delete dir="${project.build.directory}/tmp"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
