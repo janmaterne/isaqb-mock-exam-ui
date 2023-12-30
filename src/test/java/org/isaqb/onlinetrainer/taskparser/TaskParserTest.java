@@ -1,4 +1,4 @@
-package org.isaqb.onlinetrainer.parser;
+package org.isaqb.onlinetrainer.taskparser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,7 +24,7 @@ public class TaskParserTest {
     public void realLifeQuestion01_ATask() throws IOException {
         // Original document copied from
         // https://raw.githubusercontent.com/isaqb-org/examination-foundation/master/raw/mock_exam/docs/questions/question-01.adoc
-        Task task = taskLoader.loadTask("question-01.adoc");
+        Task task = taskLoader.loadADocTask("question-01.adoc");
 
         // id, points
         assertEquals("Q-20-04-01", task.getId());
@@ -68,7 +68,7 @@ public class TaskParserTest {
 
     @Test
     public void realLifeQuestion02_PTask() throws IOException {
-        Task task = taskLoader.loadTask("question-02.adoc");
+        Task task = taskLoader.loadADocTask("question-02.adoc");
 
         assertEquals("Q-20-04-02", task.getId());
         assertEquals(1, task.getReachablePoints());
@@ -87,13 +87,13 @@ public class TaskParserTest {
 
     @Test
     public void realLifeQuestion03() throws IOException {
-        Task task = taskLoader.loadTask("question-03.adoc");
+        Task task = taskLoader.loadADocTask("question-03.adoc");
         assertPositionsPresentUpTo(task, 'g');
     }
 
     @Test
     public void realLifeQuestion04_KTask() throws IOException {
-        Task task = taskLoader.loadTask("question-04.adoc");
+        Task task = taskLoader.loadADocTask("question-04.adoc");
 
         assertEquals("Q-17-13-02", task.getId());
         assertEquals(2, task.getReachablePoints());
@@ -119,7 +119,7 @@ public class TaskParserTest {
 
     @Test
     public void multiLineQuestion() throws IOException {
-        Task task = taskLoader.loadTask("question-test.adoc");
+        Task task = taskLoader.loadADocTask("question-test.adoc");
         String question = task.getQuestion().getText(Language.DE);
         assertTrue(question.contains("Question-Zeile 1"), "Zeile 1");
         assertTrue(question.contains("Question-Zeile 2"), "Zeile 2");
@@ -128,7 +128,7 @@ public class TaskParserTest {
 
     @Test
     public void multilineOption() throws IOException {
-        Task task = taskLoader.loadTask("question-multilineOption.adoc");
+        Task task = taskLoader.loadADocTask("question-multilineOption.adoc");
         assertEquals("Question-Zeile 1", task.getQuestion().getText(Language.DE));
         String option = task.getPossibleOptions().get(0).getText(Language.DE);
         assertTrue(option.contains("Option Zeile 1"), "Zeile 1");
@@ -138,7 +138,7 @@ public class TaskParserTest {
 
     @Test
     public void explanation() throws IOException {
-        Task task = taskLoader.loadTask("question-explanation.adoc");
+        Task task = taskLoader.loadADocTask("question-explanation.adoc");
         assertNotNull(task.getExplanation());
         assertTrue(task.getExplanation().startsWith("This is an *adoc* explanation."));
         assertTrue(task.getExplanation().contains("useless"));
@@ -147,10 +147,40 @@ public class TaskParserTest {
 
     @Test
     public void optionWithAsciidoc() throws IOException {
-        Task task = taskLoader.loadTask("question-28.adoc");
+        Task task = taskLoader.loadADocTask("question-28.adoc");
         Option option = task.getPossibleOptions().stream().filter( o -> o.getPosition()=='d' ).findFirst().get();
         assertTrue(option.getText().getText(Language.DE).contains("{nbsp}"));
         assertFalse(option.getText().getText(Language.DE).contains("|"));
+    }
+
+    @Test
+    void yaml() throws IOException {
+        Task task = taskLoader.loadYamlTask("question-04.yaml");
+        // Einfache Werte
+        assertEquals("Q-17-13-02", task.getId());
+        assertEquals(2, task.getReachablePoints());
+        assertTrue(task.getExplanation().contains("Things like _reasoning_ or _alternatives_"));
+        assertTrue(task.getExplanation().contains("therefore not **all** parts"));
+        assertEquals(TaskType.CHOOSE, task.getType());
+        assertTrue(task.getQuestion().getText(Language.DE).contains("arbeiten drei Architekt:innen"));
+        assertTrue(task.getQuestion().getText(Language.DE).contains("zweckmäßigen Dokumentation"));
+        assertTrue(task.getQuestion().getText(Language.EN).contains("three architects"));
+        assertTrue(task.getQuestion().getText(Language.EN).contains("achieve a consistent"));
+        // Listen
+        assertEquals("Geeignet", task.getColumnHeaders().get(0).getText(Language.DE));
+        assertEquals("Nicht geeignet", task.getColumnHeaders().get(1).getText(Language.DE));
+        assertEquals("appropriate", task.getColumnHeaders().get(0).getText(Language.EN));
+        assertEquals("not appropriate", task.getColumnHeaders().get(1).getText(Language.EN));
+        // Listen: Options - Stichprobe
+        assertEquals(3, task.getPossibleOptions().size());
+        var optionB = findOptionInTask(task, 'b');
+        assertEquals('b', optionB.getPosition());
+        assertEquals("Für die Dokumentation werden identische Vorlagen verwendet.", optionB.getText(Language.DE));
+        assertEquals("Identical templates are used for the documentation.", optionB.getText(Language.EN));
+        assertTrue(optionB.isCorrect(0));
+        assertFalse(optionB.isCorrect(1));
+        assertEquals(2, optionB.getColumnValues().size());
+        assertEquals("[y, n]", optionB.getColumnValues().toString());
     }
 
 

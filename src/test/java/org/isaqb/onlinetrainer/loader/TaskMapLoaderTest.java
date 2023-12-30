@@ -3,6 +3,7 @@ package org.isaqb.onlinetrainer.loader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,13 +11,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import org.isaqb.onlinetrainer.DataConfiguration;
+import org.isaqb.onlinetrainer.DataConfiguration.QuizConfig;
+import org.isaqb.onlinetrainer.DataConfiguration.UrlTemplateConfig;
 import org.isaqb.onlinetrainer.model.I18NText;
 import org.isaqb.onlinetrainer.model.Language;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskType;
 import org.isaqb.onlinetrainer.model.TaskValidator;
+import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.yaml.Yaml2ModelMapper;
+import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+
+import lombok.SneakyThrows;
 
 public class TaskMapLoaderTest {
 
@@ -30,7 +41,7 @@ public class TaskMapLoaderTest {
     @Nested
     public class Validate {
 
-        TaskMapLoader loader = new TaskMapLoader(null, null, new TaskValidator(), null);
+        TaskMapLoader loader = new TaskMapLoader( null, new TaskValidator(), null, null, null);
 
         @Test
         public void valid() {
@@ -71,7 +82,12 @@ public class TaskMapLoaderTest {
     @Nested
     public class LoadTasks {
 
-        TaskMapLoader loader = new TaskMapLoader(null, null, null, null);
+        TaskMapLoader loader;
+
+        @BeforeEach
+        void init() {
+            loader = new TaskMapLoader(null, null, null, null, null);
+        }
 
         @Test
         public void noErrors() {
@@ -117,6 +133,62 @@ public class TaskMapLoaderTest {
             msg.assertNextContains("  -- mock-2");
         }
 
+        @Test
+        @SneakyThrows
+        public void loadExistingTasks() {
+            String topic = "test";
+            loader = new TaskMapLoader(
+                new ConfigBuilder()
+                    .withTaskFile(topic, new File("src/test/resources/ParserTest/question-01.adoc"))
+                    .withTaskFile(topic, new File("src/test/resources/ParserTest/question-04.yaml"))
+                    .build(),
+                new TaskValidator(),
+                new UrlLoader(),
+                new AsciidocTaskParser(),
+                new YamlTaskParser(Mappers.getMapper(Yaml2ModelMapper.class))
+            );
+
+            var tasks = loader.loadTasks();
+            var x = tasks.getTasks().get(topic);
+
+            System.out.println(x.get(0));
+            System.out.println();
+            System.out.println(x.get(1));
+
+            assertEquals(2, tasks.getTasks().get(topic).size());
+        }
+    }
+
+
+    class ConfigBuilder {
+
+        private DataConfiguration config;
+
+        public ConfigBuilder() {
+            config = new DataConfiguration();
+            config.setTasks(new HashMap<>());
+        }
+
+        public ConfigBuilder withTaskFile(String topic, File resource) {
+            if (!config.getTasks().containsKey(topic)) {
+                config.getTasks().put(topic, new QuizConfig());
+            }
+            config.getTasks().get(topic).getUrls().add(urlTemplate(resource));
+            return this;
+        }
+
+        @SneakyThrows
+        private UrlTemplateConfig urlTemplate(File resource) {
+            UrlTemplateConfig cfg = new UrlTemplateConfig();
+            cfg.setFrom(1);
+            cfg.setTo(1);
+            cfg.setUrlTemplate(resource.toURI().toURL().toString());
+            return cfg;
+        }
+
+        public DataConfiguration build() {
+            return config;
+        }
     }
 
 

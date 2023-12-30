@@ -1,4 +1,4 @@
-package org.isaqb.onlinetrainer.parser;
+package org.isaqb.onlinetrainer.taskparser.asciidoc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,11 @@ import org.isaqb.onlinetrainer.model.Language;
 import org.isaqb.onlinetrainer.model.Option;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskType;
+import org.isaqb.onlinetrainer.taskparser.TaskParser;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TaskParser {
+public class AsciidocTaskParser implements TaskParser {
 
     private Task task;
     private TagLanguage currentLanguage;
@@ -44,7 +45,8 @@ public class TaskParser {
     }
 
 
-    public Task parseADoc(String adocSource) {
+    @Override
+    public Task parseContent(String adocSource) {
         state = TaskParserState.START;
         task = new Task();
         task.setQuestion(new I18NText());

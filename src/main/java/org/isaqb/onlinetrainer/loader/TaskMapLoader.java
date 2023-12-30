@@ -12,22 +12,27 @@ import org.isaqb.onlinetrainer.DataConfiguration.UrlTemplateConfig;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskMap;
 import org.isaqb.onlinetrainer.model.TaskValidator;
-import org.isaqb.onlinetrainer.parser.TaskParser;
+import org.isaqb.onlinetrainer.taskparser.TaskParser;
+import org.isaqb.onlinetrainer.taskparser.TaskParserChain;
+import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class TaskMapLoader {
 
-    private DataConfiguration config;
-    private TaskParser taskParser;
-    private TaskValidator validator;
-    private Loader loader;
+    private final DataConfiguration config;
+    private final TaskValidator validator;
+    private final Loader loader;
+
+    private final AsciidocTaskParser adocParser;
+    private final YamlTaskParser yamlParser;
 
     @Bean
     public TaskMap loadTasks() {
@@ -40,14 +45,14 @@ public class TaskMapLoader {
                 .flatMap(Collection::stream)
                 .sorted()
                 .distinct()
-                .map(loader::loadAsString)
+                .map(this::url2task)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(taskParser::parseADoc)
                 .map( t -> validate(t, errorMap) )
                 .toList();
             if (!tasks.isEmpty()) {
                 taskMap.getTasks().put(topic, tasks);
+                log.info("Task topic '{}' configured with {} tasks.", topic, tasks.size());
             } else {
                 log.error("Task topic '{}' configured without any tasks.", topic);
             }
@@ -55,7 +60,24 @@ public class TaskMapLoader {
         printErrors(errorMap);
         return taskMap;
     }
-    
+
+    private Optional<Task> url2task(String url) {
+        TaskParser parser = guessParser(url);
+        log.debug("parse {} with {}", url, parser.getClass().getSimpleName());
+        return loader
+            .loadAsString(url)
+            .map(parser::parseContent);
+    }
+
+    private TaskParser guessParser(String url) {
+        String suffix = url.substring(url.lastIndexOf('.')+1);
+        return switch (suffix) {
+            case "adoc" -> adocParser;
+            case "yaml" -> yamlParser;
+            default -> new TaskParserChain(yamlParser, adocParser);
+        };
+    }
+
     protected Task validate(Task task, Map<String, List<String>> errorMap) {
         var errors = validator.validate(task);
         var key = task.getId() != null

@@ -40,7 +40,7 @@ public class AsciidocReader {
 
 
     public String toHtml(String languageSpecificADoc) {
-        return doctor.convert(languageSpecificADoc, Options.builder()
+        return languageSpecificADoc == null ? null : doctor.convert(languageSpecificADoc, Options.builder()
             .backend("html5")
             .compact(true)
             .toFile(false)

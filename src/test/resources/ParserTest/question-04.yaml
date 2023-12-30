@@ -1,0 +1,36 @@
+id: Q-17-13-02
+type: K
+reachablePoints: 2
+question:
+    DE: |
+        Bei Ihrem Projekt arbeiten drei Architekt:innen und sieben Entwickler:innen an der Dokumentation der Softwarearchitektur. 
+        Welche Methoden eignen sich zur GewÃ¤hrleistung einer konsistenten und zweckmäßigen Dokumentation und welche nicht?
+    EN: |
+        In your project, three architects and seven developers are working on the documentation of the software architecture.
+        Which methods are appropriate in order to achieve a consistent and adequate documentation, and which are not?
+explanation: |
+    Things like _reasoning_ or _alternatives_ won't be contained in code, but need to be included in documentation,
+    therefore not **all** parts of documentation can be extracted from source code.
+columnHeaders:
+    DE:
+      - Geeignet
+      - Nicht geeignet
+    EN:
+      - appropriate
+      - not appropriate
+possibleOptions:
+  - position: a
+    text:
+      DE: Die/der leitende Architekt:in koordiniert die Erstellung der Dokumentation.
+      EN: The lead architect coordinates the creation of the documentation.
+    columnValues: y,n
+  - position: b
+    text:
+      DE: Für die Dokumentation werden identische Vorlagen verwendet.
+      EN: Identical templates are used for the documentation.
+    columnValues: y,n
+  - position: c
+    text:
+      DE: Alle Teile der Dokumentation werden automatisch aus dem Quellcode extrahiert.
+      EN: All parts of the documentation are automatically extracted from the source code.
+    columnValues: n,y

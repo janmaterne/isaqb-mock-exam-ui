@@ -1,4 +1,4 @@
-package org.isaqb.onlinetrainer.parser;
+package org.isaqb.onlinetrainer.taskparser.asciidoc;
 
 public enum TaskParserState {
 
