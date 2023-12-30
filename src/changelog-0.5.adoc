@@ -6,7 +6,9 @@ Major improvements
 * Allow to skip (default) task definitions.
 
 Fixes
-
+* Deliver flag graphics as EN-graphic is not available at the
+  used URL at Wikimedia any more. Downloaded graphic from Wikimedia to
+  internal source repository.
 
 Minor changes
 * Switch from Gradle to Maven
