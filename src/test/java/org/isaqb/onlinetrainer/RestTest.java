@@ -224,7 +224,7 @@ public class RestTest {
     }
 
 
-
+    @SuppressWarnings("unchecked")
     private List<String> filter(String json, String jsonPath) {
         var values = JsonPath.compile(jsonPath).read(json);
         return (List<String>) values;
