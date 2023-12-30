@@ -2,9 +2,10 @@
 
 Major improvements
 * store statistics: how often are exams processed?
+* Support YAML additional to ADOC for defining tasks.
 
 Fixes
 
 
 Minor changes
-
+* Switch from Gradle to Maven
