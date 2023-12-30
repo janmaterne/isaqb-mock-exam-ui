@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.TreeSet;
 
 import org.isaqb.onlinetrainer.DataConfiguration;
-import org.isaqb.onlinetrainer.DataConfiguration.UrlTemplateConfig;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskMap;
 import org.isaqb.onlinetrainer.model.TaskValidator;
@@ -40,9 +39,7 @@ public class TaskMapLoader {
         var errorMap = new HashMap<String,List<String>>();
         for(var entry : config.getTasks().entrySet()) {
             String topic = entry.getKey();
-            var tasks = entry.getValue().getUrls().stream()
-                .map(UrlTemplateConfig::generateUrls)
-                .flatMap(Collection::stream)
+            var tasks = entry.getValue().generateUrls()
                 .sorted()
                 .distinct()
                 .map(this::url2task)

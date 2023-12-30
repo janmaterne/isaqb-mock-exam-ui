@@ -1,10 +1,12 @@
 package org.isaqb.onlinetrainer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -34,9 +36,14 @@ public class DataConfiguration {
         private Map<Language, String> name;
         private List<UrlTemplateConfig> urls = new ArrayList<>();
         private List<String> refs;
+        private boolean skip = false;
 
         public boolean resolveRequires() {
             return refs != null && !refs.isEmpty();
+        }
+        
+        public Stream<String> generateUrls() {
+        	return skip ? Stream.empty() : urls.stream().map(UrlTemplateConfig::generateUrls).flatMap(Collection::stream); 
         }
     }
 

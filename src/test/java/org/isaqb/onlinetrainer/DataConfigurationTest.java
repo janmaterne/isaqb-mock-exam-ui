@@ -1,6 +1,7 @@
 package org.isaqb.onlinetrainer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,6 +54,15 @@ public class DataConfigurationTest {
         assertEquals(30, conf.getRequiredPoints());
         assertEquals(60, conf.getMaxTimeInMinutes());
         assertEquals("foundation", conf.getTaskRefs().get(0));
+    }
+    
+    @Test
+    void skipTask() {
+    	var ddd = config.getTasks().get("ddd");
+    	ddd.setSkip(false);
+    	assertTrue(ddd.generateUrls().count() > 0);
+    	ddd.setSkip(true);
+    	assertFalse(ddd.generateUrls().count() > 0);
     }
 
 

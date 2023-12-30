@@ -19,8 +19,11 @@ tasks:
         name:
             DE: Domain Driven Design
             EN: Domain Driven Design
+        # By default these tasks are loaded. If you want to skip these, set the 'skip' to 'true'. Defaults to 'false'.
+        skip: false
         # Where to find the original AsciiDoc code with the tasks content?
         # A task in this context contains the question, data and possible answers - all are provided in the "question"-docs.
+        # Since 0.5 a yaml format is also supported. The parser is selected according to the suffix (adoc|yaml). 
         urls:
         - url-template: https://raw.githubusercontent.com/janmaterne/isaqb-quiz-questions/master/src/questions/ddd/1-basics/question-{NR}.adoc
           from: 1
