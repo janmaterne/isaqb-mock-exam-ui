@@ -8,7 +8,9 @@ public class BuildInfo {
 	private static final String VERSION = "@project.version@";
 	private static final String BUILD_TIMESTAMP = "@timestamp@";
 	private static final String GIT_COMMIT_SHORTHASH = "@git.commit.id.abbrev@";
-	private static final String GIT_COMMIT_MESSAGE = "@git.commit.message.full@";
+	private static final String GIT_COMMIT_MESSAGE = """
+		@git.commit.message.full@
+	""";
 	private static final String GIT_COMMIT_TSTAMP = "@git.commit.time@";
 
 	public static String getVersion() {
