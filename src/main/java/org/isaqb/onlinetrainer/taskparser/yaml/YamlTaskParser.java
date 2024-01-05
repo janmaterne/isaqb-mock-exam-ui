@@ -5,6 +5,7 @@ import org.isaqb.onlinetrainer.taskparser.TaskParser;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.LoaderOptions;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,7 @@ public class YamlTaskParser implements TaskParser {
 
     @Override
     public Task parseContent(String content) {
-        Yaml yaml = new Yaml(new Constructor(YamlTask.class));
+        Yaml yaml = new Yaml(new Constructor(YamlTask.class, new LoaderOptions()));
         var task = (YamlTask)yaml.load(content);
         return mapper.mapTask(task);
     }

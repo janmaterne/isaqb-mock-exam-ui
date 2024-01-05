@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.isaqb.onlinetrainer.BuildInfo;
 import org.isaqb.onlinetrainer.DataConfiguration;
@@ -94,7 +94,7 @@ public class UiController {
             HttpServletRequest request,
             HttpServletResponse response,
             Model model,
-            @RequestParam("language") String language
+            @RequestParam String language
     ) {
 
         new CookieHelper(request, response, base64).deleteAllCookies();
@@ -106,8 +106,8 @@ public class UiController {
         model.addAttribute("html", introductionLoader.getHtml(lang));
         model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
         model.addAttribute("howToUse", howToUse.getText(lang));
-        model.addAttribute("appversion", String.format(
-            "Version %s - Build %s - Start %s", 
+        model.addAttribute("appversion", 
+            "Version %s - Build %s - Start %s".formatted(
             BuildInfo.getVersion(), BuildInfo.getBuildTimestamp(), startTime
         ));
         model.addAttribute("quizOptions", possibleQuizOptions(lang));
@@ -137,7 +137,7 @@ public class UiController {
             HttpServletResponse response,
             Model model,
             @RequestParam(name = "language", required = false) String langParam,
-            @CookieValue(name = "language", required = false) String language,
+            @CookieValue(required = false) String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson,
             @RequestBody(required = false) MultiValueMap<String, String> formData
     ) {
@@ -242,7 +242,7 @@ public class UiController {
             HttpServletResponse response,
             Model model,
             Base64Handler base64,
-            @CookieValue("language") String language,
+            @CookieValue String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64
     ) {
         Exam exam = examHttpAdapter.from(request);
@@ -266,7 +266,7 @@ public class UiController {
     public String resultDetails(
             HttpServletRequest request,
             Model model,
-            @CookieValue("language") String language,
+            @CookieValue String language,
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJsonBase64,
             @CookieValue("result") String resultJsonBase64
     ) {

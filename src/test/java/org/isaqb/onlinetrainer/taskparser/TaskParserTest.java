@@ -16,12 +16,12 @@ import org.isaqb.onlinetrainer.model.TaskType;
 import org.isaqb.onlinetrainer.testutil.TaskLoader4Test;
 import org.junit.jupiter.api.Test;
 
-public class TaskParserTest {
+class TaskParserTest {
 
     private static TaskLoader4Test taskLoader = TaskLoader4Test.create("ParserTest");
 
     @Test
-    public void realLifeQuestion01_ATask() throws IOException {
+    void realLifeQuestion01_ATask() throws IOException {
         // Original document copied from
         // https://raw.githubusercontent.com/isaqb-org/examination-foundation/master/raw/mock_exam/docs/questions/question-01.adoc
         Task task = taskLoader.loadADocTask("question-01.adoc");
@@ -67,7 +67,7 @@ public class TaskParserTest {
     }
 
     @Test
-    public void realLifeQuestion02_PTask() throws IOException {
+    void realLifeQuestion02_PTask() throws IOException {
         Task task = taskLoader.loadADocTask("question-02.adoc");
 
         assertEquals("Q-20-04-02", task.getId());
@@ -86,13 +86,13 @@ public class TaskParserTest {
     }
 
     @Test
-    public void realLifeQuestion03() throws IOException {
+    void realLifeQuestion03() throws IOException {
         Task task = taskLoader.loadADocTask("question-03.adoc");
         assertPositionsPresentUpTo(task, 'g');
     }
 
     @Test
-    public void realLifeQuestion04_KTask() throws IOException {
+    void realLifeQuestion04_KTask() throws IOException {
         Task task = taskLoader.loadADocTask("question-04.adoc");
 
         assertEquals("Q-17-13-02", task.getId());
@@ -118,7 +118,7 @@ public class TaskParserTest {
     }
 
     @Test
-    public void multiLineQuestion() throws IOException {
+    void multiLineQuestion() throws IOException {
         Task task = taskLoader.loadADocTask("question-test.adoc");
         String question = task.getQuestion().getText(Language.DE);
         assertTrue(question.contains("Question-Zeile 1"), "Zeile 1");
@@ -127,7 +127,7 @@ public class TaskParserTest {
     }
 
     @Test
-    public void multilineOption() throws IOException {
+    void multilineOption() throws IOException {
         Task task = taskLoader.loadADocTask("question-multilineOption.adoc");
         assertEquals("Question-Zeile 1", task.getQuestion().getText(Language.DE));
         String option = task.getPossibleOptions().get(0).getText(Language.DE);
@@ -137,7 +137,7 @@ public class TaskParserTest {
     }
 
     @Test
-    public void explanation() throws IOException {
+    void explanation() throws IOException {
         Task task = taskLoader.loadADocTask("question-explanation.adoc");
         assertNotNull(task.getExplanation());
         assertTrue(task.getExplanation().startsWith("This is an *adoc* explanation."));
@@ -146,7 +146,7 @@ public class TaskParserTest {
     }
 
     @Test
-    public void optionWithAsciidoc() throws IOException {
+    void optionWithAsciidoc() throws IOException {
         Task task = taskLoader.loadADocTask("question-28.adoc");
         Option option = task.getPossibleOptions().stream().filter( o -> o.getPosition()=='d' ).findFirst().get();
         assertTrue(option.getText().getText(Language.DE).contains("{nbsp}"));

@@ -2,9 +2,9 @@ package org.isaqb.onlinetrainer.cache;
 
 import java.time.Instant;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

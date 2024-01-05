@@ -9,28 +9,25 @@ import org.isaqb.onlinetrainer.DataConfiguration.UrlTemplateConfig;
 import org.isaqb.onlinetrainer.model.Language;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class)
+@SpringJUnitConfig(initializers = ConfigDataApplicationContextInitializer.class)
 @EnableConfigurationProperties(DataConfiguration.class)
-public class DataConfigurationTest {
+class DataConfigurationTest {
 
     @Autowired
     private DataConfiguration config;
 
     @Test
-    public void yamlInjected() {
+    void yamlInjected() {
         assertNotNull(config);
     }
 
     @Test
-    public void simpleTasks() {
+    void simpleTasks() {
         var ddd = config.getTasks().get("ddd");
         assertEquals("Domain Driven Design", ddd.getName().get(Language.DE));
         assertEquals(1, ddd.getUrls().size());
@@ -41,14 +38,14 @@ public class DataConfigurationTest {
     }
 
     @Test
-    public void resolveTaskRefs() {
+    void resolveTaskRefs() {
         var conf = config.getTasks().get("foundation");
         assertTrue(conf.getRefs().isEmpty(), () -> conf.toString());
         assertEquals(4, conf.getUrls().size(), () -> conf.toString());
     }
 
     @Test
-    public void examConfig() {
+    void examConfig() {
         var conf = config.getExams().get("mock");
         assertEquals("Foundation Level Mock Prüfung", conf.getName().get(Language.DE));
         assertEquals(30, conf.getRequiredPoints());
@@ -66,12 +63,11 @@ public class DataConfigurationTest {
     }
 
 
-
     @Nested
-    public class DataConfiguration_UrlTemplateConfig {
+    class DataConfiguration_UrlTemplateConfig {
 
         @Test
-        public void remoteUrls() {
+        void remoteUrls() {
             UrlTemplateConfig cfg = new UrlTemplateConfig()
                 .setUrlTemplate("http://question-{NR}.adoc")
                 .setFrom(9)

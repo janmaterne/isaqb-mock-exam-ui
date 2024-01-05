@@ -37,14 +37,13 @@ public class TaskMapLoaderTest {
     }
 
 
-
     @Nested
-    public class Validate {
+    class Validate {
 
         TaskMapLoader loader = new TaskMapLoader( null, new TaskValidator(), null, null, null);
 
         @Test
-        public void valid() {
+        void valid() {
             Task task = createTask();
             Map<String, List<String>> errorMap = new HashMap<>();
             Task validated = loader.validate(task, errorMap);
@@ -57,7 +56,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void invalid() {
+        void invalid() {
             Task task = createTask();
             task.setQuestion(new I18NText());
             Map<String, List<String>> errorMap = new HashMap<>();
@@ -67,7 +66,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void invalidIdMissing() {
+        void invalidIdMissing() {
             Task task = createTask();
             task.setId(null);
             Map<String, List<String>> errorMap = new HashMap<>();
@@ -78,9 +77,8 @@ public class TaskMapLoaderTest {
     }
 
 
-
     @Nested
-    public class LoadTasks {
+    class LoadTasks {
 
         TaskMapLoader loader;
 
@@ -90,13 +88,13 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void noErrors() {
+        void noErrors() {
             var msg = loader.errors2string(new HashMap<>());
             assertTrue(msg.isEmpty());
         }
 
         @Test
-        public void error_1topic_1error() {
+        void error_1topic_1error() {
             var errors = Map.of("ddd", Arrays.asList("ddd-1"));
             var msg = ErrorQueue.of(loader, errors);
             msg.assertCountIs(3);
@@ -106,7 +104,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void error_1topic_2errors() {
+        void error_1topic_2errors() {
             var errors = Map.of("ddd", Arrays.asList("ddd-1", "ddd-2"));
             var msg = ErrorQueue.of(loader, errors);
             msg.assertCountIs(4);
@@ -117,7 +115,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void error_2topic_2errors() {
+        void error_2topic_2errors() {
             var errors = Map.of(
                 "ddd", Arrays.asList("ddd-1", "ddd-2"),
                 "mock", Arrays.asList("mock-1", "mock-2")
@@ -135,7 +133,7 @@ public class TaskMapLoaderTest {
 
         @Test
         @SneakyThrows
-        public void loadExistingTasks() {
+        void loadExistingTasks() {
             String topic = "test";
             loader = new TaskMapLoader(
                 new ConfigBuilder()

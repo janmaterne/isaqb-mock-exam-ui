@@ -18,7 +18,7 @@ public class ExamFactoryTest {
     @Nested
     class MockExam {
         @Test
-        public void standard() {
+        void standard() {
             var exam = standardFactoryBuilder().build().mockExam();
             assertEquals(39, exam.getTasks().size());
             assertEquals(0,  exam.getTasks().stream()
@@ -33,7 +33,7 @@ public class ExamFactoryTest {
     @Nested
     class ExamByIds {
         @Test
-        public void standard() {
+        void standard() {
             var exam = standardFactoryBuilder().build()
                 .examByQuestionIds("ddd-01,ddd-02");
             assertEquals(2, exam.getTasks().size());
@@ -43,7 +43,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void idsFromMultipleTopics() {
+        void idsFromMultipleTopics() {
             var exam = standardFactoryBuilder().build()
                 .examByQuestionIds("mock-01,ddd-02,adoc-03");
             assertEquals(3, exam.getTasks().size());
@@ -54,7 +54,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void notExistentId() {
+        void notExistentId() {
             var exam = standardFactoryBuilder().build().examByQuestionIds("ddd-99");
             assertEquals(0, exam.getTasks().size());
         }
@@ -66,7 +66,7 @@ public class ExamFactoryTest {
     class ExamByTopic {
 
         @Test
-        public void standard() {
+        void standard() {
             var exam = standardFactoryBuilder().build().examByTopic("adoc");
             assertEquals(5, exam.getTasks().size());
             assertEquals(0,  exam.getTasks().stream()
@@ -76,7 +76,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void changedMaxSize() {
+        void changedMaxSize() {
             var exam = standardFactoryBuilder()
                 .maxNumOfQuestions(3)
                 .build()
@@ -89,7 +89,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void maxGreaterThanNumberOfQuestions() {
+        void maxGreaterThanNumberOfQuestions() {
             var exam = standardFactoryBuilder()
                 .maxNumOfQuestions(100)
                 .build()
@@ -102,7 +102,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void allTopics() {
+        void allTopics() {
             var exam = new FactoryBuilder()
                 .task("mock", 1)
                 .task("ddd", 1)
@@ -118,7 +118,7 @@ public class ExamFactoryTest {
         }
 
         @Test
-        public void notExistentTopic() {
+        void notExistentTopic() {
             var exam = standardFactoryBuilder().build().examByTopic("not-existent");
             assertEquals(0, exam.getTasks().size());
         }
@@ -158,7 +158,7 @@ public class ExamFactoryTest {
             exam(topic);
             List<Task> list = tasks.computeIfAbsent(topic, (s) -> new ArrayList<Task>());
             IntStream.rangeClosed(1, count)
-                .mapToObj( i -> String.format("%s-%02d", topic, i) )
+                .mapToObj( i -> "%s-%02d".formatted(topic, i) )
                 .map(this::task)
                 .forEach(list::add);
             return this;

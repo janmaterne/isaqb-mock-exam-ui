@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 public class UrlLoaderTest {
 
     @Nested
-    public class LoadAsString {
+    class LoadAsString {
         @Test
-        public void ok() {
+        void ok() {
             String remoteUrl = "https://raw.githubusercontent.com/isaqb-org/examination-foundation/master/raw/mock_exam/docs/questions/question-01.adoc";
             Optional<String> opt = new UrlLoader().loadAsString(remoteUrl);
             assertTrue(opt.isPresent());
@@ -21,7 +21,7 @@ public class UrlLoaderTest {
         }
 
         @Test
-        public void notLoaded() {
+        void notLoaded() {
             String remoteUrl = "https://raw.githubusercontent.com/isaqb-org/examination-foundation/master/raw/mock_exam/docs/questions/question-0X1.adoc";
             Optional<String> opt = new UrlLoader().loadAsString(remoteUrl);
             assertFalse(opt.isPresent());

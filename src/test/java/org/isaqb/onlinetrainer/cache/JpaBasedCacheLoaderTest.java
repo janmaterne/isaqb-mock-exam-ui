@@ -35,36 +35,34 @@ public class JpaBasedCacheLoaderTest {
     }
 
 
-
     @Nested
-    public class UpdateRequired {
+    class UpdateRequired {
 
         @Test
-        public void noTimestamp() {
+        void noTimestamp() {
             CacheEntry entry = new CacheEntry();
             assertTrue(cache().updateRequired(entry));
         }
 
         @Test
-        public void tooOld() {
+        void tooOld() {
             CacheEntry entry = new CacheEntry().setSaved(Instant.now().minus(10, ChronoUnit.DAYS));
             assertTrue(cache().updateRequired(entry));
         }
 
         @Test
-        public void actual() {
+        void actual() {
             CacheEntry entry = new CacheEntry().setSaved(Instant.now());
             assertFalse(cache().updateRequired(entry));
         }
     }
 
 
-
     @Nested
-    public class UpdateCache {
+    class UpdateCache {
 
         @Test
-        public void noContentLoaded() {
+        void noContentLoaded() {
             when(delegate.loadAsString(anyString()))
                 .thenReturn(Optional.empty());
             cache().updateCache("url");
@@ -73,7 +71,7 @@ public class JpaBasedCacheLoaderTest {
         }
 
         @Test
-        public void contentLoaded() {
+        void contentLoaded() {
             when(delegate.loadAsString(anyString()))
                 .thenReturn(Optional.of("content"));
             cache().updateCache("url");
@@ -82,7 +80,7 @@ public class JpaBasedCacheLoaderTest {
         }
 
         @Test
-        public void timestampSet() {
+        void timestampSet() {
             when(delegate.loadAsString(anyString()))
                 .thenReturn(Optional.of("content"));
             repository = mock(MockingRepository.class);
@@ -106,12 +104,11 @@ public class JpaBasedCacheLoaderTest {
     }
 
 
-
     @Nested
-    public class LoadAsString {
+    class LoadAsString {
 
         @Test
-        public void noCachedValue() {
+        void noCachedValue() {
             when(repository.findByUrl(anyString()))
                 .thenReturn(Optional.empty());
             cache().loadAsString("url");
@@ -119,7 +116,7 @@ public class JpaBasedCacheLoaderTest {
         }
 
         @Test
-        public void cachedValueWithoutTimestamp() {
+        void cachedValueWithoutTimestamp() {
             when(repository.findByUrl(anyString()))
                 .thenReturn(Optional.of(new CacheEntry()));
             cache().loadAsString("url");
@@ -127,7 +124,7 @@ public class JpaBasedCacheLoaderTest {
         }
 
         @Test
-        public void cachedValueTooOld() {
+        void cachedValueTooOld() {
             when(repository.findByUrl(anyString()))
                 .thenReturn(Optional.of(new CacheEntry().setSaved(Instant.now().minus(10, ChronoUnit.DAYS))));
             cache().loadAsString("url");
@@ -135,7 +132,7 @@ public class JpaBasedCacheLoaderTest {
         }
 
         @Test
-        public void cachedValueActual() {
+        void cachedValueActual() {
             when(repository.findByUrl(anyString()))
                 .thenReturn(Optional.of(new CacheEntry().setSaved(Instant.now())));
             cache().loadAsString("url");

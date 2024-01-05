@@ -30,7 +30,7 @@ import org.mapstruct.factory.Mappers;
 public class TaskMapLoaderTest {
 
     @Nested
-    public class Errors2String {
+    class Errors2String {
 
         // Dummy class to make the method testable.
         class SystemUnderTest extends TaskMapLoader {
@@ -43,14 +43,14 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void noErrors() {
+        void noErrors() {
             Map<String, List<String>> errorMap = Map.of();
             var error = new SystemUnderTest().test(errorMap);
             assertTrue(error.isBlank());
         }
 
         @Test
-        public void oneTopicOneError() {
+        void oneTopicOneError() {
             Map<String, List<String>> errorMap = Map.of(
                 "topic", List.of("error1")
             );
@@ -62,7 +62,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void oneTopicMultipleError() {
+        void oneTopicMultipleError() {
             Map<String, List<String>> errorMap = Map.of(
                 "topic", List.of("error1", "error2")
             );
@@ -75,7 +75,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void multipleTopicsWithErrors() {
+        void multipleTopicsWithErrors() {
             Map<String, List<String>> errorMap = Map.of(
                 "topic1", List.of("error1"),
                 "topic2", List.of("error2")
@@ -91,9 +91,8 @@ public class TaskMapLoaderTest {
     }
 
 
-
     @Nested
-    public class Validate {
+    class Validate {
 
         class SystemUnderTest extends TaskMapLoader {
             public SystemUnderTest() {
@@ -105,7 +104,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void noErrors() {
+        void noErrors() {
             Map<String, List<String>> errorMap = new HashMap<>();
             Task task = validTask();
             Task rv = new SystemUnderTest().test(task, errorMap);
@@ -114,7 +113,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void withError() {
+        void withError() {
             Map<String, List<String>> errorMap = new HashMap<>();
             Task task = validTask();
             task.setReachablePoints(0);
@@ -125,7 +124,7 @@ public class TaskMapLoaderTest {
         }
 
         @Test
-        public void noId() {
+        void noId() {
             Map<String, List<String>> errorMap = new HashMap<>();
             Task task = validTask();
             task.setId(null);
@@ -145,9 +144,8 @@ public class TaskMapLoaderTest {
     }
 
 
-
     @Nested
-    public class LoadTasks {
+    class LoadTasks {
 
         class SystemUnderTest extends TaskMapLoader {
             public SystemUnderTest(DataConfiguration config) {
@@ -158,9 +156,10 @@ public class TaskMapLoaderTest {
             }
         }
 
+        // nicht hinterm Proxy
         @Test
-        @Disabled // nicht hinterm Proxy
-        public void simple() {
+        @Disabled
+        void simple() {
             DataConfiguration config = new DataConfiguration();
             config.setTasks(Map.of(
                 "testTopic", new QuizConfig().setUrls(List.of(

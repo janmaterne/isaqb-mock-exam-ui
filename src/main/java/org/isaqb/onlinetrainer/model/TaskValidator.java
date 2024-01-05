@@ -30,7 +30,7 @@ public class TaskValidator {
 
     private Optional<String> assertFieldNotEmpty(Task task, Function<Task,Object> fieldAccessor, String fieldName) {
         return isEmpty(fieldAccessor.apply(task))
-                ? Optional.of(String.format("'%s' is null or empty", fieldName))
+                ? Optional.of("'%s' is null or empty".formatted(fieldName))
                 : Optional.empty();
     }
 
@@ -38,8 +38,7 @@ public class TaskValidator {
         if (value == null) {
             return true;
         }
-        if (value instanceof String) {
-        	String asString = (String) value;
+        if (value instanceof String asString) {
             if (asString.isBlank()) {
                 return true;
             }

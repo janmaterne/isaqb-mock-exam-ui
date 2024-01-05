@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class JsonMapperTest {
+class JsonMapperTest {
 
     @Autowired
     private JsonMapper mapper;
 
     @Test
-    public void answer() {
+    void answer() {
         TaskAnswer original = new TaskAnswer();
         original.setFlagged(true).setTaskNumber(42);
         original.setOptionSelections(Map.of(
@@ -31,7 +31,7 @@ public class JsonMapperTest {
     }
 
     @Test
-    public void calculationResult() {
+    void calculationResult() {
         CalculationResult calcResult = new CalculationResult();
         calcResult.points = Map.of(
             "task-id-1", 3.2,

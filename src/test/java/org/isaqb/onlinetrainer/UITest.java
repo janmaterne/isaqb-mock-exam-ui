@@ -13,13 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UITest {
+class UITest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
-	@Test
-	public void indexContainsTwoLanguages() throws Exception {
+
+    @Test
+    void indexContainsTwoLanguages() throws Exception {
 		mockMvc
 			.perform(get("/"))
 			.andDo(print())

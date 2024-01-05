@@ -93,7 +93,7 @@ public class ExamFactory {
             taskRefs.forEach( ref -> examTasks.addAll(tasks.get(ref)));
             return Exam.createExam(examConfig.getRequiredPoints(), examTasks).setName(name);
         } else {
-        	throw new RuntimeException(String.format("Kein Examen mit Namen '%s' gefunden.", name));
+        	throw new RuntimeException("Kein Examen mit Namen '%s' gefunden.".formatted(name));
         }
     }
 

@@ -10,22 +10,22 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-public class OptionTest {
+class OptionTest {
 
-	@Test
-	public void findNone() {
+    @Test
+    void findNone() {
 		assertTrue(Option.findByPosition(options(), 'z').isEmpty());
 	}
-	
-	@Test
-	public void findOne() {
+
+    @Test
+    void findOne() {
 		assertEquals(1, Option.findByPosition(options(), 'a').size());
 		assertEquals("Eins", Option.findByPosition(options(), 'a').get(0).getText(DE));
 		assertEquals("Eins", Option.findByPosition(options(), 'a').get(0).getText(DE));
 	}
-	
-	@Test
-	public void findSeveral() {
+
+    @Test
+    void findSeveral() {
 		assertEquals(2, Option.findByPosition(options(), 'a', 'b').size());
 	}
 	

@@ -23,8 +23,10 @@ public class Config {
     public static AutoloadJS create(@Value("${inject-autoload-js}") boolean injectAutoloadJS) {
         return springDevToolsPresent() && injectAutoloadJS
             ? new AutoloadJS(
-                "<!-- Autoreload on local file change -->" +
-                "<script type=\"text/javascript\" src=\"https://livejs.com/live.js\"></script>")
+                """
+                <!-- Autoreload on local file change -->\
+                <script type="text/javascript" src="https://livejs.com/live.js"></script>\
+                """)
             : new AutoloadJS("");
 	}
 

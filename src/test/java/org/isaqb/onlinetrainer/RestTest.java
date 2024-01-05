@@ -22,13 +22,11 @@ import org.isaqb.onlinetrainer.rest.GivenAnswers.AnsweredTask;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -39,7 +37,6 @@ import com.jayway.jsonpath.JsonPath;
 @Disabled("Not ready for public tests")
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@ExtendWith(SpringExtension.class)
 public class RestTest {
 
     @Autowired
@@ -47,9 +44,9 @@ public class RestTest {
 
 
     @Nested
-    public class SupportedLanguages {
+    class SupportedLanguages {
         @Test
-        public void twoLanguagesSupported() throws Exception {
+        void twoLanguagesSupported() throws Exception {
             request()
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -63,18 +60,17 @@ public class RestTest {
     }
 
 
-
     @Nested
-    public class Introduction {
+    class Introduction {
         @Test
-        public void containsMetaData() throws Exception {
+        void containsMetaData() throws Exception {
             request("DE")
                 .andExpect(jsonPath("appVersion", is(BuildInfo.getVersion())))
                 .andExpect(jsonPath("buildTStamp", is(BuildInfo.getBuildTimestamp())));
         }
 
         @Test
-        public void noLanguage() throws Exception {
+        void noLanguage() throws Exception {
             request(null)
 //                .andDo(print())
                 .andExpect(status().is(400))
@@ -82,13 +78,13 @@ public class RestTest {
         }
 
         @Test
-        public void german() throws Exception {
+        void german() throws Exception {
             request("DE")
                 .andExpect(jsonPath("introduction", containsString("Veranschaulichung")));
         }
 
         @Test
-        public void english() throws Exception {
+        void english() throws Exception {
             request("EN")
                 .andExpect(jsonPath("introduction", containsString("Explanations")));
         }
@@ -103,11 +99,10 @@ public class RestTest {
     }
 
 
-
     @Nested
-    public class Start {
+    class Start {
         @Test
-        public void differentQuizzesPerCall() throws Exception {
+        void differentQuizzesPerCall() throws Exception {
             List<TreeSet<String>> results = new ArrayList<>();
             for(int i=0; i<10; i++) {
                 results.add(new TreeSet<>(questionIdsForFoundationQuiz()));
@@ -129,7 +124,7 @@ public class RestTest {
         }
 
         @Test
-        public void mockExam() throws Exception {
+        void mockExam() throws Exception {
             request("mock", null, null)
                 .andDo(print())
                 .andExpect(jsonPath("$.requiredPoints", is(30.0)))
@@ -138,7 +133,7 @@ public class RestTest {
         }
 
         @Test
-        public void returnSameIfNameIsSame() throws Exception {
+        void returnSameIfNameIsSame() throws Exception {
             var first = request("mock", null, null).andReturn().getResponse().getContentAsString();
             for(int i=0; i<10; i++) {
                 assertEquals(first, request("mock", null, null).andReturn().getResponse().getContentAsString());
@@ -161,11 +156,10 @@ public class RestTest {
     }
 
 
-
     @Nested
-    public class Process {
+    class Process {
         @Test
-        public void noAnswersGiven() throws Exception {
+        void noAnswersGiven() throws Exception {
             GivenAnswers givenAnswer = new GivenAnswers(
                 List.of("Q-20-04-18", "Q-20-04-13"),
                 List.of()
@@ -179,7 +173,7 @@ public class RestTest {
         }
 
         @Test
-        public void allWrong() throws Exception {
+        void allWrong() throws Exception {
             GivenAnswers givenAnswer = new GivenAnswers(
                 List.of("Q-20-04-18", "Q-20-04-13"),
                 List.of(
@@ -197,7 +191,7 @@ public class RestTest {
         }
 
         @Test
-        public void allCorrect() throws Exception {
+        void allCorrect() throws Exception {
             GivenAnswers givenAnswer = new GivenAnswers(
                 List.of("Q-20-04-18", "Q-20-04-13"),
                 List.of(

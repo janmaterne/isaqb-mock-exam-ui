@@ -70,8 +70,8 @@ public class UIData {
 
     public String statistik() {
         //TODO Sprache
-        return String.format(
-            "%.2f / %.2f Punkte (%.2f %%)<br>%s",
+        return 
+            "%.2f / %.2f Punkte (%.2f %%)<br>%s".formatted(
             result.totalPoints(), result.pointsMaximum, result.pointsRelative(),
             resultStatement()
         );
@@ -89,8 +89,8 @@ public class UIData {
     }
 
     public String nextTaskLink(int currentTaskNumber) {
-        return String.format(
-            "<a href=\"javascript:changeToQuestion(%d)\">%s</a>%s",
+        return 
+            "<a href=\"javascript:changeToQuestion(%d)\">%s</a>%s".formatted(
             (currentTaskNumber % numberOfTasks()) + 1,
             currentTaskNumber == numberOfTasks()
                 ? data.get(currentLanguage, Key.FIRST_LINK_LABEL)
@@ -98,7 +98,7 @@ public class UIData {
             currentTaskNumber == numberOfTasks()
                 ? " <button type=\"submit\">Berechnen</button>"
                 : ""
-            );
+        );
     }
 
     public int numberOfTasks() {
@@ -197,7 +197,7 @@ public class UIData {
         public String getMenuLabelForResultPage() {
             double maxPoints = task.getReachablePoints();
             String pointLabel = maxPoints < 2 ? "Punkt" : "Punkte";
-            return String.format("Frage %d (%.2f / %.2f %s)", nr, actualPoints(), maxPoints, pointLabel); //TODO
+            return "Frage %d (%.2f / %.2f %s)".formatted(nr, actualPoints(), maxPoints, pointLabel); //TODO
         }
 
         private double actualPoints() {
