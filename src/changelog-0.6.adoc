@@ -1,7 +1,7 @@
 ## Version 0.6
 
 Major improvements
-* 
+* Change from SpringBoot 2.6 to 2.7.
 
 Fixes
 * 
