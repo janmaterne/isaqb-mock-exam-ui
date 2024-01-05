@@ -2,7 +2,6 @@ package org.isaqb.onlinetrainer.model;
 
 public enum TaskType {
 	
-	
 	SINGLE_CHOICE('A'),
 	PICK_FROM_MANY('P'),
 	CHOOSE('K');

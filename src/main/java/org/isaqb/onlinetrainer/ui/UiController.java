@@ -179,11 +179,10 @@ public class UiController {
     }
 
     private String examIdentifier(Exam exam) {
-        String rv = switch (exam.getMode()) {
+        return switch (exam.getMode()) {
             case EXAM -> "examName: " + exam.getName();
             case QUIZ -> "taskIDs: "  + exam.getTasks().stream().map(Task::getId).collect(Collectors.joining(", "));
         };
-        return rv;
     }
 
 

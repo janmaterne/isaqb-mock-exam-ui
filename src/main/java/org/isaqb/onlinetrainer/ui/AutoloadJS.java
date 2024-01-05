@@ -11,9 +11,9 @@ public class AutoloadJS {
 
     public static final String ATTRIBUTE_NAME = "autoReloadJS";
 
-    private final String javascriptCode;
+    private final String htmlScriptTag;
 
     public void injectAutoReloadJS(Model model) {
-        model.addAttribute(ATTRIBUTE_NAME, javascriptCode);
+        model.addAttribute(ATTRIBUTE_NAME, htmlScriptTag);
     }
 }

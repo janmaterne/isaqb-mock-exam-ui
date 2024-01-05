@@ -1,12 +1,10 @@
 package org.isaqb.onlinetrainer;
 
-import java.util.Map;
-
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
@@ -16,16 +14,11 @@ public class MockexamApplication {
     @Value("${spring.h2.console.enabled}")
     private boolean h2ConsoleEnabled;
 
-
-
     public static void main(String[] args) {
 		validateEnvironment();
 		SpringApplication app = new SpringApplication(MockexamApplication.class);
 		// Inject values into the banner.
-		app.setDefaultProperties(Map.of(
-			"app.version", BuildInfo.getVersion(),
-			"app.buildtime", BuildInfo.getBuildTimestamp()
-		));
+		app.setDefaultProperties(BuildInfo.get());
 		app.run(args);
 	}
 

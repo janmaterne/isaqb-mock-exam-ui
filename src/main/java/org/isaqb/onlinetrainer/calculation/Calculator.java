@@ -53,7 +53,6 @@ public class Calculator {
 	}
 	
 	private <T> T first(T first, T second) {
-		System.out.printf("first()%n- %s%n- %s%n%n", first, second);
 		return first;
 	}
 

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Config {
-
+	
     @Bean
     public Loader publishLoader(CacheRepository repo, @Value("${cache.ttl-hours}") int ttlHours) {
         var realLoader = new UrlLoader();

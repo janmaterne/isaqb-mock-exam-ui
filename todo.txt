@@ -43,11 +43,28 @@ Refactor
 
 
 
-Bei Absolvieren eines "normalen" Quizzes funktioniert die Berechnung nicht. Es wird anstelle "foundation-part1" das komplette "foundation" verwendet.
+Bei Absolvieren eines "normalen" Quizzes funktioniert die Berechnung nicht. 
+Es wird anstelle "foundation-part1" das komplette "foundation" verwendet.
 
 
 
 Changelog in der Introduction
+
+
+Persönliches Lehrkonto
+•	explizit anwählen, Cookie löschen
+•	Cookie speichert 
+•	Map: TaskID-AnzahlRichtigBeantwortet
+•	List: Themenfelder
+•	get /personal
+ 
+ 
+Introduction überarbeiten
+•	Einführung in das Werkzeug (aufgeklappt)
+•	Wozu?
+•	Was kann es?
+•	Wie zu bedienen?
+
 
 
 

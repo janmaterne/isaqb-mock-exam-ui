@@ -7,3 +7,5 @@
                                                             
 Version: ${app.version}
 Build: ${app.buildtime}
+Git-TStamp: ${app.git.commit.tstamp}
+Git-SHA: ${app.git.commit.shorthash}

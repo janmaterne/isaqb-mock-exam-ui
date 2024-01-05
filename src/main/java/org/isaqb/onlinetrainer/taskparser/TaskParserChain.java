@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.isaqb.onlinetrainer.model.Task;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TaskParserChain implements TaskParser {
 
     private List<TaskParser> chain = new ArrayList<>();
@@ -26,8 +29,7 @@ public class TaskParserChain implements TaskParser {
         }
         if (!exceptions.isEmpty()) {
             for(var ex : exceptions) {
-                ex.printStackTrace();
-                System.out.println();
+            	log.error(ex.getLocalizedMessage(), ex);
             }
         }
         return null;
