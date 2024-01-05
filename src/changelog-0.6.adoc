@@ -1,10 +1,12 @@
 ## Version 0.6
 
 Major improvements
-* Change from SpringBoot 2.6 to 2.7.
+* Change from SpringBoot 2.6.15 to 3.2.1.
+* Change to Java 21
 
 Fixes
-* 
+* new SnakeYaml needs "LoaderOptions" in Constructor(Class,LoaderOptions)
+* new H2 does not like 'key' or 'value' as column names
 
 Minor changes
-* 
+* update dependencies
