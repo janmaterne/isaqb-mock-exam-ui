@@ -13,8 +13,8 @@ echo Clean
 rd /Q/S target
 
 :build
-rem echo Docker Build 
-rem docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
+echo Docker Build 
+docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
 
 echo Maven Distribution
 call mvn package -Pdistribution
