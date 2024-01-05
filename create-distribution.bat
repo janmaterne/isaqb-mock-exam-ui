@@ -31,6 +31,7 @@ goto end
 
 echo git-tag
 git tag %TSTAMP%
+git tag %APP_VERSION%
 
 echo Publish Git
 git push
@@ -42,8 +43,8 @@ docker push janmaterne/onlinetrainer:%APP_VERSION%
 
 echo Erstelle GitHub Release mit Assets
 rem https://cli.github.com/manual/gh_release_create
-rem gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win32.zip target\onlinetrainer-%APP_VERSION%.jar
-gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win32.zip target\onlinetrainer-%APP_VERSION%.jar
+rem gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win64.zip target\onlinetrainer-%APP_VERSION%.jar
+gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win64.zip target\onlinetrainer-%APP_VERSION%.jar
 
 
 :end
