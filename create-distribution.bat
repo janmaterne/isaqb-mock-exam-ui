@@ -1,4 +1,5 @@
 @echo off
+call mvn generate-sources
 call ".version.bat"
 rem DATE  : dd.MM.yyyy
 rem TSTAMP: HH:MM:ss,SS
