@@ -10,8 +10,32 @@ echo Nutze TSTAMP=%TSTAMP%
 echo APP_VERSION: %APP_VERSION%
 
 
-echo Clean
-rd /Q/S target
+
+set PUBLISH=
+set CLEAN=
+
+:arg-loop
+IF NOT "%1"=="" (
+    IF "%1"=="publish" (
+        SET PUBLISH=true
+    )
+    IF "%1"=="clean" (
+        SET CLEAN=true
+    )
+    SHIFT
+    GOTO :arg-loop
+)
+
+echo publish: %PUBLISH%
+echo clean  : %CLEAN%
+
+
+
+
+if "%CLEAN%"=="true" (
+    echo Clean
+    rd /Q/S target
+)
 
 
 :build
@@ -22,7 +46,7 @@ echo Maven Distribution
 call mvn package -Pdistribution
 
 
-if "%1"=="publish" goto publish
+if "%PUBLISH%"=="true" goto publish
 goto end
 
 
