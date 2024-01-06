@@ -1,0 +1,10 @@
+## Version 0.7
+
+Major improvements
+* 
+
+Fixes
+* 
+
+Minor changes
+* 
