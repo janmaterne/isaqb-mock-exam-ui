@@ -20,6 +20,7 @@ import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskType;
 import org.isaqb.onlinetrainer.model.TaskValidator;
 import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.simple.SimpleTaskParser;
 import org.isaqb.onlinetrainer.taskparser.yaml.Yaml2ModelMapper;
 import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,7 @@ public class TaskMapLoaderTest {
     @Nested
     class Validate {
 
-        TaskMapLoader loader = new TaskMapLoader( null, new TaskValidator(), null, null, null);
+        TaskMapLoader loader = new TaskMapLoader( null, new TaskValidator(), null, null, null, null);
 
         @Test
         void valid() {
@@ -84,7 +85,7 @@ public class TaskMapLoaderTest {
 
         @BeforeEach
         void init() {
-            loader = new TaskMapLoader(null, null, null, null, null);
+            loader = new TaskMapLoader(null, null, null, null, null, null);
         }
 
         @Test
@@ -143,7 +144,8 @@ public class TaskMapLoaderTest {
                 new TaskValidator(),
                 new UrlLoader(),
                 new AsciidocTaskParser(),
-                new YamlTaskParser(Mappers.getMapper(Yaml2ModelMapper.class))
+                new YamlTaskParser(Mappers.getMapper(Yaml2ModelMapper.class)),
+                new SimpleTaskParser()
             );
 
             var tasks = loader.loadTasks();

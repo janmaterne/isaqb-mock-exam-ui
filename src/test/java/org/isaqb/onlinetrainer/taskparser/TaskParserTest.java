@@ -183,6 +183,56 @@ class TaskParserTest {
         assertEquals("[y, n]", optionB.getColumnValues().toString());
     }
 
+    @Test
+    void simple() throws IOException {
+    	Task task = taskLoader.loadSimpleTask("question-simple.txt");
+    	// Header
+    	assertEquals("meine-id", task.getId());
+    	assertEquals(5, task.getReachablePoints());
+    	assertEquals(TaskType.PICK_FROM_MANY, task.getType());
+    	// DE
+    	assertEquals("Dies ist die Frage", task.getQuestion().getText(Language.DE));
+    	assertTrue(task.getExplanation().contains("Erläuterung"));
+    	assertTrue(task.getExplanation().contains("mehrere"));
+    	assertEquals(6, task.getPossibleOptions().size());
+    	var optionA = findOptionInTask(task, 'a');
+    	assertEquals("Falsche Antwort 1", optionA.getText(Language.DE));
+    	assertEquals("n", getColumnValuesForOption(task, 'a'));
+    	assertEquals("y", getColumnValuesForOption(task, 'c'));
+    	assertEquals("y", getColumnValuesForOption(task, 'e'));
+    	// EN
+    	assertTrue(task.getQuestion().getText(Language.EN).startsWith("This is the question"));
+    	assertTrue(task.getExplanation().contains("not internationalized"));
+    	assertEquals("wrong1", optionA.getText(Language.EN));
+    	// special case
+    	var optionF = findOptionInTask(task, 'f');
+    	assertFalse(optionF.isCorrect());
+    	assertEquals("XFalsche Antwort 6", optionF.getText(Language.DE));
+    }
+    
+    @Test
+    void simpleWithDefaults() throws IOException {
+    	Task task = taskLoader.loadSimpleTask("question-simple-defaults.txt");
+    	assertTrue(task.getId().startsWith("hash-"));
+    	assertEquals(1, task.getReachablePoints());
+    	assertEquals(TaskType.PICK_FROM_MANY, task.getType());
+    	assertEquals("Dies ist die Frage", task.getQuestion().getText(Language.DE));
+    	assertTrue(task.getExplanation().contains("Erläuterung"));
+    	assertTrue(task.getExplanation().contains("mehrere"));
+    	assertEquals(5, task.getPossibleOptions().size());
+    	var optionA = findOptionInTask(task, 'a');
+    	assertEquals("Falsche Antwort 1", optionA.getText(Language.DE));
+    	assertEquals("n", getColumnValuesForOption(task, 'a'));
+    	assertEquals("y", getColumnValuesForOption(task, 'c'));
+    	assertEquals("y", getColumnValuesForOption(task, 'e'));
+    }
+    
+    
+    private String getColumnValuesForOption(Task task, char position) {
+    	StringBuilder sb = new StringBuilder();
+    	findOptionInTask(task, position).getColumnValues().forEach(sb::append);
+    	return sb.toString();
+    }
 
 
     private void assertHeaderContains(Task task, String expected) {

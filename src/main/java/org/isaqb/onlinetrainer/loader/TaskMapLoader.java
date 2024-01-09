@@ -14,6 +14,7 @@ import org.isaqb.onlinetrainer.model.TaskValidator;
 import org.isaqb.onlinetrainer.taskparser.TaskParser;
 import org.isaqb.onlinetrainer.taskparser.TaskParserChain;
 import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.simple.SimpleTaskParser;
 import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class TaskMapLoader {
 
     private final AsciidocTaskParser adocParser;
     private final YamlTaskParser yamlParser;
+    private final SimpleTaskParser simpleParser;
 
     @Bean
     public TaskMap loadTasks() {
@@ -53,12 +55,23 @@ public class TaskMapLoader {
             } else {
                 log.error("Task topic '{}' configured without any tasks.", topic);
             }
+            assertIdIsUnique(errorMap, tasks);
         }
         printErrors(errorMap);
         return taskMap;
     }
 
-    private Optional<Task> url2task(String url) {
+    private void assertIdIsUnique(HashMap<String, List<String>> errorMap, List<Task> tasks) {
+    	var idsAll = tasks.stream().map(Task::getId).sorted().toList();
+    	var idsUnique = tasks.stream().map(Task::getId).sorted().distinct().toList();
+    	if (idsAll.size() != idsUnique.size()) {
+    		var diff =  idsAll;
+    		diff.removeAll(idsUnique);
+    		errorMap.put("_", List.of("Duplicate task ids: " + String.join(", ", diff)));
+    	}
+	}
+
+	private Optional<Task> url2task(String url) {
         TaskParser parser = guessParser(url);
         log.debug("parse {} with {}", url, parser.getClass().getSimpleName());
         return loader
@@ -71,7 +84,8 @@ public class TaskMapLoader {
         return switch (suffix) {
             case "adoc" -> adocParser;
             case "yaml" -> yamlParser;
-            default -> new TaskParserChain(yamlParser, adocParser);
+            case "txt" -> simpleParser;
+            default -> new TaskParserChain(yamlParser, simpleParser, adocParser);
         };
     }
 

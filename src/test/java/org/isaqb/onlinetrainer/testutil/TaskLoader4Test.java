@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.taskparser.TaskParserChain;
 import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.simple.SimpleTaskParser;
 import org.isaqb.onlinetrainer.taskparser.yaml.Yaml2ModelMapper;
 import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
 import org.mapstruct.factory.Mappers;
@@ -39,6 +40,11 @@ public class TaskLoader4Test {
         String yamlContent = readResource(resourceName);
         return yamlParser().parseContent(yamlContent);
     }
+
+	public Task loadSimpleTask(String resourceName) throws IOException {
+        String content = readResource(resourceName);
+		return new SimpleTaskParser().parseContent(content);
+	}
 
     public Task loadTask(String resourceName) throws IOException {
         String adocContent = readResource(resourceName);

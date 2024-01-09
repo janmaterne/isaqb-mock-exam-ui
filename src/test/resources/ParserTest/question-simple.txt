@@ -1,0 +1,28 @@
+id: meine-id
+points: 5
+type: P
+***DE***
+Dies ist die Frage
+---
+	Falsche Antwort 1
+	Falsche Antwort 2
+X   Richtige Antwort 3
+	Falsche Antwort 4
+ x	Richtige Antwort 5
+    XFalsche Antwort 6
+---
+Erläuterung mit *AsciiDoc* Auszeichnungen.
+
+Über mehrere Zeilen.
+
+***EN***
+This is the question. Checks are only used from the first language!
+---
+	wrong1
+	wrong2
+	right3
+	wrong4
+    right5
+    wrong6
+  ---  
+Added to explanation as explanation is not internationalized.

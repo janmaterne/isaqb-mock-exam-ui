@@ -1,10 +1,10 @@
 ## Version 0.7
 
 Major improvements
-* 
+* new 'simple' format for defining tasks
 
 Fixes
 * 
 
 Minor changes
-* 
+* checks if task-ids are unique

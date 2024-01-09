@@ -1,0 +1,11 @@
+Dies ist die Frage
+---
+	Falsche Antwort 1
+	Falsche Antwort 2
+X   Richtige Antwort 3
+	Falsche Antwort 4
+x	Richtige Antwort 5
+---
+Erläuterung mit *AsciiDoc* Auszeichnungen.
+
+Über mehrere Zeilen.	

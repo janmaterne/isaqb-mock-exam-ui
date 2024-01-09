@@ -20,6 +20,7 @@ import org.isaqb.onlinetrainer.model.TaskMap;
 import org.isaqb.onlinetrainer.model.TaskType;
 import org.isaqb.onlinetrainer.model.TaskValidator;
 import org.isaqb.onlinetrainer.taskparser.asciidoc.AsciidocTaskParser;
+import org.isaqb.onlinetrainer.taskparser.simple.SimpleTaskParser;
 import org.isaqb.onlinetrainer.taskparser.yaml.Yaml2ModelMapper;
 import org.isaqb.onlinetrainer.taskparser.yaml.YamlTaskParser;
 import org.junit.jupiter.api.Disabled;
@@ -35,7 +36,7 @@ public class TaskMapLoaderTest {
         // Dummy class to make the method testable.
         class SystemUnderTest extends TaskMapLoader {
             public SystemUnderTest() {
-                super(null, null, null, null, null);
+                super(null, null, null, null, null, null);
             }
             public String test(Map<String, List<String>> errorMap) {
                 return errors2string(errorMap);
@@ -96,7 +97,7 @@ public class TaskMapLoaderTest {
 
         class SystemUnderTest extends TaskMapLoader {
             public SystemUnderTest() {
-                super(null, new TaskValidator(), null, null, null);
+                super(null, new TaskValidator(), null, null, null, null);
             }
             public Task test(Task task, Map<String, List<String>> errorMap) {
                 return validate(task, errorMap);
@@ -149,7 +150,7 @@ public class TaskMapLoaderTest {
 
         class SystemUnderTest extends TaskMapLoader {
             public SystemUnderTest(DataConfiguration config) {
-                super(config, new TaskValidator(), new UrlLoader(), new AsciidocTaskParser(), new YamlTaskParser(Mappers.getMapper(Yaml2ModelMapper.class)) );
+                super(config, new TaskValidator(), new UrlLoader(), new AsciidocTaskParser(), new YamlTaskParser(Mappers.getMapper(Yaml2ModelMapper.class)), new SimpleTaskParser() );
             }
             public TaskMap test() {
                 return loadTasks();
