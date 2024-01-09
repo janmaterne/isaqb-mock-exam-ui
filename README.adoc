@@ -4,7 +4,9 @@
 
 === English
 
-Interactive UI for processing the mock foundation exam of the ISAQB
+Interactive UI for processing the mock foundation exam of the ISAQB.
+Interactive UI for doing quizzes.
+
 
 ==== Using it
 
@@ -18,11 +20,11 @@ There are three types of distributions:
 
 The docker image is available on https://hub.docker.com/r/janmaterne/onlinetrainer[DockerHub] while the others are released on https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub].
 
-There is (hopefully ;) a running instance at https://isaqb-onlinetrainer.herokuapp.com/
+// Lost Heroku, so commented out: There is (hopefully ;) a running instance at https://isaqb-onlinetrainer.herokuapp.com
 
 ===== Startable JAR
 
-If you have a Java runtime installed (required Java16+), you could download the JAR and start it as any startable JAR:
+If you have a Java runtime installed (required Java21+), you could download the JAR and start it as any startable JAR:
 `java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar onlinetrainer-{VERSION}.jar`
 Here you have to specify the file encoding, as the application produces UTF-8 characters.
 Additionally you should "open" the Java module system.
@@ -32,7 +34,7 @@ Additionally you should "open" the Java module system.
 You could start the application by starting the docker image:
 `docker run -p 8080:8080 janmaterne/onlinetrainer:latest`
 Here you have to publish port - maybe with changing it `-p 80:8080`.
-After starting the container you could access the application via the specified port on http://localhost:8080.
+After starting the container you could access the application via the specified port on http://localhost:8080 or respectively http://localhost:80 or http://localhost.
 
 ===== Distribution
 
@@ -49,6 +51,7 @@ So opening http://localhost:8080/ should work.
 === German
 
 Interaktives UI für das Üben der Mockprüfung des iSAQB Foundation Level.
+Interaktives UI für die Durchführung von Quizzes.
 
 ==== Nutzung
 
@@ -62,11 +65,11 @@ Es gibt drei Arten der Distribution
 
 Das Docker Image kann von https://hub.docker.com/r/janmaterne/onlinetrainer[DockerHub] bezogen werden während die anderen Artefakte als Releases auf https://github.com/janmaterne/isaqb-mock-exam-ui/releases[GitHub] erhätlich sind.
 
-Eine laufende Instanz ist (hoffentlich ;) unter https://isaqb-onlinetrainer.herokuapp.com/
+// Heroku-Instanz verloren, daher auskommentiert: Eine laufende Instanz ist (hoffentlich ;) unter https://isaqb-onlinetrainer.herokuapp.com
 
 ===== Starbares JAR
 
-Wenn eine Java Laufzeit installiert ist (es wird mindestens ein Java 16 benötigt), kann einfach das JAR heruntergeladen und wie gewohnt gestartet werden:
+Wenn eine Java Laufzeit installiert ist (es wird mindestens ein Java 21 benötigt), kann einfach das JAR heruntergeladen und wie gewohnt gestartet werden:
 `java -Dfile.encoding=UTF-8 --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -jar mockexam-{VERSION}.jar`
 Dabei muss das Encoding gesetzt werden, da die Anwendung UTF-8 Zeichen erzeugt.
 Auch sollte das Java Modulsystem befriedigt werden.
@@ -76,7 +79,7 @@ Auch sollte das Java Modulsystem befriedigt werden.
 Man kann die Anwendung durch per Docker Image starten:
 `docker run -p 8080:8080 janmaterne/onlinetrainer:latest`
 Hier muss der Port veröffentlicht werden - eventuell mit Änderung desselben: `-p 80:8080`.
-Nach dem Start des Containers kann die Anwendung über den spezifizierten Port erreicht werden: http://localhost:8080.
+Nach dem Start des Containers kann die Anwendung über den spezifizierten Port erreicht werden: http://localhost:8080 bzw. http://localhost:80 bzw. http://localhost
 
 ===== Distribution   
 
