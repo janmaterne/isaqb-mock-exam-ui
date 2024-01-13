@@ -42,10 +42,89 @@ After extracting the distribution archive you'll find a start script `run.bat` (
 With this script you could start the application which will open port `8080` for incoming requests from the browser.
 So opening http://localhost:8080/ should work.
 
+==== Configuration
+
+The application is configured via standard springboot yaml config file.
+The default file is at the default location `src/main/resources/application.yaml`.
+That file is documented so you should be able to dive in.
+
+===== Java Application: Setting single values 
+
+On startup you could overwrite these settings in the usual springboot manner, e.g. changing the file of the cache database:
+`java ... -jar onlinetrainer-${version}.jar --spring.datasource.url=jdbc:h2:./h2-cache.file`
+
+or via environment variable 
+
+```
+set SPRING_DATASOURCE_URL=jdbc:h2:./h2-cache.file
+java ... -jar onlinetrainer-${version}.jar
+```
+
+// Tested with: java -jar .\target\onlinetrainer-0.6.jar --introduction=https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-01.adoc
+// Tested with INTRODUCTION=...
+
+===== Java Application: Providing custom config file
+
+Also you could place a custom `application.yaml` in the current https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.external-config.files[location]. The values are merged with the defaults in the application.
+
+The easiest way is providing an `application.yaml` in the working directory.
+
+When using a different location you have to specify that location:
+`java ... -jar --spring.config.additional-location=<URL>`
+`URL` could be a `classpath:` or `file:` location.
+
+(When using `--spring.config.location` instead `...additional-location` Spring will only use these settings
+instead of merging them.)
+
+// Tested with: java -jar .\target\onlinetrainer-0.6.jar --spring.config.additional-location=file:./target/application.yaml
+
+===== Docker
+
+With Docker the type of configuration does not change. But you have to 'modify' the container in the way
+you need:
+```
+docker run --rm -p 8080:8080 janmaterne/onlinetrainer:latest --key=value
+docker run --rm -p 8080:8080 -e KEY=value janmaterne/onlinetrainer:latest 
+docker run --rm -p 8080:8080 -v c:/absolute/path/to/application.yaml:/app/application.yaml janmaterne/onlinetrainer:latest
+```
+
+// Tested with: docker run --rm -p 8080:8080 janmaterne/onlinetrainer:latest --introduction=https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-01.adoc 
+// Tested with: docker run --rm -p 8080:8080 -e INTRODUCTION=https://raw.githubusercontent.com/isaqb-org/examination-foundation/main/raw/mock_exam/docs/questions/question-01.adoc janmaterne/onlinetrainer:latest
+// Tested with: docker run --rm -p 8080:8080 -v c:/projekte/isaqb-mock-exam-ui/x/application.yaml:/app/application.yaml janmaterne/onlinetrainer:latest
+
 ==== Developing it
 
 // ** a "developing" section, for motivated devs who want to contribute and enhance it
 
+==== Task definition
+
+You have topics referencing tasks and you have quizzes referencing tasks.
+Tasks are loaded from resources.
+
+There are multiple format for defining the tasks:
+
+===== AsciiDoc
+
+This is the original format as used by the ISAQB. 
+AsciiDoc based but with a standard format: parts defining the task per language and an part for (English) explanation.
+While the latter is simple AsciiDoc the former has a more complex format.
+Have a look at the test resouces like `src/test/resources/ParserTest/question-04.adoc`.
+
+Derived from the model there is also a yaml format (`src/test/resources/ParserTest/question-04.yaml`).
+
+The third format is text based. It starts with a header containing of `key: value` pairs and the language task definition. Each language starts with `***LANG***` (with LANG = DE or EN). A split line (`---`) separates the 
+question text, possible options and the explanation. A "possible option" is selected, if the line starts with an `x`.
+All explanations are merged as there is only one language supported.
+
+The fourth format is a small version of the text format and uses defaults and limitations: task id is calculated from its content, type is always 'K' and it supports only DE-language.
+
+// ==== UseCase
+
+// ===== Train for the Mock-Exam
+
+// ===== Train some more topics
+
+// ===== Make a quiz with you own tasks
 
 
 === German
@@ -87,8 +166,67 @@ Nachdem die Distribution heruntergeladen wurde, kann man ein Startskript `run.ba
 Über dieses Skript kann die Anwendung gestartet werden, welche den Port `8080` öffnet, um Anfragen eines Browsers zu beantworten.
 Ein Öffnen von http://localhost:8080/ sollte daher reichen.
 
+==== Konfiguration
+
+Die Anwendung wird über die Standard-SpringBoot-Mechanismen konfiguriert.
+Die Default-Konfiguration liegt in `src/main/resources/application.yaml`.
+Diese Datei ist dokumentiert, so dass dass Sie sich zurechtfinden sollten.
+
+===== Java Anwendung: einen einzelnen Wert setzten
+
+Die Konfigurationswerte können beim Start über die gewohnten Wege überschrieben werden, z.B. um die Cache-Datenbank zu ändern:
+`java ... -jar onlinetrainer-${version}.jar --spring.datasource.url=jdbc:h2:./h2-cache.file`
+
+oder über Umgebungsvariablen
+
+```
+set SPRING_DATASOURCE_URL=jdbc:h2:./h2-cache.file
+java ... -jar onlinetrainer-${version}.jar
+```
+
+===== Java Anwendung: eigene Konfigurationsdatei
+
+Man kann auch eine eigene `application.yaml` im aktuellen https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.external-config.files[Verzeichnis] bereitstellen, deren Werte dann germergt werden.
+
+Wenn ein anderer Pfad als `application.yaml` im aktuellen Arbeitszeichnis verwendet wird, muss dieser angegeben werden:
+`java ... -jar --spring.config.additional-location=<URL>`
+`URL` kann dabei eine `classpath:` oder `file:` Lokation sein.
+
+(Wenn `--spring.config.location` anstelle `...additional-location` verwendet wird, wird Spring nur diese Angaben verwenden anstelle sie zu mergen.)
+
+===== Docker
+
+Mit Docker ändern sich die Mechanismen nicht. Man muss nur entsprechend den Container starten:
+```
+docker run --rm -p 8080:8080 janmaterne/onlinetrainer:latest --key=value
+docker run --rm -p 8080:8080 -e KEY=value janmaterne/onlinetrainer:latest 
+docker run --rm -p 8080:8080 -v c:/absolute/path/to/application.yaml:/app/application.yaml janmaterne/onlinetrainer:latest
+```
 
 ==== Weiterentwicklung
 
+==== Task Definition
 
+Es gibt Topics, die Tasks referenzieren und es gibt Quizzes, die Tasks referenzieren.
+Tasks werden von Resourcen geladen.
 
+Dabei gibt es mehrere Formate, Tasks zu definieren:
+
+===== AsciiDoc
+
+Dieses ist das Originalformat, wie es von der ISAQB verwendet wird.
+Es ist AsciiDoc-basierend, setzt aber ein bestimmtes Format voraus:
+Die ersten Teile definieren die Tasks (ein Teil pro Sprache) und ein letzter eine (englischsprachige) Erläuterung.
+Während die Erläuterung einfaches AsciiDoc ist, haben die ersten ein komplexeres Format.
+Vergleiche hierzug die Testresource `src/test/resources/ParserTest/question-04.adoc`.
+
+Abgeleitet von den Domänenklassen gibt es auch ein YAML-Format (`src/test/resources/ParserTest/question-04.yaml`).
+
+Das dritte Format is textbasierend. Es startet mit einem Header bestehend aus `schlüssel: wert` Paaren und den 
+sprachspezifischen Definitionen. Jede Definition beginnt mit `***LANG***` (mit LANG = DE oder EN). 
+Eine Trennzeile (`---`) teilt zwischen dem Fragetext, den möglichen Antworten und den Erläuterungen.
+Eine "mögliche Antwort" gilt als "wahr", wenn die Zeile mit einem `x` beginnt.
+Alle Erläuterungstexte werden gemergt, da nur eine Sprache unterstützt wird.
+
+Das vierte Format is eine kleinere Version des Textformates und verwendet Defaults und Einschränkungen:
+die Task-ID wird aus dem Inhalt berechnet, der Typ ist immer "K" und es wird nur DE unterstützt.
