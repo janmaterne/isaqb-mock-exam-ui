@@ -55,21 +55,10 @@ public class TaskMapLoader {
             } else {
                 log.error("Task topic '{}' configured without any tasks.", topic);
             }
-            assertIdIsUnique(errorMap, tasks);
         }
         printErrors(errorMap);
         return taskMap;
     }
-
-    private void assertIdIsUnique(HashMap<String, List<String>> errorMap, List<Task> tasks) {
-    	var idsAll = tasks.stream().map(Task::getId).sorted().toList();
-    	var idsUnique = tasks.stream().map(Task::getId).sorted().distinct().toList();
-    	if (idsAll.size() != idsUnique.size()) {
-    		var diff =  idsAll;
-    		diff.removeAll(idsUnique);
-    		errorMap.put("_", List.of("Duplicate task ids: " + String.join(", ", diff)));
-    	}
-	}
 
 	private Optional<Task> url2task(String url) {
         TaskParser parser = guessParser(url);

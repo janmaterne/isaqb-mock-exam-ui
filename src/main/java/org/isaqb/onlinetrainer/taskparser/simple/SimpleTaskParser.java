@@ -3,6 +3,7 @@ package org.isaqb.onlinetrainer.taskparser.simple;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskType;
 import org.isaqb.onlinetrainer.taskparser.TaskParser;
+import org.springframework.stereotype.Component;
 
 /**
  * Parses "Simple Text Format":
@@ -28,6 +29,7 @@ import org.isaqb.onlinetrainer.taskparser.TaskParser;
  * </pre>
  *  
  */
+@Component
 public class SimpleTaskParser implements TaskParser {
 
 	@Override
