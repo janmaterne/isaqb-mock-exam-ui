@@ -39,11 +39,18 @@ class StateMachine {
 	 * More '=' signs are possible (min=3). 
 	 */
 	private Pattern languageLine = Pattern.compile("\\*{3,}(..)\\*{3,}");
+	
 	/** 
 	 * Marker line for changing the state/area: <tt>---</tt>
 	 * More '-' signs are possible (min=3). 
 	 */
 	private Pattern changeLine = Pattern.compile("\\-{3,}");
+	
+	/**
+	 * RegEx for initial checking if the text starts with a header:
+	 * maybe whitespaces, characters (min=1), colon, maybe whitespaces, at least one sign, more data (including whitespaces).
+	 */
+	private String headerPattern = "\\s*\\w+\\s*:\\s*\\w+.+";
 	
 	
 	@Getter
@@ -81,9 +88,13 @@ class StateMachine {
 		if (handler == null) {
 			// Difference between full format and format with defaults (= without header).
 			// ':' means, this is a header instruction like 'id: my-id'
-			currentState = line.contains(":") ? State.HEADER : State.QUESTION;
+			currentState = isHeaderLine(line) ? State.HEADER : State.QUESTION;
 			handler = handler();
 		}
+	}
+
+	boolean isHeaderLine(String line) {
+		return line.matches(headerPattern);
 	}
 
 	private LineHandler handler() {
