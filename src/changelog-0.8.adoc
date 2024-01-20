@@ -3,6 +3,8 @@
 Major improvements
 
 * provide SBOM and Maven Dependency Tree as JAR `onlinetrainer-${version}-sbom.jar`
+* new CLI argument `get-config` copies the built-in `application.yaml` to current dir as 
+  starting point for further modifications
 
 Fixes
 

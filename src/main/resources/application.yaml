@@ -136,9 +136,14 @@ cache:
     ttl-hours: 72
 
 
-# Increase Header-Size to store UIData as cookie
 server:
+    # Increase Header-Size to store UIData as cookie
     max-http-request-header-size: 250KB
+    # Standard Port of this Application.
+    port: 8080
+
+
+
 
 # https://docs.spring.io/spring-boot/docs/1.4.1.RELEASE/reference/html/common-application-properties.html
 spring:
