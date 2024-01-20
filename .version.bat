@@ -1,5 +1,6 @@
-set APP_VERSION=0.8-SNAPSHOT
-set APP_BUILT_TSTAMP=2024.01.18 17:44
-set APP_GIT_COMMIT_SHORTHASH=e0faec2
-set APP_GIT_COMMIT_MESSAGE=update README
-set APP_GIT_COMMIT_TSTAMP=2024-01-13T18:24:48+0100
+set APP_VERSION=0.8
+set APP_BUILT_TSTAMP=2024.01.20 10:16
+set APP_GIT_COMMIT_SHORTHASH=c71a83f
+set APP_GIT_COMMIT_MESSAGE=new CLI argument `get-config` copies the built-in `application.yaml` to current dir as
+starting point for further modifications
+set APP_GIT_COMMIT_TSTAMP=2024-01-20T10:53:22+0100

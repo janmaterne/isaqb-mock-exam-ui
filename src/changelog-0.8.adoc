@@ -12,4 +12,4 @@ Fixes
 
 Minor changes
 
-* x
+* updated dependencies

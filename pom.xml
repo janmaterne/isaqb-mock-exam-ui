@@ -8,13 +8,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>org.isaqb.onlinetrainer</groupId>
     <artifactId>onlinetrainer</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.8</version>
 
 
     <properties>
