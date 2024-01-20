@@ -37,6 +37,9 @@
         <!-- Test -->
         <hamcrest.version>2.2</hamcrest.version>
 
+        <!-- SBOM -->
+        <sbom-directory>${project.build.directory}/sbom</sbom-directory>
+
         <!-- Distribution -->
         <jdk.base-url>https://download.java.net/java/GA/jdk21.0.1/415e3f918a1f4062a0074a2794853d0d/12/GPL</jdk.base-url>
         <jdk.file.win64>openjdk-21.0.1_windows-x64_bin.zip</jdk.file.win64>
@@ -242,9 +245,66 @@
 
     <profiles>
         <profile>
+            <id>sbom</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <version>2.7.11</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>makeAggregateBom</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${sbom-directory}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <classifier>sbom</classifier>
+                                <classesDirectory>${sbom-directory}</classesDirectory>
+                            </configuration>
+                        </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>distribution</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.6.1</version>
+                        <executions>
+                            <execution>
+                                <id>sbom-dependency-tree</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>tree</goal>
+                                </goals>
+                                <configuration>
+                                    <outputFile>${sbom-directory}/mvn-dependency-tree.txt</outputFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>3.1.0</version>

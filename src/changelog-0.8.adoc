@@ -1,0 +1,13 @@
+## Version 0.8
+
+Major improvements
+
+* provide SBOM and Maven Dependency Tree as JAR `onlinetrainer-${version}-sbom.jar`
+
+Fixes
+
+* fix header recognition in text format
+
+Minor changes
+
+* x

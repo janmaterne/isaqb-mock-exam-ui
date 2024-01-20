@@ -53,7 +53,7 @@ echo Docker Build
 docker build -t janmaterne/onlinetrainer:latest -t janmaterne/onlinetrainer:%TSTAMP% -t janmaterne/onlinetrainer:%APP_VERSION% .
 
 echo Maven Distribution
-call mvn package -Pdistribution
+call mvn package -Pdistribution -Psbom
 
 
 
@@ -79,8 +79,9 @@ docker push janmaterne/onlinetrainer:%APP_VERSION%
 echo Create  GitHub Release with Assets
 rem https://cli.github.com/manual/gh_release_create
 rem gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win64.zip target\onlinetrainer-%APP_VERSION%.jar
-gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win64.zip target\onlinetrainer-%APP_VERSION%.jar
+gh release create %APP_VERSION% --title "iSAQB OnlineTrainer %APP_VERSION% - %TSTAMP%" --notes-file src\changelog-%APP_VERSION%.adoc target\onlinetrainer-linux.tar.gz target\onlinetrainer-macos.tar.gz target\onlinetrainer-win64.zip target\onlinetrainer-%APP_VERSION%.jar target\onlinetrainer-%APP_VERSION%-sbom.jar
 goto end
+
 
 
 :help
