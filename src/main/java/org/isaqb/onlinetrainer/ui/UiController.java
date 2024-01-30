@@ -119,6 +119,7 @@ public class UiController {
 
 	private List<QuizOptions> possibleQuizOptions(Language lang) {
         return quizConfiguration.getTasks().entrySet().stream()
+    		.filter(e -> !e.getValue().isSkip())
             .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
             .toList();
     }

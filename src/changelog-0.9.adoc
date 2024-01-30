@@ -1,0 +1,13 @@
+## Version 0.9
+
+Major improvements
+
+* x
+
+Fixes
+
+* Hide skipped quizzes
+
+Minor changes
+
+* x
