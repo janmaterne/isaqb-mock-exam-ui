@@ -10,4 +10,4 @@ Fixes
 
 Minor changes
 
-* x
+* rename main class

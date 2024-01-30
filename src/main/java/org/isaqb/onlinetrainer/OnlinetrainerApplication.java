@@ -9,14 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @Slf4j
-public class MockexamApplication {
+public class OnlinetrainerApplication {
 
     @Value("${spring.h2.console.enabled}")
     private boolean h2ConsoleEnabled;
 
     public static void main(String[] args) {
 		validateEnvironment();
-		SpringApplication app = new SpringApplication(MockexamApplication.class);
+		SpringApplication app = new SpringApplication(OnlinetrainerApplication.class);
 		// Inject values into the banner.
 		app.setDefaultProperties(BuildInfo.get());
 		app.run(args);
