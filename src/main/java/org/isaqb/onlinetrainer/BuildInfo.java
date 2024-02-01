@@ -8,12 +8,12 @@ import jakarta.annotation.Generated;
 public class BuildInfo {
 
 	private static final String VERSION = "0.9-SNAPSHOT";
-	private static final String BUILD_TIMESTAMP = "2024.01.30 14:04";
-	private static final String GIT_COMMIT_SHORTHASH = "9756294";
+	private static final String BUILD_TIMESTAMP = "2024.02.01 16:10";
+	private static final String GIT_COMMIT_SHORTHASH = "635bafa";
 	private static final String GIT_COMMIT_MESSAGE = """
-		update dependencies
+		rename main class
 	""";
-	private static final String GIT_COMMIT_TSTAMP = "2024-01-20T11:19:02+0100";
+	private static final String GIT_COMMIT_TSTAMP = "2024-01-30T15:40:20+0100";
 
 	public static String getVersion() {
         return VERSION;

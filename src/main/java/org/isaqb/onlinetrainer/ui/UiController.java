@@ -11,12 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.isaqb.onlinetrainer.BuildInfo;
-import org.isaqb.onlinetrainer.DataConfiguration;
+import org.isaqb.onlinetrainer.Messages;
 import org.isaqb.onlinetrainer.calculation.Calculator;
 import org.isaqb.onlinetrainer.loader.AsciidocReader;
 import org.isaqb.onlinetrainer.loader.IntroductionLoader;
@@ -26,6 +22,7 @@ import org.isaqb.onlinetrainer.model.I18NText;
 import org.isaqb.onlinetrainer.model.Language;
 import org.isaqb.onlinetrainer.model.Task;
 import org.isaqb.onlinetrainer.model.TaskAnswer;
+import org.isaqb.onlinetrainer.service.TrainerService;
 import org.isaqb.onlinetrainer.statistics.StatisticService;
 import org.isaqb.onlinetrainer.util.Base64Handler;
 import org.isaqb.onlinetrainer.util.CookieHelper;
@@ -41,6 +38,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -52,11 +52,12 @@ public class UiController {
     private I18NText cookieDislaimer;
     private I18NText howToUse;
     private AutoloadJS autoloadJS;
-    private DataConfiguration quizConfiguration;
     private ExamHttpAdapter examHttpAdapter;
     private Base64Handler base64;
     private AsciidocReader adocReader;
     private StatisticService statisticService;
+    private TrainerService trainerService;
+    private Messages messages;
 
     private String startTime;
 
@@ -70,9 +71,10 @@ public class UiController {
             @Value("classpath:messages/cookie-disclaimer.adoc") Resource resourceCookieDisclaimer,
             @Value("classpath:messages/how-to-use.adoc") Resource howToUse,
             AutoloadJS autloadJS,
-            DataConfiguration quizConfiguration,
             Base64Handler base64,
-            StatisticService statisticService
+            StatisticService statisticService,
+            TrainerService trainerService,
+            Messages messages
     ) throws IOException {
         this.examHttpAdapter = examHttpAdapter;
         this.introductionLoader = introductionLoader;
@@ -80,11 +82,12 @@ public class UiController {
         this.cookieDislaimer = adocReader.parse(resourceCookieDisclaimer);
         this.howToUse = adocReader.parse(howToUse);
         this.autoloadJS = autloadJS;
-        this.quizConfiguration = quizConfiguration;
         this.base64 = base64;
         this.adocReader = adocReader;
         this.startTime = new SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date());
         this.statisticService = statisticService;
+        this.trainerService = trainerService;
+        this.messages = messages;
     }
 
 
@@ -94,43 +97,28 @@ public class UiController {
             HttpServletRequest request,
             HttpServletResponse response,
             Model model,
-            @RequestParam String language
+            @RequestParam Language language
     ) {
-
-        new CookieHelper(request, response, base64).deleteAllCookies();
-
-        response.addCookie(new Cookie("language", language));
-        Language lang = Language.valueOf(language);
+        var cookies = new CookieHelper(request, response, base64);
+        cookies.deleteAllCookies();
+        cookies.setLanguage(language);
 
         model.addAttribute("language", language);
-        model.addAttribute("html", introductionLoader.getHtml(lang));
-        model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(lang));
-        model.addAttribute("howToUse", howToUse.getText(lang));
+        model.addAttribute("html", introductionLoader.getHtml(language));
+        model.addAttribute("cookieDisclaimer", cookieDislaimer.getText(language));
+        model.addAttribute("howToUse", howToUse.getText(language));
         model.addAttribute("appversion", 
             "Version %s - Build %s - Start %s".formatted(
             BuildInfo.getVersion(), BuildInfo.getBuildTimestamp(), startTime
         ));
-        model.addAttribute("quizOptions", possibleQuizOptions(lang));
-        model.addAttribute("exams", possibleExams(lang));
+        model.addAttribute("quizOptions", trainerService.possibleQuizOptions(language));
+        model.addAttribute("exams", trainerService.possibleExams(language));
         autoloadJS.injectAutoReloadJS(model);
 
         return "introduction.html";
     }
 
-	private List<QuizOptions> possibleQuizOptions(Language lang) {
-        return quizConfiguration.getTasks().entrySet().stream()
-    		.filter(e -> !e.getValue().isSkip())
-            .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
-            .toList();
-    }
 
-    private List<QuizOptions> possibleExams(Language lang) {
-        return quizConfiguration.getExams().entrySet().stream()
-            .map(e -> new QuizOptions(e.getKey(), e.getValue().getName().get(lang)))
-            .toList();
-	}
-    
-    
 
     @GetMapping("process-exam.html")
     public String processExam(
@@ -142,25 +130,27 @@ public class UiController {
             @CookieValue(name = "givenAnswers", required = false) String givenAnswersJson,
             @RequestBody(required = false) MultiValueMap<String, String> formData
     ) {
+        Language realLanguage = Language.of(language, langParam);
+
+        var cookies = new CookieHelper(request, response, base64);
+        cookies.setLanguage(realLanguage);
+        
         List<TaskAnswer> givenAnswers = givenAnswersFromCookie(givenAnswersJson);
         Exam exam = examHttpAdapter.from(request);
         examHttpAdapter.send(response, exam);
 
-        String realLanguage = language != null ? language : langParam;
-
-        UIData uiData = new UIData(adocReader, exam, Language.valueOf(realLanguage), givenAnswers, null);
+        UIData uiData = new UIData(adocReader, exam, realLanguage, givenAnswers, null);
         model.addAttribute("exam", exam);
         model.addAttribute("util", uiData);
         model.addAttribute("givenAnswers", givenAnswers);
         model.addAttribute("language", realLanguage);
         autoloadJS.injectAutoReloadJS(model);
         if (exam.getMode() == Mode.QUIZ) {
-            model.addAttribute("quizhint", "Sie können diese URL speichern, um zukünftig direkt ein Quiz mit den gewählten Themen zu starten.");
+            model.addAttribute("quizhint", messages.getMessage(realLanguage, "quizhint"));
         } else {
             model.addAttribute("quizhint", "");
         }
 
-        response.addCookie(new Cookie("language", realLanguage));
         logProcessed(realLanguage, exam);
         return "process-exam.html";
     }
@@ -169,7 +159,7 @@ public class UiController {
         return givenAnswersJson == null ? Collections.emptyList() : jsonMapper.fromStringToAnswers(givenAnswersJson);
     }
 
-    private void logProcessed(String realLanguage, Exam exam) {
+    private void logProcessed(Language realLanguage, Exam exam) {
         statisticService.processed(exam);
         log.info(
             "Exam processed: Language={}, mode={}, {}",

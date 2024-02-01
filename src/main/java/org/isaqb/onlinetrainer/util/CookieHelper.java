@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.isaqb.onlinetrainer.model.Language;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -75,5 +77,9 @@ public class CookieHelper {
         cookie.setValue("");
         response.addCookie(cookie);
     }
+
+	public void setLanguage(Language language) {
+		response.addCookie(new Cookie("language", language.name()));
+	}
 
 }
