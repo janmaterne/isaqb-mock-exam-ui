@@ -11,3 +11,4 @@ Fixes
 Minor changes
 
 * rename main class
+* update dependencies

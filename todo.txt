@@ -1,11 +1,51 @@
+
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.2-Release-Notes
+
+Docker Image Building
+Default CNB Builders Upgraded
+
+The default CNB builders used when building images with the Maven and Gradle plugin have changed. When the GraalVM plugin is applied to the build, the new default builder is paketobuildpacks:builder-jammy-tiny. Otherwise, the new default builder is paketobuildpacks:builder-jammy-base. See the Paketo documentation for more information on these builders.
+
+The previous default builders included a run image based on Ubuntu 18.04, and the new defaults include a run image based on Ubuntu 22.04. This means that any images built with the new defaults will be based on Ubuntu 22.04.
+Docker Host Configuration
+
+The spring-boot:build-image Maven goal and bootBuildImage Gradle task now use Docker CLI configuration files to determine the host address and other connection details for the Docker daemon that should be used by default. See the Gradle and Maven plugin documentation for more information.
+
+-----
+
+
+
+Refactoring: Service-Klasse einführen
+Aufgaben:
+* Controller: Mapping "http" auf Service-Call
+* Service: Logig
+* ServiceTest
+
+
+
+-----
+
+
+
+
+Quiz-Auswahl
+- Einträge nur hinzufügen, wenn auch Tasks vorhanden sind
+- "ALL" nur hinzufügen, wenn mindestens zwei Einträge vorhanden sind
+
+
+
+Architecture Communication Canvas
+
+
+TechSteck Canvas
+
+
 Internationalisierung der Oberflächen
 - Seite 1 index: ok
 - Seite 2 introduction: "weiter"
 - Seite 3 process: Header "Fragen", Button "Berechnen", Fragetexte
 - Seite 4 send-exam: komplett
 - Seite 5 details: komplett, lang übertragen?
-
-
 
 
 Stopuhr anzeigen; Am Ende: wie lange gebraucht + vergleich zum limit
@@ -33,7 +73,6 @@ userdoc.adoc mit Grafiken /images
 - screenshots      
 
 
-
 Refactor
 - ExamHttpAdapter, CookieHelper, Base64Handler, ?
 --> ClientCommunication(Request,Response)
@@ -42,10 +81,8 @@ Refactor
    * getFromParameterOrCookie
 
 
-
 Bei Absolvieren eines "normalen" Quizzes funktioniert die Berechnung nicht. 
 Es wird anstelle "foundation-part1" das komplette "foundation" verwendet.
-
 
 
 Changelog in der Introduction
@@ -64,8 +101,6 @@ Introduction überarbeiten
 •	Wozu?
 •	Was kann es?
 •	Wie zu bedienen?
-
-
 
 
 Banner-Erzeugung
