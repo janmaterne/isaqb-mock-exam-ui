@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.5</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -25,12 +25,12 @@
         <!-- Build -->
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy.MM.dd HH:mm</maven.build.timestamp.format>
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.32</lombok.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <!-- Runtime -->
-        <asciidoctorj.version>2.5.11</asciidoctorj.version>
-        <commons-io.version>2.15.1</commons-io.version>
+        <asciidoctorj.version>2.5.12</asciidoctorj.version>
+        <commons-io.version>2.16.1</commons-io.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
@@ -47,6 +47,14 @@
         <jdk.file.macos>openjdk-21.0.1_macos-x64_bin.tar.gz</jdk.file.macos>
         <jdk.download-dir>${project.build.directory}/downloads</jdk.download-dir>
         <distro.basedir>${project.build.directory}/distribution</distro.basedir>
+
+		<!-- Plugins -->
+		<cyclonedx-maven-plugin.version>2.8.0</cyclonedx-maven-plugin.version>
+		<maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
+		<maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
+		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+		<git-commit-id-maven-plugin.version>8.0.2</git-commit-id-maven-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     </properties>
 
     <dependencies>
@@ -119,13 +127,12 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <plugins>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
-                <version>7.0.0</version>
+                <version>${git-commit-id-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>get-the-git-infos</id>
@@ -148,7 +155,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${maven-resources-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -251,7 +258,7 @@
                     <plugin>
                         <groupId>org.cyclonedx</groupId>
                         <artifactId>cyclonedx-maven-plugin</artifactId>
-                        <version>2.7.11</version>
+                        <version>${cyclonedx-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -267,7 +274,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
-                        <version>3.3.0</version>
+                        <version>${maven-jar-plugin.version}</version>
                         <executions>
                         <execution>
                             <phase>package</phase>
@@ -291,7 +298,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
-                        <version>3.6.1</version>
+                        <version>${maven-dependency-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sbom-dependency-tree</id>
@@ -307,7 +314,7 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>${maven-antrun-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
